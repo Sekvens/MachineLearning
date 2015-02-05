@@ -45,3 +45,6 @@ We know that the hyperbolic tangent function can only create a few types of hype
 Question 13:
 With rback propagation we get very fast a result that is quite similar to the desired function shape. However if we let it run for a long time it doesn't really get any better. If we want more precision we can use normal back propagation but the shape will be more distorted the first iterations but quite fast it will catch up and become better than the rprop.
 
+Question 14:
+We used 50 nodes and rback prop. We used 3000 epochs and delta0 = 0.07, delt_int = 1.2, delt_dec = 0.5, maximum_delta 50.
+
