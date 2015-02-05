@@ -1,0 +1,47 @@
+Machine learning assignment 1
+
+Plot1: Different learning values.
+
+Question 1:
+The algorithm finds a local minimum before the global minimum and get stuck at that local minimum.
+
+Question 2:
+A low learning rate increases the risk of getting stuck at local minima. A high learning rate would increases the probability that it jumps over a particular local minimum, especially if it have a narrow valley. However if the local minimum is very wide the algorithm will be likely to start oscillating between the sides of the valley. If the algorithm with a high learning rate early on gets very close to the global minimum it might adjust the weights favourably enough to very fast narrowing down to the global minimum. However the same goes for the algorithm with a low learning rate. 
+We believe that there is no optimal general value that works for all problems. The learning rate have to be tweaked depending on the problem space.
+
+Question 3:
+The range of the hyperbolic tangent function is between $[-1, - 1]$ and the range of the logistic function is between $[0, 1]$ which is the functions we used for the hidden layer and respectively the output layer. 
+
+Question 4:
+Because the weights are randomized for each run.
+
+Question 5:
+H1 = AND, H2 = OR, O = XOR
+
+Question 6: // Need to verify the it with a truth table or similar.
+
+Plot3
+
+Question 7:
+The biggest difference is the difference in number of epoch needed. Resilient back propagation needs a lot fewer epoch to reach a minima.
+We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation.
+An interesting observation from using plot_xor is that the way rprop have classified the groups is a mirrored image of the bprop. 
+
+Question 8:
+With many epochs we notice that the higher number of nodes we have the less MSE we get. We suspect that they can faster tweak the curve to cross the desired coordinates since they have more options to optimize. 
+
+Question 9:
+The 6 node network got the approximation that looks most like the desired function. It seems like 3 nodes is not enough to make a plot close to the training targets. Each node represents a hyper plane and it seems like 3 hyper planes is not enough to plot the actual target nodes. It seems like the networks with bigger size tend to have to much freedom between the training targets to plot a way towards them. Somehow the size of 6 nodes seems to limit the shape of the curve to represent the desired function plot. However if we had more target nodes we would probably need more nodes in the network. 
+
+Question 10:
+With few hidden nodes we get to few hyper planes to classify the actual target nodes in this problem. 
+
+Question 11:
+If we have to many hidden nodes the errors are getting better but the approximation towards the function is suffering. There are to many hyperplanes that it can adjust so it's not that likely that it will plot it as a smooth curve between the target nodes. Instead it just get rewards for reaching the target nodes, not caring about the extra hyper planes between the target nodes.
+
+Question 12:
+We know that the hyperbolic tangent function can only create a few types of hyperplanes. By looking at the desired function we can imagine how many hyperplanes we need to get a good approximation of it. For every hyperplane we need one hidden node to the MLP.
+
+Question 13:
+With rback propagation we get very fast a result that is quite similar to the desired function shape. However if we let it run for a long time it doesn't really get any better. If we want more precision we can use normal back propagation but the shape will be more distorted the first iterations but quite fast it will catch up and become better than the rprop.
+
