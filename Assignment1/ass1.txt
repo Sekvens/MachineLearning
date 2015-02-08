@@ -25,7 +25,7 @@ Plot3
 Question 7:
 The biggest difference is the difference in number of epoch needed. Resilient back propagation needs a lot fewer epoch to reach a minima.
 We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation.
-An interesting observation from using plot_xor is that the way rprop have classified the groups is a mirrored image of the bprop. 
+A interesting observation from using plot_xor is that the way rprop have classified the groups is a mirrored image of the bprop. 
 
 Question 8:
 With many epochs we notice that the higher number of nodes we have the less MSE we get. We suspect that they can faster tweak the curve to cross the desired coordinates since they have more options to optimize. 
