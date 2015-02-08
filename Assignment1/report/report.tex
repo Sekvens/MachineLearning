@@ -3,11 +3,13 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
-\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorinlistoftodos]{todonotes}
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{color}
 \usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{{../pics/}}
 
 \lstset{frame=tb,
   language=Matlab,
@@ -30,7 +32,7 @@
 Uppsala University – Spring 2015
 Report for Assignment 1 by group 6}
 
-\author{Ludvig Sundstrom and John Shaw}
+\author{Ludvig Sundstr\"{o}m and John Shaw}
 \date{\today}
 
 \begin{document}
@@ -54,7 +56,12 @@ minimum. After a session of trial and error, we found that a learning rate of 2
 usually resulted in a well-trained network. 
 
 %Insert training plots here
-\textbf{Question 1 \& 2} Sometimes, as shown in for example figure 2, 
+\begin{figure}[h!] %float here
+	\caption{\label{fig:plot2_LR2}TODO: Running some examples}
+	\includegraphics[]{plot2_LR2.png}
+\end{figure}
+\subsection*{Question 1\& 2}
+\textbf{Question 1 \& 2} Sometimes, as shown in for example figure \ref{fig:plot2_LR2}, 
 the error plot converges to an value significally larger than zero.
 This is because the error rate is too low and we get stuck in local minima. We are 
 taking too small steps, and can't get out of small cavities. A too large learning 
