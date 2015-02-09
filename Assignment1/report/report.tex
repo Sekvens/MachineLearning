@@ -39,7 +39,7 @@ Report for Assignment 1 by group 6}
 
 \maketitle
 
-\section{Task1}
+\section{Task1: Simple classification: XOR}
 
 For the first task we were asked to create a feed forward neural network (NN) and 
 train it to implement the boolean XOR function. Using tools built into Matlab, we 
@@ -69,7 +69,7 @@ usually resulted in a well-trained network.
 	\includegraphics[]{plot2_LR20.png}
 \end{figure}
 \subsection*{Question 1 \& 2}
-\textbf{Question 1 \& 2} Sometimes, as shown in for example figure \{\ref{fig:plot2_LR01}\}, 
+Sometimes, as shown in for example figure \{\ref{fig:plot2_LR01}\}, 
 the error plot converges to an value significantly larger than zero.
 This is because the error rate is too low and we get stuck in local minima. We are 
 taking too small steps, and can't get out of small cavities. A too large learning 
@@ -96,7 +96,7 @@ Here, we also see the hidden node values of possible inputs of the XOR function.
 Inspecting the plot ranges of the hidden nodes aswell as the output node, we notice that
 the range for the hidden nodes are [-1, 1] and the range for the output function is [0, 1].
 \subsection*{Question 3}
-\textbf{Question 3} The reason that the ranges differs is that two 
+The reason that the ranges differs is that two 
 different sigmoid functions were used as activation functions used for the network. 
 For the hidden layer, the hyberbolic tangent function (range [-1, 1]) were used. 
 For the output node, the logistic function (range [0, 1]) were used. The authors of 
@@ -105,7 +105,7 @@ you use a activation function that ranges from [0, 1] or [-1, 1] but it's obviou
 convinient if the output activation function has the same range as the actual problem 
 output. 
 \subsection*{Question 4}
-\textbf{Question 4}A new neural network gets distrubited random weights 
+A new neural network gets distrubited random weights 
 when initialized. The result of this is that the training ends with different 
 solutions every time the network is initialized and trained and the 
 number of epochs needed to train the network differs aswell. 
@@ -115,20 +115,21 @@ network nodes (figure 4). We already
 know that this represents a well trained network which means that the output node is 
 infact representing the boolean XOR function. As for the hidden nodes, study the value 
 of the different inputs. For hidden node 1, an input of (0, 0) corresponds to 0 (or 
-atleast a value very close to zero). $(0, 1)$ also yeilds $~ 0$, $(1, 0) ~= 0$ and 
+atleast a value very close to zero). $(0, 1)$ also yields $~ 0$, $(1, 0) ~= 0$ and 
 $(1, 1) ~= 1$. If this node implemented any boolean function it would be the AND function.
 In the same way, the hidden node implements the boolean OR function. 
 \subsection*{Question 6}
-\textbf{Question 6} This is veryfied in the truth table below. 
+This is verified in the truth table \{\ref{table:1}\} below. 
 
 \begin{center}
+	\label{table:1}
     \begin{tabular} {l | c | r }
         Input & boolean XOR & Network implemented XOR \\
 		\hline
-        0 0 & 0 & TODO \\
-        0 1 & 1 & TODO \\
-        1 0 & 1 & TODO \\
-        1 1 & 0 & TODO \\
+        0 0 & 0 & 0.0348 \\
+        0 1 & 1 & 0.9744 \\
+        1 0 & 1 & 0.9745 \\
+        1 1 & 0 & 0.0350 \\
     \end{tabular}
 \end{center}
 
@@ -137,10 +138,14 @@ In the same way, the hidden node implements the boolean OR function.
 	\caption{\label{fig:plot3_rprop}\textbf{Plot 3} Using the Resilient Back-propagation algorithm with the variables: $DeltaInc = 1.2, DeltaDec = 0.5, MaxDelta = 50, delta0 = 0.7$}
 	\includegraphics[]{plot3_rprop.png}
 \end{figure}
+\begin{figure}[h!] %float here
+	\caption{\label{fig:good_rprop_xor_plot}\textbf{Plot 3} The plot\_xor of resilient back-propagation.}
+	\includegraphics[scale=0.55]{good_rprop_xor_plot.png}
+\end{figure}
 \subsection*{Question 7}
 The biggest difference is the difference in number of epoch needed. Resilient back propagation needs a lot fewer epoch to reach a minima.
-We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation.
-A interesting observation from using plot\_xor is that the way rprop have classified the groups is a mirrored image of the bprop. 
+We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation. This is seen in figure \{\ref{plot3_rprop.png}\}.
+A interesting observation from using plot\_xor, seen in figure \{\ref{good_rprop_xor_plot.png}\} is that the way rprop have classified the groups is a mirrored image of the back-propagation. 
 
 \section{Task2: Simple function approximation}
 
