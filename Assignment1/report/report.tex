@@ -57,16 +57,16 @@ usually resulted in a well-trained network.
 
 %Insert training plots here
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot2_LR01}\textbf{Plot 1} from 10 Training sessions with a learning rate of 0.1.}
 	\includegraphics[]{plot2_LR01.png}
+	\caption{\label{fig:plot2_LR01}\textbf{Plot 1} from 10 Training sessions with a learning rate of 0.1.}
 \end{figure}
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot2_LR2}\textbf{Plot 1} from 10 Training sessions with a learning rate of 2.}
 	\includegraphics[]{plot2_LR2.png}
+	\caption{\label{fig:plot2_LR2}\textbf{Plot 1} from 10 Training sessions with a learning rate of 2.}
 \end{figure}
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot2_LR20}\textbf{Plot 1} from 10 Training sessions with a learning rate of 20.}
 	\includegraphics[]{plot2_LR20.png}
+	\caption{\label{fig:plot2_LR20}\textbf{Plot 1} from 10 Training sessions with a learning rate of 20.}
 \end{figure}
 \subsection*{Question 1 \& 2}
 Sometimes, as shown in for example figure \{\ref{fig:plot2_LR01}\}, 
@@ -79,12 +79,12 @@ behaviour is likely to occur; see figure \{\ref{fig:plot2_LR20}\}.
 
 %insert colored xor plot 
 \begin{figure}[h!] %float here
-	\caption{\label{fig:good_bprop_xor_plot}\textbf{Plot 2} A good solution found for the XOR problem using back-propagation}
 	\includegraphics[scale=0.55]{good_bprop_xor_plot.png}
+	\caption{\label{fig:good_bprop_xor_plot}\textbf{Plot 2} A good solution found for the XOR problem using back-propagation}
 \end{figure}
 \begin{figure}[h!] %float here
-	\caption{\label{fig:bad_bprop_xor_plot}\textbf{Plot 2} A bad solution found for the XOR problem using back-propagation}
 	\includegraphics[scale=0.55]{bad_bprop_xor_plot.png}
+	\caption{\label{fig:bad_bprop_xor_plot}\textbf{Plot 2} A bad solution found for the XOR problem using back-propagation}
 \end{figure}
 A visualisation of a well trained network for the xor problem  
 is to plot the result of various values 
@@ -135,27 +135,56 @@ This is verified in the truth table \{\ref{table:1}\} below.
 
 %TODO: Insert plot 3 here
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot3_rprop}\textbf{Plot 3} Using the Resilient Back-propagation algorithm with the variables: $DeltaInc = 1.2, DeltaDec = 0.5, MaxDelta = 50, delta0 = 0.7$}
 	\includegraphics[]{plot3_rprop.png}
+	\caption{\label{fig:plot3_rprop}\textbf{Plot 3} Using the Resilient Back-propagation algorithm with the variables: $DeltaInc = 1.2, DeltaDec = 0.5, MaxDelta = 50, delta0 = 0.7$}
 \end{figure}
 \begin{figure}[h!] %float here
-	\caption{\label{fig:good_rprop_xor_plot}\textbf{Plot 3} The plot\_xor of resilient back-propagation.}
 	\includegraphics[scale=0.55]{good_rprop_xor_plot.png}
+	\caption{\label{fig:good_rprop_xor_plot}\textbf{Plot 3} The plot\_xor of resilient back-propagation.}
 \end{figure}
 \subsection*{Question 7}
 The biggest difference is the difference in number of epoch needed. Resilient back propagation needs a lot fewer epoch to reach a minima.
-We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation. This is seen in figure \{\ref{plot3_rprop.png}\}.
-A interesting observation from using plot\_xor, seen in figure \{\ref{good_rprop_xor_plot.png}\} is that the way rprop have classified the groups is a mirrored image of the back-propagation. 
+We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation. This is seen in figure \{\ref{fig:plot3_rprop}\}.
+A interesting observation from using plot\_xor, seen in figure \{\ref{fig:good_rprop_xor_plot}\} is that the way rprop have classified the groups is a mirrored image of the back-propagation. 
 
 \section{Task2: Simple function approximation}
+In this task we are trying to approximate the function $f(x) = sin(x) \times sin(5x)$ on the interval $[0, \pi]$ with a MLP. We will use a 10 data points to approximate the function, assuming we don't know it from the start. 
+%Insert plot 4 here
+\begin{figure}[h!] %float here
+	\includegraphics[scale=0.8]{plot4_3nodes.png}
+	\caption{\label{fig:plot4_3nodes.png}\textbf{Plot 4} A ANN consisting of 3 nodes with a learning rate of 0.1 for 5000 epochs}
+\end{figure}
+\begin{figure}[h!] %float here
+	\includegraphics[scale=0.8]{plot4_6nodes.png}
+	\caption{\label{fig:plot4_6nodes.png}\textbf{Plot 4} A ANN consisting of 6 nodes with a learning rate of 0.1 for 10000 epochs}
+\end{figure}
+\begin{figure}[h!] %float here
+	\includegraphics[scale=0.8]{plot4_3nodes.png}
+	\caption{\label{fig:plot4_10nodes.png}\textbf{Plot 4} A ANN consisting of 10 nodes with a learning rate of 0.1 for 10000 epochs}
+\end{figure}
+\begin{figure}[h!] %float here
+	\includegraphics[scale=0.8]{plot4_20nodes.png}
+	\caption{\label{fig:plot4_20nodes.png}\textbf{Plot 4} A ANN consisting of 20 nodes with a learning rate of 0.1 for 1000 epochs}
+\end{figure}
 
-%TODO: Insert plot 4 here
 \subsection*{Question 8}
+When using many epochs, we notice that the higher number of nodes we have, the less MSE we get. We suspect that a AAN with more nodes can faster tweak the curve to cross the desired training targets' coordinates since they have more options to optimize the path between the targets. This gives a smaller MSE even though it doesn't necessary mean that it gives us a better answer, an example of this can be seen in the 20 nodes ANN in \{\ref{fig:plot4_20nodes.png}\}, that performance very well in crossing the training targets' coordinates.
+
 \subsection*{Question 9}
+The 6 node network, seen in figure \{\ref{fig:plot4_6nodes.png}\} got the approximation that looks most like the desired function. It seems like 3 nodes is not enough to make a plot close to the training targets. This can be seen in figure \{\ref{fig:plot4_3nodes.png}\}. We believe that each node represents a hyper plane and it seems like 3 hyper planes is not enough to plot a curve that crosses the nodes of the actual target data. It seems like the networks with bigger size tend to have to much freedom between the training targets to plot a way towards them. Furthermore the size of 6 nodes seems to limit the shape of the curve between the training target, but express enough freedom to actually cross the target data's coordinates, to represent the desired function. That would as well mean that if we have more target nodes we would benefit if we increase the number of nodes in the network. 
+The AAN with 10 nodes, seen in \{\ref{fig:plot4_10nodes.png}\}, shows less freedom of expression between the lines than the 20 node network but a lot more than the 6 node network.
+
 \subsection*{Question 10}
+With few hidden nodes we get to few hyper planes to classify the actual target nodes in this problem instance. This is strongly co-related to the number of coordinates the target data express and their location. 
+
 \subsection*{Question 11}
+If we have to many hidden nodes, the errors we are testing against is getting less severe, but the approximation towards the function is suffering. There are to many hyperplanes that the AAN can adjust so it's not likely that it will plot it as a smooth curve between the target nodes. Instead it just get rewards for reaching the target nodes, regardless of the angle of the extra  not hyper planes between the target nodes.
+
 \subsection*{Question 12}
+We know that the hyperbolic tangent function can only create a few types of hyperplanes, where the most simple is similar to a line. By looking at the desired function we can imagine how many hyperplanes we need to get a good approximation of the function. For every hyperplane we need we should add one hidden node to the MLP. However we need to make sure we have enough nodes in the target data to actually represent this shape.
+
 \subsection*{Question 13}
+With resilient back-propagation we get very fast a result that is quite similar to the desired function shape. If we let it run for a long time we don't experience any improvement. If we want more precision we can use normal back propagation but the shape will be more distorted the first iterations but quite fast it will catch up and become better than the resilient back-propagation. The choice is between training time and how close the approximation need to be. 
 
 \section{Task3: Classification of wine data}
 \subsection*{Question 14}
