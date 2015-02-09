@@ -11,23 +11,6 @@
 \usepackage{graphicx}
 \graphicspath{{../pics/}}
 
-\lstset{frame=tb,
-  language=Matlab,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\small\ttfamily},
-  numbers=left,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{green},
-  stringstyle=\color{red},
-  breaklines=true,
-  breakatwhitespace=true,   
-  tabsize=4
-}
-
 \title{Machine Learning (course 1DT071)
 Uppsala University – Spring 2015
 Report for Assignment 1 by group 6}
@@ -57,16 +40,16 @@ usually resulted in a well-trained network.
 
 %Insert training plots here
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot2_LR01}\textbf{Plot 1} from 10 Training sessions with a learning rate of 0.1.}
-	\includegraphics[]{plot2_LR01.png}
+    \caption{\label{fig:plot2_LR01}\textbf{Plot 1} from 10 Training sessions with a learning rate of 0.1.}
+    \includegraphics[]{plot2_LR01.png}
 \end{figure}
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot2_LR2}\textbf{Plot 1} from 10 Training sessions with a learning rate of 2.}
-	\includegraphics[]{plot2_LR2.png}
+    \caption{\label{fig:plot2_LR2}\textbf{Plot 1} from 10 Training sessions with a learning rate of 2.}
+    \includegraphics[]{plot2_LR2.png}
 \end{figure}
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot2_LR20}\textbf{Plot 1} from 10 Training sessions with a learning rate of 20.}
-	\includegraphics[]{plot2_LR20.png}
+    \caption{\label{fig:plot2_LR20}\textbf{Plot 1} from 10 Training sessions with a learning rate of 20.}
+    \includegraphics[]{plot2_LR20.png}
 \end{figure}
 \subsection*{Question 1 \& 2}
 Sometimes, as shown in for example figure \{\ref{fig:plot2_LR01}\}, 
@@ -77,7 +60,6 @@ rate however, will cause the algorithm to take giant leaps through the landscape
 Too big steps will make it very hard to find a good solution, and an oscillating 
 behaviour is likely to occur; see figure \{\ref{fig:plot2_LR20}\}. 
 
-%insert colored xor plot 
 \begin{figure}[h!] %float here
 	\caption{\label{fig:good_bprop_xor_plot}\textbf{Plot 2} A good solution found for the XOR problem using back-propagation}
 	\includegraphics[scale=0.55]{good_bprop_xor_plot.png}
@@ -133,19 +115,18 @@ This is verified in the truth table \{\ref{table:1}\} below.
     \end{tabular}
 \end{center}
 
-%TODO: Insert plot 3 here
 \begin{figure}[h!] %float here
-	\caption{\label{fig:plot3_rprop}\textbf{Plot 3} Using the Resilient Back-propagation algorithm with the variables: $DeltaInc = 1.2, DeltaDec = 0.5, MaxDelta = 50, delta0 = 0.7$}
-	\includegraphics[]{plot3_rprop.png}
+    \caption{\label{fig:plot3_rprop}\textbf{Plot 3} Using the Resilient Back-propagation algorithm with the variables: $DeltaInc = 1.2, DeltaDec = 0.5, MaxDelta = 50, delta0 = 0.7$}
+    \includegraphics[]{plot3_rprop.png}
 \end{figure}
 \begin{figure}[h!] %float here
-	\caption{\label{fig:good_rprop_xor_plot}\textbf{Plot 3} The plot\_xor of resilient back-propagation.}
-	\includegraphics[scale=0.55]{good_rprop_xor_plot.png}
+    \caption{\label{fig:good_rprop_xor_plot}\textbf{Plot 3} The plot\_xor of resilient back-propagation.}
+    \includegraphics[scale=0.55]{good_rprop_xor_plot.png}
 \end{figure}
 \subsection*{Question 7}
 The biggest difference is the difference in number of epoch needed. Resilient back propagation needs a lot fewer epoch to reach a minima.
-We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation. This is seen in figure \{\ref{plot3_rprop.png}\}.
-A interesting observation from using plot\_xor, seen in figure \{\ref{good_rprop_xor_plot.png}\} is that the way rprop have classified the groups is a mirrored image of the back-propagation. 
+We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation. This is seen in figure \{\ref{fig:plot3_rprop}\}.
+A interesting observation from using plot\_xor, seen in figure \{\ref{fig:good_rprop_xor_plot}\} is that the way rprop have classified the groups is a mirrored image of the back-propagation. 
 
 \section{Task2: Simple function approximation}
 
@@ -158,8 +139,32 @@ A interesting observation from using plot\_xor, seen in figure \{\ref{good_rprop
 \subsection*{Question 13}
 
 \section{Task3: Classification of wine data}
+IN this task, we were like in task 1 asked to solve a classification problem. This time 
+both the input and the dataset were larger: 178 samples, each with 13 different values for 
+the various metrics. Again, we do not know what the relation of the data and the result, 
+so we create a NN and leave it to the network to work out a solution for this problem.
+
 \subsection*{Question 14}
+As the arity grows, it both becomes harder to decide the structure of the network and 
+choosing the right training parameters. Even though we had difficulties training networks 
+on this data, we had some success with a 
+network trained with the following specifications: The training algorithm was 
+resilient back propagation, the network had one hidden layer with 50 
+nodes, speed increase 20\% and decrease by 50\%. The network was trained 3000 epochs but 
+on good runs, it usually found a good solution in fewer epochs. The confusion matrix 
+of one trained network is shown in figure \{\ref{fig:wine_classification}\}. 
+As we can see, this network manages to classify 96.6\% of the samples into the right class.
+
+\begin{figure}[h!] %float here
+    \includegraphics[]{wine_classification.png}
+    \caption{\label{fig:wine_classification}Confusion matrix for a successfully trained network for the wine classification problems.}
+\end{figure}
+
 \subsection*{Question 15}
+The previous network had 50 hidden nodes, and was still very hard to train. One reason 
+for that is the data distribution. Some data values are significanly larger than others,
+even though we have no idea how important they are for the actual classification
+
 \subsection*{Question 16}
 
 \section{Task4: Approximating house prices}
