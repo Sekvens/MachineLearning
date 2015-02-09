@@ -190,10 +190,23 @@ As we can see, this network manages to classify 96.6\% of the samples into the r
 
 \subsection*{Question 15}
 The previous network had 50 hidden nodes, and was still very hard to train. One reason 
-for that is the data distribution. Some data values are significanly larger than others,
-even though we have no idea how important they are for the actual classification
+for that is the data distribution in this input set. 
+Some data values are significantly larger than others, resulting in big weight shifts 
+even if we do not know if that data is actually important for determining the class of the 
+sample. We made an attempt to solve this problem by normalizing the input vector to prevent 
+some values to differ a lot from others. 
+We experienced great improvement training the same network with the normalized input. The 
+network now found a solution with very low error every time the network was initialized 
+and trained. We had the same success when lowering the number of nodes in the hidden layer, 
+and we found that a network with as few as 3 hidden nodes were successful in training on the 
+normalized data, and would usually classify all wines into the right class in very 
+few (\<50) epochs.
 
 \subsection*{Question 16}
+Even when having success with normalized data compared to the widely distributed 
+data, normalization should be used with caution. The reason is that it discards 
+information. As we don't know if certain parameters of the input is more important 
+for the classification, we don't know if normalizing can make training harder. 
 
 \section{Task4: Approximating house prices}
 

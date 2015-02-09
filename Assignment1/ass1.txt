@@ -1,4 +1,4 @@
-Machine learning assignment 1
+Machine learning assignment 2
 
 Plot1: Different learning values.
 
