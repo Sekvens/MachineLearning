@@ -90,32 +90,32 @@ A visualisation of a well trained network for the xor problem
 is to plot the result of various values 
 as colors, as seen in figure \{\ref{fig:good_bprop_xor_plot}\}. 
 Here, we can see the classification of the possible input values. We can 
-clearly see the two hyperplanes generated that seperates data. 
+clearly see the two hyperplanes generated that separates data. 
 
 Here, we also see the hidden node values of possible inputs of the XOR function.
-Inspecting the plot ranges of the hidden nodes aswell as the output node, we notice that
+Inspecting the plot ranges of the hidden nodes as well as the output node, we notice that
 the range for the hidden nodes are [-1, 1] and the range for the output function is [0, 1].
 \subsection*{Question 3}
 The reason that the ranges differs is that two 
 different sigmoid functions were used as activation functions used for the network. 
-For the hidden layer, the hyberbolic tangent function (range [-1, 1]) were used. 
+For the hidden layer, the hyperbolic tangent function (range [-1, 1]) were used. 
 For the output node, the logistic function (range [0, 1]) were used. The authors of 
 this report could not find out weather it makes a difference for the algorithm weather 
 you use a activation function that ranges from [0, 1] or [-1, 1] but it's obviously 
-convinient if the output activation function has the same range as the actual problem 
+convenient if the output activation function has the same range as the actual problem 
 output. 
 \subsection*{Question 4}
-A new neural network gets distrubited random weights 
+A new neural network gets distributed random weights 
 when initialized. The result of this is that the training ends with different 
 solutions every time the network is initialized and trained and the 
-number of epochs needed to train the network differs aswell. 
+number of epochs needed to train the network differs as well. 
 \subsection*{Question 5}
-\textbf{Question 5} Again consider the colored plot of the XOR problem 
-network nodes (figure 4). We already 
+Again consider the coloured plot of the XOR problem 
+network nodes (figure \{\ref{fig:good_bprop_xor_plot}\}). We already 
 know that this represents a well trained network which means that the output node is 
-infact representing the boolean XOR function. As for the hidden nodes, study the value 
+in fact representing the boolean XOR function. As for the hidden nodes, study the value 
 of the different inputs. For hidden node 1, an input of (0, 0) corresponds to 0 (or 
-atleast a value very close to zero). $(0, 1)$ also yields $~ 0$, $(1, 0) ~= 0$ and 
+at least a value very close to zero). $(0, 1)$ also yields $~ 0$, $(1, 0) ~= 0$ and 
 $(1, 1) ~= 1$. If this node implemented any boolean function it would be the AND function.
 In the same way, the hidden node implements the boolean OR function. 
 \subsection*{Question 6}
