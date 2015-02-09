@@ -132,19 +132,19 @@ In this task we are trying to approximate the function $f(x) = sin(x) \times sin
 %Insert plot 4 here
 \begin{figure}[h!] %float here
 	\includegraphics[scale=0.8]{plot4_3nodes.png}
-	\caption{\label{fig:plot4_3nodes.png}\textbf{Plot 4} A ANN consisting of 3 nodes with a learning rate of 0.1 for 5000 epochs}
+	\caption{\label{fig:plot4_3nodes.png}\textbf{Plot 4} An ANN consisting of 3 nodes with a learning rate of 0.1 for 5000 epochs}
 \end{figure}
 \begin{figure}[h!] %float here
 	\includegraphics[scale=0.8]{plot4_6nodes.png}
-	\caption{\label{fig:plot4_6nodes.png}\textbf{Plot 4} A ANN consisting of 6 nodes with a learning rate of 0.1 for 10000 epochs}
+	\caption{\label{fig:plot4_6nodes.png}\textbf{Plot 4} An ANN consisting of 6 nodes with a learning rate of 0.1 for 10000 epochs}
 \end{figure}
 \begin{figure}[h!] %float here
 	\includegraphics[scale=0.8]{plot4_3nodes.png}
-	\caption{\label{fig:plot4_10nodes.png}\textbf{Plot 4} A ANN consisting of 10 nodes with a learning rate of 0.1 for 10000 epochs}
+	\caption{\label{fig:plot4_10nodes.png}\textbf{Plot 4} An ANN consisting of 10 nodes with a learning rate of 0.1 for 10000 epochs}
 \end{figure}
 \begin{figure}[h!] %float here
 	\includegraphics[scale=0.8]{plot4_20nodes.png}
-	\caption{\label{fig:plot4_20nodes.png}\textbf{Plot 4} A ANN consisting of 20 nodes with a learning rate of 0.1 for 1000 epochs}
+	\caption{\label{fig:plot4_20nodes.png}\textbf{Plot 4} An ANN consisting of 20 nodes with a learning rate of 0.1 for 1000 epochs}
 \end{figure}
 
 \subsection*{Question 8}
@@ -196,11 +196,31 @@ even though we have no idea how important they are for the actual classification
 \subsection*{Question 16}
 
 \section{Task4: Approximating house prices}
+In this task we are estimating house prices in Boston based on 506 samples. Each sample contains 13 dimensions with data.
+We will split the data into three sets: a training set, a validation set and a test set as an attempt to determine how good the ANN generalizes.
 
 %TODO: insert plot 5 here
 \subsection*{Question 17}
+Considering the cases where the algorithm was able to train the network in a significant number of epochs: 
+The training set usually has the lowest error rate, since it is the data we use to adjust the weights with. The validation usually has the second lowest error rate. Thus the test set have the highest error rate. The reason the validation data is biased is that even though it is not used to adjust the weights, it is used to select the final model of the network. The test data is the completely unbiased data, which means it usually has the highest error rate. 
+In general, even though a network seems to be well trained, it might not perform as good when given fresh data.
+
 \subsection*{Question 18}
+In early epochs, the test and validation set is behaving quite randomly. This is because an untrained network starts with a random distribution of the weights. After a while, the curves becomes more smooth. 
+After a more significant number of epochs, the validation curve
+has minimum after which its error starts to steadily increase. This is the point we know we should stop training in order to prevent over-fitting. 
+In the example plot TODO, we chose the maximum number of epochs where the validation error could increase as 1000, so we continue training for maximum 1000 epochs after we find a minimum in the validation graph. The test set error usually doesn't get much smaller as we train the network for a long time. 
+
+A well trained network should perform well when given fresh data but perhaps the data set was too small or the training method was wrong.
+
 \subsection*{Question 19}
+\begin{enumerate}
+\item Training the network for a long time does not necessarily mean that it is going to be giving the correct outputs when given inputs outside the training set.
+
+In most cases we have to consider cases where the ANN have to generalize data as it encounters data it haven't trained on.  
+
+\item We need to be careful when deciding when to stop training. Because of the nature of an ANN, having a few failed validation epochs does not mean we already found the optimal solution, so we can't stop training too early. We can also have to be careful to not stop training too late, because that will result in a over-fitted ANN which will perform bad on data that was not in the original training set. 
+\end{enumerate}
 
 \section{Task 5: Wrapping up}
 \subsection*{Question 20}
