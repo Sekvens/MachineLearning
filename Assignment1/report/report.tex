@@ -69,7 +69,7 @@ behaviour is likely to occur; see figure \{\ref{fig:plot2_LR20}\}.
 \end{figure}
 A visualisation of a well trained network for the xor problem  
 is to plot the result of various values 
-as colors, as seen in figure \{\ref{fig:good_bprop_xor_plot}\}. 
+as colours, as seen in figure \{\ref{fig:good_bprop_xor_plot}\}. 
 Here, we can see the classification of the possible input values. We can 
 clearly see the two hyperplanes generated that separates data. 
 
@@ -213,6 +213,11 @@ In this task we are estimating house prices in Boston based on 506 samples. Each
 We will split the data into three sets: a training set, a validation set and a test set as an attempt to determine how good the ANN generalizes.
 
 %TODO: insert plot 5 here
+\begin{figure}[h!] %float here
+	\includegraphics[]{housetraining.png}
+	\caption{\label{fig:housetraining}\textbf{Plot 5} House estimate samples run}
+\end{figure}
+
 \subsection*{Question 17}
 Considering the cases where the algorithm was able to train the network in a significant number of epochs: 
 The training set usually has the lowest error rate, since it is the data we use to adjust the weights with. The validation usually has the second lowest error rate. Thus the test set have the highest error rate. The reason the validation data is biased is that even though it is not used to adjust the weights, it is used to select the final model of the network. The test data is the completely unbiased data, which means it usually has the highest error rate. 
@@ -222,7 +227,7 @@ In general, even though a network seems to be well trained, it might not perform
 In early epochs, the test and validation set is behaving quite randomly. This is because an untrained network starts with a random distribution of the weights. After a while, the curves becomes more smooth. 
 After a more significant number of epochs, the validation curve
 has minimum after which its error starts to steadily increase. This is the point we know we should stop training in order to prevent over-fitting. 
-In the example plot TODO, we chose the maximum number of epochs where the validation error could increase as 1000, so we continue training for maximum 1000 epochs after we find a minimum in the validation graph. The test set error usually doesn't get much smaller as we train the network for a long time. 
+In the example plot \{\ref{fig:housetraining}\}, we chose the maximum number of epochs where the validation error could increase as 1000, so we continue training for maximum 1000 epochs after we find a minimum in the validation graph. The test set error usually doesn't get much smaller as we train the network for a long time. 
 
 A well trained network should perform well when given fresh data but perhaps the data set was too small or the training method was wrong.
 
