@@ -10,6 +10,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \graphicspath{{../pics/}}
+\usepackage{float}
 
 \title{Machine Learning (course 1DT071)
 Uppsala University – Spring 2015
@@ -38,15 +39,15 @@ adjust the parameters of the descent in such a way that we don't get stuck in a 
 minimum. After a session of trial and error, we found that a learning rate of 2 
 usually resulted in a well-trained network. 
 
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[]{plot2_LR01.png}
 	\caption{\label{fig:plot2_LR01}\textbf{Plot 1} from 10 Training sessions with a learning rate of 0.1.}
 \end{figure}
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[]{plot2_LR2.png}
 	\caption{\label{fig:plot2_LR2}\textbf{Plot 1} from 10 Training sessions with a learning rate of 2.}
 \end{figure}
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[]{plot2_LR20.png}
 	\caption{\label{fig:plot2_LR20}\textbf{Plot 1} from 10 Training sessions with a learning rate of 20.}
 \end{figure}
@@ -59,11 +60,11 @@ a too large learning rate will cause the algorithm to take giant leaps through t
 Too big steps will make it very hard to find a good solution, and an oscillating 
 behaviour is likely to occur; see figure \{\ref{fig:plot2_LR20}\}. 
 
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[scale=0.55]{good_bprop_xor_plot.png}
 	\caption{\label{fig:good_bprop_xor_plot}\textbf{Plot 2} A good solution found for the XOR problem using back-propagation}
 \end{figure}
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[scale=0.55]{bad_bprop_xor_plot.png}
 	\caption{\label{fig:bad_bprop_xor_plot}\textbf{Plot 2} A bad solution found for the XOR problem using back-propagation}
 \end{figure}
@@ -115,11 +116,11 @@ This is verified in the truth table \{\ref{table:1}\} below.
     \end{tabular}
 \end{center}
 
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[]{plot3_rprop.png}
 	\caption{\label{fig:plot3_rprop}\textbf{Plot 3} Using the Resilient Back-propagation algorithm with the variables: $DeltaInc = 1.2, DeltaDec = 0.5, MaxDelta = 50, delta0 = 0.7$}
 \end{figure}
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[scale=0.55]{good_rprop_xor_plot.png}
 	\caption{\label{fig:good_rprop_xor_plot}\textbf{Plot 3} The plot\_xor of resilient back-propagation.}
 \end{figure}
@@ -134,19 +135,19 @@ A interesting observation from using plot\_xor, seen in figure \{\ref{fig:good_r
 \section{Simple function approximation}
 In this task we are trying to approximate the function $f(x) = sin(x) \times sin(5x)$ on the interval $[0, \pi]$ with a MLP. We will use a 10 data points to approximate the function, assuming we don't know it from the start. 
 %Insert plot 4 here
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[scale=0.8]{plot4_3nodes.png}
 	\caption{\label{fig:plot4_3nodes.png}\textbf{Plot 4} An ANN consisting of 3 nodes with a learning rate of 0.1 for 5000 epochs}
 \end{figure}
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[scale=0.8]{plot4_6nodes.png}
 	\caption{\label{fig:plot4_6nodes.png}\textbf{Plot 4} An ANN consisting of 6 nodes with a learning rate of 0.1 for 10000 epochs}
 \end{figure}
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[scale=0.8]{plot4_3nodes.png}
 	\caption{\label{fig:plot4_10nodes.png}\textbf{Plot 4} An ANN consisting of 10 nodes with a learning rate of 0.1 for 10000 epochs}
 \end{figure}
-\begin{figure}[h!] %float here
+\begin{figure}[H] %float here
 	\includegraphics[scale=0.8]{plot4_20nodes.png}
 	\caption{\label{fig:plot4_20nodes.png}\textbf{Plot 4} An ANN consisting of 20 nodes with a learning rate of 0.1 for 1000 epochs}
 \end{figure}
