@@ -22,7 +22,7 @@ Report for Assignment 1 by group 6}
 
 \maketitle
 
-\section{Task1: Simple classification: XOR}
+\section{Simple classification: XOR}
 
 For the first task we were asked to create a feed forward neural network (NN) and 
 train it to implement the boolean XOR function. Using tools built into Matlab, we 
@@ -51,11 +51,11 @@ usually resulted in a well-trained network.
 	\caption{\label{fig:plot2_LR20}\textbf{Plot 1} from 10 Training sessions with a learning rate of 20.}
 \end{figure}
 \subsection*{Question 1 \& 2}
-Sometimes, as shown in for example figure \{\ref{fig:plot2_LR01}\}, 
+Sometimes, as shown in figure \{\ref{fig:plot2_LR01}\}, 
 the error plot converges to an value significantly larger than zero.
-This is because the error rate is too low and we get stuck in local minima. We are 
-taking too small steps, and can't get out of small cavities. A too large learning 
-rate however, will cause the algorithm to take giant leaps through the landscape. 
+In these cases the algorithm get's stuck in local minima. If we are taking too 
+small steps we and can't get out of small cavities. But we have to be careful: 
+a too large learning rate will cause the algorithm to take giant leaps through the landscape. 
 Too big steps will make it very hard to find a good solution, and an oscillating 
 behaviour is likely to occur; see figure \{\ref{fig:plot2_LR20}\}. 
 
@@ -82,7 +82,7 @@ different sigmoid functions were used as activation functions used for the netwo
 For the hidden layer, the hyperbolic tangent function (range [-1, 1]) were used. 
 For the output node, the logistic function (range [0, 1]) were used. The authors of 
 this report could not find out weather it makes a difference for the algorithm weather 
-you use a activation function that ranges from [0, 1] or [-1, 1] but it's obviously 
+you use a activation function that ranges from [0, 1] or [-1, 1] but it could be 
 convenient if the output activation function has the same range as the actual problem 
 output. 
 \subsection*{Question 4}
@@ -91,15 +91,16 @@ when initialized. The result of this is that the training ends with different
 solutions every time the network is initialized and trained and the 
 number of epochs needed to train the network differs as well. 
 \subsection*{Question 5}
-Again consider the coloured plot of the XOR problem 
-network nodes (figure \{\ref{fig:good_bprop_xor_plot}\}). We already 
-know that this represents a well trained network which means that the output node is 
-in fact representing the boolean XOR function. As for the hidden nodes, study the value 
+Consider the coloured plot of the XOR problem 
+network nodes (figure \{\ref{fig:good_bprop_xor_plot}\}). We 
+know that this plot represents a well trained network and output node is 
+representing the boolean XOR function. As for the hidden nodes, study the value 
 of the different inputs. For hidden node 1, an input of (0, 0) corresponds to 0 (or 
-at least a value very close to zero). $(0, 1)$ also yields $~ 0$, $(1, 0) ~= 0$ and 
-$(1, 1) ~= 1$. If this node implemented any boolean function it would be the AND function.
+at least a value very close to zero). $(0, 1)$ also approximates to $0$, $(1, 0) \approx 0$ and 
+$(1, 1) \approx 1$. If this node implemented any boolean function it would be the AND function.
 In the same way, the hidden node implements the boolean OR function. 
 \subsection*{Question 6}
+The output node implements the boolean XOR function, 
 This is verified in the truth table \{\ref{table:1}\} below. 
 
 \begin{center}
@@ -107,10 +108,10 @@ This is verified in the truth table \{\ref{table:1}\} below.
     \begin{tabular} {l | c | r }
         Input & boolean XOR & Network implemented XOR \\
 		\hline
-        0 0 & 0 & 0.0348 \\
-        0 1 & 1 & 0.9744 \\
-        1 0 & 1 & 0.9745 \\
-        1 1 & 0 & 0.0350 \\
+        0 0 & 0 & $0.0348 \approx 0$\\
+        0 1 & 1 & $0.9744 \approx 1$\\
+        1 0 & 1 & $0.9745 \approx 1$\\
+        1 1 & 0 & $0.0350 \approx 0$\\
     \end{tabular}
 \end{center}
 
@@ -123,11 +124,14 @@ This is verified in the truth table \{\ref{table:1}\} below.
 	\caption{\label{fig:good_rprop_xor_plot}\textbf{Plot 3} The plot\_xor of resilient back-propagation.}
 \end{figure}
 \subsection*{Question 7}
-The biggest difference is the difference in number of epoch needed. Resilient back propagation needs a lot fewer epoch to reach a minima.
-We think that resilient back propagation is better suitable for this problem since it finds a minimum in about 400 times less epochs compare to the normal back propagation. This is seen in figure \{\ref{fig:plot3_rprop}\}.
+The biggest difference is the difference in number of epochs needed. 
+Resilient back propagation needs a lot fewer epoch to reach a minima.
+We think that resilient back propagation is better suitable for this problem 
+since it finds a minimum in about 400 times less epochs compare to the normal 
+back propagation. This is seen in figure \{\ref{fig:plot3_rprop}\}.
 A interesting observation from using plot\_xor, seen in figure \{\ref{fig:good_rprop_xor_plot}\} is that the way rprop have classified the groups is a mirrored image of the back-propagation. 
 
-\section{Task2: Simple function approximation}
+\section{Simple function approximation}
 In this task we are trying to approximate the function $f(x) = sin(x) \times sin(5x)$ on the interval $[0, \pi]$ with a MLP. We will use a 10 data points to approximate the function, assuming we don't know it from the start. 
 %Insert plot 4 here
 \begin{figure}[h!] %float here
@@ -166,22 +170,27 @@ We know that the hyperbolic tangent function can only create a few types of hype
 \subsection*{Question 13}
 With resilient back-propagation we get very fast a result that is quite similar to the desired function shape. If we let it run for a long time we don't experience any improvement. If we want more precision we can use normal back propagation but the shape will be more distorted the first iterations but quite fast it will catch up and become better than the resilient back-propagation. The choice is between training time and how close the approximation need to be. 
 
-\section{Task3: Classification of wine data}
-IN this task, we were like in task 1 asked to solve a classification problem. This time 
-both the input and the dataset were larger: 178 samples, each with 13 different values for 
-the various metrics. Again, we do not know what the relation of the data and the result, 
-so we create a NN and leave it to the network to work out a solution for this problem.
+\section{Classification of wine data}
+In this task, we were like in task 1 asked to solve a classification problem. This time 
+both the input and the dataset were larger: 178 samples, each with 13
+values for the various measurements. Again we do not know 
+the relation between the data and the result, 
+so we create a NN and leave it to the network to work out a solution for the problem.
 
 \subsection*{Question 14}
-As the arty grows, it both becomes harder to decide the structure of the network and 
-choosing the right training parameters. Even though we had difficulties training networks 
+As the arity of the input data input grows, 
+it both becomes harder to decide the structure of the network and 
+choosing the right training parameters. Even though we had difficulties training 
+networks 
 on this data, we had some success with a 
 network trained with the following specifications: The training algorithm was 
 resilient back propagation, the network had one hidden layer with 50 
-nodes, speed increase 20\% and decrease by 50\%. The network was trained 3000 epochs but 
-on good runs, it usually found a good solution in fewer epochs. The confusion matrix 
+nodes, speed increase 20\% and decrease by 50\%. The network was trained for 
+3000 epochs but when training went well, the algorithm usually found a good 
+solution in fewer epochs. The confusion matrix 
 of one trained network is shown in figure \{\ref{fig:wine_classification}\}. 
-As we can see, this network manages to classify 96.6\% of the samples into the right class.
+As we can see, this network manages to classify 96.6\% of the samples 
+into the right class.
 
 \begin{figure}[h!] %float here
     \includegraphics[]{wine_classification.png}
@@ -189,13 +198,17 @@ As we can see, this network manages to classify 96.6\% of the samples into the r
 \end{figure}
 
 \subsection*{Question 15}
-The previous network had 50 hidden nodes, and was still very hard to train. One reason 
-for that is the data distribution in this input set. 
-Some data values are significantly larger than others, resulting in big weight shifts 
-even if we do not know if that data is actually important for determining the class of the 
-sample. We made an attempt to solve this problem by normalizing the input vector to prevent 
+Even though the network from the previous subsection had 50 hidden nodes, it was 
+still very hard to train. Upon inspecting the distribution of the separate values 
+of the input data we notice that some data values are significantly larger 
+than others. This results in in big weight shifts for those values 
+even if we do not know if that specific 
+data is actually more important for determining the class of the 
+sample. We made an attempt to solve this problem by 
+normalizing the input vector to prevent 
 some values to differ a lot from others. 
-We experienced great improvement training the same network with the normalized input. The 
+We experienced great improvement training the same network with the 
+normalized input. The 
 network now found a solution with very low error every time the network was initialized 
 and trained. We had the same success when lowering the number of nodes in the hidden layer, 
 and we found that a network with as few as 3 hidden nodes were successful in training on the 
