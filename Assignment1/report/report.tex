@@ -222,7 +222,7 @@ data, normalization should be used with caution. The reason is that it discards
 information. As we don't know if certain parameters of the input is more important 
 for the classification, we don't know if normalizing can make training harder. 
 
-\section{Task4: Approximating house prices}
+\section{Approximating house prices}
 In this task we are estimating house prices in Boston based on 506 samples. Each sample contains 13 dimensions with data.
 We will split the data into three sets: a training set, a validation set and a test set as an attempt to determine how good the ANN generalizes.
 
@@ -254,7 +254,7 @@ In most cases we have to consider cases where the ANN have to generalize data as
 \item We need to be careful when deciding when to stop training. Because of the nature of an ANN, having a few failed validation epochs does not mean we already found the optimal solution, so we can't stop training too early. We can also have to be careful to not stop training too late, because that will result in a over-fitted ANN which will perform bad on data that was not in the original training set. 
 \end{enumerate}
 
-\section{Task 5: Wrapping up}
+\section{Wrapping up}
 \subsection*{Question 20}
 We have been considering two different problem, the first is detecting spoiled products at for example a food distribution plant and the second is to detect cancer. There is a tool called electronic nose that can give a representation of smell that a computer can parse. We think this can be used to detect the chemical components that are released in food when it spoils or the chemical components in cancer. We think it would be possible to get enough data for these fields of use to learn an ANN to generalize a patient as cancerous or non-cancerous. This would work well as a complement to human expertise and remove workload from the doctors. 
 In food delivery it can be used to early detect spoiled fruit or meat so it can be removed before shipped to the stores.
