@@ -1,0 +1,52 @@
+
+Question 1
+The cells (with state 7 as the only exception) gets their values updated according 
+to a lower percentage of the neighboring cell values. Cells far away from the goal 
+converges to lower vaues because the cell just above the goal is the only cell that 
+is rewarded. 
+
+Question 2 
+Initially, all Q-values are zero. Before the agent finds the goal, no reward is 
+given and hence no values are changed. With the reward, state 7 has it's value 
+changed. In the following epochs, actions that takes the agent to this state 
+will have their value changed. Therefore the Q-values will start increasing at 
+states closer to the goal.
+
+Question 3
+Because the map is symmetrical, some states are also symmetrical. ex states 
+{10, 14}. Here it's only possible to move North or South and in both cases both 
+states will take the agent equally close to the goal (3 cells). 
+
+Question 4
+That the choice of action is random does not mean that we won't find a solution, 
+it just means it will possible take longer. However, full exploration also 
+means that we will find a solution if we run the algorthm long enough. 
+
+Question 5
+
+We 
+
+Question 6
+
+Q_{t + 1}(s_t, a_t) = Q_t(s_t, a_t) + LR(s_t, a_t) * 
+    ( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
+
+new = old + LR * (reward + discount * max(future) - old)
+
+
+Question 7
+
+The true value for state 2 is 0.95. 
+Because 
+Q(s, a)                         = 
+r + discount * max(Q(s', a'))   = 
+0 + 0.95 * 1 = 0.95
+
+Question 8
+Because of greedyness the algorithm is much more likely to visit a state that 
+has sooner or later led to the goal. This means that even though there might 
+exist more optimal solutions, the agent are much more likely to take a known 
+path rather than trying a new undiscovered path, leading to that some values 
+are updated much more frequently even though there might exist symmetrical 
+states. 
+
