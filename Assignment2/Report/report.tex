@@ -59,16 +59,18 @@ Another alternative could be to calculate the Manhattan distance (since we know 
 \emph{Write down the update rule for Q-learning!}
 
 \textbf{Answer:} 
-\begin{equation*}
-\mathsf{Q}_{t + 1}(s_t, a_t) = \\
-Q_t(s_t, a_t) + LR(s_t, a_t) * 
-( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
-new = old + LR * (reward + discount * max(future) - old)
-\end{equation*}
+%\begin{equation*}
+%\mathsf{Q}_{t + 1}(s_t, a_t) = \\
+%Q_t(s_t, a_t) + LR(s_t, a_t) * 
+%( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
+%new = old + LR * (reward + discount * max(future) - old)
+%\end{equation*}
 The update rule is the TD error:
 \begin{equation*}
 Q(s, a) \leftarrow Q(s, a) + \eta \bigg( r + \gamma max(Q(s', a') - Q(s, a)) \bigg)
 \end{equation*}
+
+ where $r$ is the reward, $\eta$ is the learning rate and $\gamma$ is the discount factor.
 
 \subsection*{Question 7}
 \emph{What is the true value (the value that Q-learning should converge
