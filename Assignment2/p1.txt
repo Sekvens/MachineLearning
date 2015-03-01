@@ -19,6 +19,10 @@ Question 3
 Because the map is symmetrical, some states are also symmetrical. ex states {10, 14}. Here it's only possible to move North or South and in both cases, both states will take the agent equally close to the goal (3 cells). 
 
 Question 4
+Even though the agent moves randomly, the reward makes the Q-values converge 
+to higher values if the action happens to bring it closer to the goal.
+
+
 That the choice of action is random does not mean that we won't find a solution, 
 it just means it will possible take longer. However, full exploration also 
 means that we will find a solution if we run the algorthm long enough. 
