@@ -96,13 +96,15 @@ This leads to states that are far away from the optimal paths are less likely to
 \emph{With Q-learning the lengths of the arrows increased steadily, but
 using SARSA they sometimes decrease. Why is that?}
 
-\textbf{Answer:} 
+\textbf{Answer:} When Q-learning selects an action it directly update the previous state. SARSA however, selects one action and then explores it. The previous state is not necessary updated right away and SARSA can select another action if it's not satisfied with the explorations of the first chosen action. This makes the q-values of an action getting updated (arrows increase) while SARSA is exploring, however when SARSA decides to explore another action it restores the q-values and thus the arrows of the first explored action decrease.
 
 \subsection*{Question 10}
 \emph{Do the arrows in the SARSA window converge to the same
 lengths as the corresponding arrows in the Q-learning window? Motivate your answer.}
 
-\textbf{Answer:} 
+\textbf{Answer:} Yes, if given enough time they will. SARSA and Q-learning are very similar algorithms and they differ in the way they explore. If given enough time they will have explored all possible states and actions so the difference between them can be ignored. 
+
+Since they calculate the Q-values in the same way they will eventually converge into the same value.
 
 \section{Task 3: Two rooms}
 
