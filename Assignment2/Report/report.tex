@@ -45,8 +45,8 @@ state-action pairs that get equal Q-values.}
 \emph{If you train the agent long enough, the red arrows will mark the
 shortest path to the goal. Why does it find the shortest path? (You may have noticed that the problem formulation—how the agent is rewarded—did not define shorter paths as ``better''.)}
 
-\textbf{Answer:} The action that takes the robot closer to the goal gets higher q-values because the way q-learning works. The shortest path is then found because of the discount factor will cascade so more distant states get a smaller proportion of the reward. When the number of episodes get higher we can assume it have started from all locations in a even distribution and that it have taken all paths in a even distribution. Then the red arrows will reflect the impact the discount factor have had to all other paths, making the red arrow the most rewarded path.
-So during an update the discount factor have lowered the values of a sub-optimal path's state. When updating the part of the rewards it will become lower than if it was coming from an optimal path. 
+\textbf{Answer:} The action that takes the robot closer to the goal gets higher Q-values because the way Q-learning algorithm works. The shortest path is found because of the discount factor will cascade so more distant states get a smaller proportion of the reward. When the number of episodes get higher we can assume it have started from all locations in a even distribution and that it have taken all paths in a even distribution. Then the red arrows will reflect the impact the discount factor have had to all other paths, making the red arrow the most rewarded path.
+During an update the discount factor have lowered the values of a sub-optimal path's state. When updating the part of the rewards it will become lower than if it was coming from an optimal path. 
 
 \subsection*{Question 5}
 \emph{How can we reformulate the problem (change the immediate re-
