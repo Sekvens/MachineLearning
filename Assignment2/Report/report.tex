@@ -59,16 +59,18 @@ Another alternative could be to calculate the Manhattan distance (since we know 
 \emph{Write down the update rule for Q-learning!}
 
 \textbf{Answer:} 
-\begin{equation*}
-\mathsf{Q}_{t + 1}(s_t, a_t) = \\
-Q_t(s_t, a_t) + LR(s_t, a_t) * 
-( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
-new = old + LR * (reward + discount * max(future) - old)
-\end{equation*}
+%\begin{equation*}
+%\mathsf{Q}_{t + 1}(s_t, a_t) = \\
+%Q_t(s_t, a_t) + LR(s_t, a_t) * 
+%( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
+%new = old + LR * (reward + discount * max(future) - old)
+%\end{equation*}
 The update rule is the TD error:
 \begin{equation*}
 Q(s, a) \leftarrow Q(s, a) + \eta \bigg( r + \gamma max(Q(s', a') - Q(s, a)) \bigg)
 \end{equation*}
+
+ where $r$ is the reward, $\eta$ is the learning rate and $\gamma$ is the discount factor.
 
 \subsection*{Question 7}
 \emph{What is the true value (the value that Q-learning should converge
@@ -114,13 +116,14 @@ The number of actions needed to finish 50 episodes decreases heavily if the agen
 \emph{In general, can you think of any disadvantages of guiding the
 agent in this way?} 
 
-\textbf{Answer:} 
- 
+\textbf{Answer:} The agent might get stuck in the guided solution for a long time. If it's allowed to explore in the start it could find very innovative starts and guiding it could make it require a lot of exploration to find the same innovative starts. 
 
 \subsection*{Question 13}
 \emph{Suggest an application where this method of initially leading the
 agent may be necessary (if not in theory, then at least in practice).}
 
-\textbf{Answer:} 
+\textbf{Answer:} If the state space is large and it's an constraint optimization problem, for example scheduling, there might exist non optimal solutions that are easy to find. By guiding the the agent in the start it would not wander aimlessly around in the state space but could instead start exploring solutions that are similar to the guided solution. 
+
+When trying to make a robot learn how to balance a pole or similar guiding could help the application to find a start, avoiding to much exploring in states where the stick is held vertically or other extremes.
 
 \end{document}
