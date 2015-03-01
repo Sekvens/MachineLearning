@@ -5,17 +5,18 @@ to a lower percentage of the neighboring cell values. Cells far away from the go
 converges to lower vaues because the cell just above the goal is the only cell that 
 is rewarded. 
 
+The only reinforcement that occurs is at the final state. This reinforcement is cascaded to all paths that are known to lead to the final step and thus these states get their q-value updated in proportion to the learning rate, the discount factor and the final state q-value.
+
+Answer:
+Because the discount factor restrict the values to become up to 0.95 times the value of the optimal future state. So the longer distance the state are from the goal, the smaller q-value it will have due to the discount factor. 
+
 Question 2 
-Initially, all Q-values are zero. Before the agent finds the goal, no reward is 
-given and hence no values are changed. With the reward, state 7 has it's value 
-changed. In the following epochs, actions that takes the agent to this state 
-will have their value changed. Therefore the Q-values will start increasing at 
-states closer to the goal.
+Answer:
+Initially, all Q-values are zero. Before the agent finds the goal, no reward is given and hence no values are changed. With the reward, state 7 has it's value 
+changed. In the following epochs, actions that takes the agent to this state will have their value changed. Therefore the Q-values will start increasing at states closer to the goal.
 
 Question 3
-Because the map is symmetrical, some states are also symmetrical. ex states 
-{10, 14}. Here it's only possible to move North or South and in both cases both 
-states will take the agent equally close to the goal (3 cells). 
+Because the map is symmetrical, some states are also symmetrical. ex states {10, 14}. Here it's only possible to move North or South and in both cases, both states will take the agent equally close to the goal (3 cells). 
 
 Question 4
 Even though the agent moves randomly, the reward makes the Q-values converge 

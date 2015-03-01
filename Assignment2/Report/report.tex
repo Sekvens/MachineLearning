@@ -1,0 +1,115 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{float}
+
+\title{Machine Learning (course 1DT071)
+Uppsala University – Spring 2015
+Report for Assignment 2 by group 6}
+
+\author{Ludvig Sundstr\"{o}m and John Shaw}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Q-learning}
+
+\subsection*{Question 1}
+\emph{After the arrows have converged, some states will have longer
+arrows than others (i.e., larger Q-values). Why is this so?}
+
+\textbf{Answer:} Because the discount factor restrict the values to become up to 0.95 times the value of the optimal future state. So the longer distance the state are from the goal, the smaller q-value it will have, due to the discount factor. 
+
+\subsection*{Question 2}
+\emph{In the first few episodes, only the states closest to the goal will
+have their Q-values increased (even though the agent may start far from the
+goal). Explain why.}
+
+\textbf{Answer:} Initially, all Q-values are zero. Before the agent finds the goal, no reward is given and hence no values are changed. With the reward, state 7 has it's value changed. In the following epochs, actions that takes the agent to this state will have their value changed. Therefore the Q-values will start increasing at states closer to the goal.
+
+\subsection*{Question 3}
+\emph{Certain arrows (not necessarily in the same state) should con-
+verge towards the same lengths. Why is this the case? Give an example of two
+state-action pairs that get equal Q-values.}
+
+\textbf{Answer:} Because the map is symmetrical, some states are also symmetrical. ex states \{10, 14\}. Here it's only possible to move North or South and in both cases, both states will take the agent equally close to the goal (3 cells). 
+
+\subsection*{Question 4}
+\emph{If you train the agent long enough, the red arrows will mark the
+shortest path to the goal. Why does it find the shortest path? (You may have noticed that the problem formulation—how the agent is rewarded—did not define shorter paths as ``better''.)}
+
+\textbf{Answer:} The action that takes the robot closer to the goal gets higher q-values because the way q-learning works. The shortest path is then found because of the discount factor will cascade so more distant states get a smaller proportion of the reward. When the number of episodes get higher we can assume it have started from all locations in a even distribution and that it have taken all paths in a even distribution. Then the red arrows will reflect the impact the discount factor have had to all other paths, making the red arrow the most rewarded path.
+So during an update the discount factor have lowered the values of a sub-optimal path's state. When updating the part of the rewards it will become lower than if it was coming from an optimal path. 
+
+\subsection*{Question 5}
+\emph{How can we reformulate the problem (change the immediate re-
+wards that the agent receives) so as to explicitly make shorter paths preferable to longer paths, also if the metric of success is simply the total sum of rewards in an episode?}
+
+\textbf{Answer:} One solution is to punish the poor robot if it moves away from the goal and reward it if it walks closer. 
+Another alternative could be to calculate the Manhattan distance (since we know how this environment is constrained) and reward it more when it's closer to the Manhattan distance and less if it's moving away from the Manhattan distance.
+
+\subsection*{Question 6}
+\emph{Write down the update rule for Q-learning!}
+
+\textbf{Answer:} 
+\begin{equation*}
+Q_{t + 1}(s_t, a_t) = \\
+Q_t(s_t, a_t) + LR(s_t, a_t) * 
+( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
+new = old + LR * (reward + discount * max(future) - old)
+\end{equation*}
+
+\subsection*{Question 7}
+\emph{What is the true value (the value that Q-learning should converge
+to, Q*) of the action down in state 2 (top row, centre square)? Include the complete calculation, not just the answer.}
+
+\textbf{Answer:} The true value for state 2 is 0.95. 
+Because:
+
+\subsection*{Question 8}
+\emph{Some arrows that previously converged to equal length (with $\epsilon = 1.0$) will not any more (unless you train for a very long time). Why?}
+
+\textbf{Answer:} Because of greediness the algorithm is much more likely to visit a state that has sooner or later led to the goal. This means that even though there might exist more optimal solutions, the agent are much more likely to take a known path rather than trying a new undiscovered path. 
+This leads to states that are far away from the optimal paths are less likely to get visited and thus updated less frequently.
+
+\section{Task 2: SARSA}
+
+\subsection*{Question 9}
+\emph{With Q-learning the lengths of the arrows increased steadily, but
+using SARSA they sometimes decrease. Why is that?}
+
+\textbf{Answer:} 
+
+\subsection*{Question 10}
+\emph{Do the arrows in the SARSA window converge to the same
+lengths as the corresponding arrows in the Q-learning window? Motivate your answer.}
+
+\textbf{Answer:} 
+
+\section{Task 3: Two rooms}
+
+\subsection*{Question 11}
+\emph{What can you say about the average action count in the experiment? Compare guiding the robot to not guiding the robot.}
+
+\textbf{Answer:} 
+
+\subsection*{Question 12}
+\emph{In general, can you think of any disadvantages of guiding the
+agent in this way?}
+
+\textbf{Answer:} 
+
+\subsection*{Question 13}
+\emph{Suggest an application where this method of initially leading the
+agent may be necessary (if not in theory, then at least in practice).}
+
+\textbf{Answer:} 
+
+\end{document}
