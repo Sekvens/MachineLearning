@@ -108,12 +108,14 @@ lengths as the corresponding arrows in the Q-learning window? Motivate your answ
 \emph{What can you say about the average action count in the experiment? Compare guiding the robot to not guiding the robot.}
 
 \textbf{Answer:} 
+The number of actions needed to finish 50 episodes decreases heavily if the agent is guided the first few episodes. Initially robot has no information about its environment and has to learn by trial and error. It takes a high number of random actions before it starts learning the actions that takes it closer to the goal. To prevent the agent from learning too slow in the beginning, you can guide the robot a couple of times, showing it the closest path to the goal. Then it has an idea what actions to perform in future episodes. 
 
 \subsection*{Question 12}
 \emph{In general, can you think of any disadvantages of guiding the
-agent in this way?}
+agent in this way?} 
 
 \textbf{Answer:} 
+ 
 
 \subsection*{Question 13}
 \emph{Suggest an application where this method of initially leading the
