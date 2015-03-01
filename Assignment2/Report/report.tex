@@ -60,18 +60,27 @@ Another alternative could be to calculate the Manhattan distance (since we know 
 
 \textbf{Answer:} 
 \begin{equation*}
-Q_{t + 1}(s_t, a_t) = \\
+\mathsf{Q}_{t + 1}(s_t, a_t) = \\
 Q_t(s_t, a_t) + LR(s_t, a_t) * 
 ( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
 new = old + LR * (reward + discount * max(future) - old)
+\end{equation*}
+The update rule is the TD error:
+\begin{equation*}
+Q(s, a) \leftarrow Q(s, a) + \eta \bigg( r + \gamma max(Q(s', a') - Q(s, a)) \bigg)
 \end{equation*}
 
 \subsection*{Question 7}
 \emph{What is the true value (the value that Q-learning should converge
 to, Q*) of the action down in state 2 (top row, centre square)? Include the complete calculation, not just the answer.}
 
-\textbf{Answer:} The true value for state 2 is 0.95. 
-Because:
+\textbf{Answer:} The true value for state 2 is 0.95.
+
+\begin{align*}
+Q(s, a)                    &= \\
+r + \eta \times max(Q(s', a'))   &= \\
+0 + 0.95 \times lim(1) &= 0.95 \\
+\end{align*}
 
 \subsection*{Question 8}
 \emph{Some arrows that previously converged to equal length (with $\epsilon = 1.0$) will not any more (unless you train for a very long time). Why?}
