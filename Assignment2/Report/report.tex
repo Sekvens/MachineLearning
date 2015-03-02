@@ -80,8 +80,8 @@ to, Q*) of the action down in state 2 (top row, centre square)? Include the comp
 
 \begin{align*}
 Q(s, a)                    &= \\
-r + \eta \times max(Q(s', a'))   &= \\
-0 + 0.95 \times lim(1) &= 0.95 \\
+r + \gamma \times max(Q(s', a'))   &= \\
+0 + 0.95 \times \sim lim(1) &= 0.95 \\
 \end{align*}
 
 \subsection*{Question 8}
@@ -104,7 +104,7 @@ When trying to visualize the agent for the two algorithms one difference would b
 \emph{Do the arrows in the SARSA window converge to the same
 lengths as the corresponding arrows in the Q-learning window? Motivate your answer.}
 
-\textbf{Answer:} Yes, if given enough time they will. SARSA and Q-learning are very similar algorithms and they differ in the way they explore. If given enough time they will have explored all possible states and actions so the difference between them can be ignored. 
+\textbf{Answer:} Yes, if given enough time they will. SARSA and Q-learning are very similar algorithms and they differ in the way they update on exploration. If given enough time they will have explored all possible states and actions so the difference between them can be ignored. 
 
 Since they calculate the Q-values in the same way they will eventually converge into the same value.
 
