@@ -1,0 +1,121 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{float}
+
+\title{Machine Learning (course 1DT071)
+Uppsala University – Spring 2015
+Report for Assignment 3 by group 2}
+
+\author{Ludvig Sundstr\"{o}m and John Shaw}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Training on simple 3-dimensional data}
+
+\subsection*{Question 1} 
+\emph{Use \texttt{plotsomehits} to study the overlap between the winning nodes for the two clusters, as above. What amount of overlap do you see for each different data set?}
+
+\textbf{Answer:} As the sparseness increases, the amount of overlap between the clusters increases as well.
+
+%insert plot 1: plotsomehits figures for cluster F1 both with P10 som_P30 and P30 with som_P10
+
+\subsection*{Question 2}
+\emph{Explain why the two \texttt{plotsomhits} figures that you created for Plot 1 look the way they do.}
+
+\textbf{Answer:} som\_10-P30 displays the winning nodes of the SOM trained on the most dense data applied on the most sparse data. Since the data is much more sparse than the distribution of nodes, the nodes on the edge of the map is most likely to win. som\_30-P190 displays the winning nodes of the SOM trained on the most sparse data applied on the most dense data. Here, a couple nodes inside the map close to the dense cluster are most likely to win. 
+
+%insert plot 2: The smoothest RGB map we could produce
+
+\subsection*{Question 3}
+\emph{What relation between the ordering phase and tuning phase seems to be best in order to get a smooth map? Why do you think that is?}
+
+\textbf{Answer:} 
+In this problem, the data lies in 3-dimensional space. How can we make the map cover the data in a good way? We can think of the 2-dimensional map as a paper arc which is formed  in some way to occupy as much space as possible in a 3D-cube. Even though we want to map a good variation of colors, it is more important to have smooth transitions between nodes in this problem. With this in mind, it would be good to form the map as a globe occupying as much as possible of the 3D-cube. In essence, this problem is to minimize the difference of the distances between the nodes. In order to do this, we found that we needed to train the network with no tuning phase at all. If we added a tuning phase where the nodes are moved individually, the distances start to differ and the shape of the map was distorted, resulting in a non-smooth color plot.
+
+\subsection*{Question 4}
+\emph{What training parameters did you use? How well does the trained
+sofm separate the classes in your opinion? Is some class easier to separate then the rest? If so, which one?}
+
+\textbf{Answer:} We trained the map for 200 epochs in total with only one epoch in ordering phase. The first class was easier to separate from the others. The SOFM performed quite badly. 
+
+\subsection*{Question 5}
+\emph{What training parameters did you use? What  major differences
+do you see in the results compared to the 5 by 5-node SOFM?}
+
+\textbf{Answer:} This time we used a 10 times 10 network and the same parameters except that we changed the total number of epochs to 300. One major difference is that we get better precision in the classification since 25 nodes was not enought to cover the training data. With 100 nodes we get better coverage over the first cluster that is less dense than the other two classes. The other two classes are more dense and they are overlapping a bit. We got a better cover over the area with these two nodes as well and that helped to seperate them as well.
+
+\subsection*{Question 6}
+\emph{How well do the sofms separate the classes in the normalized
+data?}
+
+\textbf{Answer:} 
+Pretty damn good.
+
+\subsection*{Question 7}
+\emph{What is the true value (the value that Q-learning should converge
+to, Q*) of the action down in state 2 (top row, centre square)? Include the complete calculation, not just the answer.}
+
+\textbf{Answer:} The true value for state 2 is 0.95.
+
+\begin{align*}
+Q(s, a)                    &= \\
+r + \gamma \times max(Q(s', a'))   &= \\
+0 + 0.95 \times \sim lim(1) &= 0.95 \\
+\end{align*}
+
+\subsection*{Question 8}
+\emph{Some arrows that previously converged to equal length (with $\epsilon = 1.0$) will not any more (unless you train for a very long time). Why?}
+
+\textbf{Answer:} Because of greediness the algorithm is much more likely to visit a state that has sooner or later led to the goal. This means that even though there might exist more optimal solutions, the agent are much more likely to take a known path rather than trying a new undiscovered path. 
+This leads to states that are far away from the optimal paths are less likely to get visited and thus updated less frequently.
+
+\section{Task 2: SARSA}
+
+\subsection*{Question 9}
+\emph{With Q-learning the lengths of the arrows increased steadily, but
+using SARSA they sometimes decrease. Why is that?}
+
+\textbf{Answer:} When Q-learning selects an action it directly update the previous state. SARSA however, selects one action and then explores it. The previous state is not necessary updated right away and SARSA can select another action if it's not satisfied with the explorations of the first chosen action. This makes the q-values of an action getting updated (the length of the arrows increase) while SARSA is exploring, however when SARSA decides to explore another action it restores the q-values and thus the arrows of the first explored action decrease.
+
+When trying to visualize the agent for the two algorithms one difference would be that SARSA have many actions to choose from while Q-learning just takes the one that maximise for the moment (greediness).
+
+\subsection*{Question 10}
+\emph{Do the arrows in the SARSA window converge to the same
+lengths as the corresponding arrows in the Q-learning window? Motivate your answer.}
+
+\textbf{Answer:} Yes, if given enough time they will. SARSA and Q-learning are very similar algorithms and they differ in the way they update on exploration. If given enough time they will have explored all possible states and actions so the difference between them can be ignored. 
+
+Since they calculate the Q-values in the same way they will eventually converge into the same value.
+
+\section{Task 3: Two rooms}
+
+\subsection*{Question 11}
+\emph{What can you say about the average action count in the experiment? Compare guiding the robot to not guiding the robot.}
+
+\textbf{Answer:} 
+The number of actions needed to finish 50 episodes decreases heavily if the agent is guided the first few episodes. Initially robot has no information about its environment and has to learn by trial and error. It requires a large number of random actions before it starts learning how to get closer to the goal. If one experiences that the agent learns too slow in the beginning, one can guide the robot a couple of times, showing it the closest path to the goal. Now when the robot has an idea on where to go, it should speed up the learning process. 
+
+\subsection*{Question 12}
+\emph{In general, can you think of any disadvantages of guiding the
+agent in this way?} 
+
+\textbf{Answer:} If you manually guide the agent too much the agent might get ``tunnel vision'' and always perform the guided solution. This would defeat the purpose of reinforcement learning where we only want to inform the agent when it has done something good or bad rather than telling the agent exactly what it did that was good or bad. If it's allowed to explore in the start it could find very innovative starts and guiding it could make it require a lot of exploration to find the same innovative starts. Another problem arises if the environment changes state. A wall might appear in the way of the robots guided solution making it very hard for it to adapt. 
+
+\subsection*{Question 13}
+\emph{Suggest an application where this method of initially leading the
+agent may be necessary (if not in theory, then at least in practice).}
+
+\textbf{Answer:} If the state space is large and it's an constraint optimization problem, for example scheduling, there might exist-non optimal solutions that are easy to find. By guiding the agent in the start it would not wander aimlessly around in the state space but could instead start exploring solutions that are similar to the guided solution. 
+
+When trying to make a robot learn how to balance a pole or similar guiding could help the application to find a start, avoiding to much exploring in states where the stick is held vertically or other extremes.
+
+\end{document}
