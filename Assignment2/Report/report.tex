@@ -19,7 +19,7 @@ Report for Assignment 2 by group 6}
 
 \maketitle
 
-\section{Q-learning}
+\section{Task 1: Q-learning}
 
 \subsection*{Question 1}
 \emph{After the arrows have converged, some states will have longer
@@ -34,10 +34,12 @@ goal). Explain why.}
 
 \textbf{Answer:} Initially, all Q-values are zero. Before the agent finds the goal, no reward is given and hence no values are changed. With the reward, state 7 has it's value changed. In the following epochs, actions that takes the agent to this state will have their value changed. Therefore the Q-values will start increasing at states closer to the goal.
 
+\pagebreak
 \subsection*{Question 3}
 \emph{Certain arrows (not necessarily in the same state) should con-
 verge towards the same lengths. Why is this the case? Give an example of two
 state-action pairs that get equal Q-values.}
+
 
 \textbf{Answer:} Because the map is symmetrical, some states are also symmetrical. For example states \{10, 14\} are two states 4 cells from the goal where it's only possible to move North or South. In both cases, both states will take the agent equally close to the goal (3 cells). 
 
@@ -59,12 +61,6 @@ Another alternative could be to calculate the Manhattan distance (since we know 
 \emph{Write down the update rule for Q-learning!}
 
 \textbf{Answer:} 
-%\begin{equation*}
-%\mathsf{Q}_{t + 1}(s_t, a_t) = \\
-%Q_t(s_t, a_t) + LR(s_t, a_t) * 
-%( Reward_{t + 1} + discount * max(future_values) - Q_t(s_t, a_t) )
-%new = old + LR * (reward + discount * max(future) - old)
-%\end{equation*}
 The update rule is the TD error:
 \begin{equation*}
 Q(s, a) \leftarrow Q(s, a) + \eta \bigg( r + \gamma max(Q(s', a') - Q(s, a)) \bigg)
