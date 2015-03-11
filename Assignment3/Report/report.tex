@@ -23,14 +23,19 @@ Report for Assignment 3 by group 2}
 
 \section*{Task 1: Training on simple 3-dimensional data}
 
+\begin{figure}[H] %float here
+	\includegraphics[]{q1_somP30onP10.png}
+	\caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+\end{figure}
+
+\begin{figure}[H] %float here
+	\includegraphics[]{q1_somP10onP30.png}
+	\caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P10 on P30.}
+\end{figure}
+
 \subsection*{Question 1} 
 
 \emph{Use } \texttt{plotsomehits} \emph{ to study the overlap between the winning nodes for the two clusters, as above. What amount of overlap do you see for each different data set?}
-
-% \begin{figure}[H] %float here
-	% \includegraphics[]{plot2_LR20.png}
-	% \caption{\label{fig:plot2_LR20}\textbf{Plot 1} from 10 Training sessions with a learning rate of 20.}
-% \end{figure}
 
 \textbf{Answer:} As the sparseness increases, the amount of overlap between the clusters increases as well.
 
@@ -44,6 +49,11 @@ Report for Assignment 3 by group 2}
 %insert plot 2: The smoothest RGB map we could produce
 
 \section*{Task 2: Mapping of RGB color data}
+
+\begin{figure}[H] %float here
+	\includegraphics[]{q2_Order500_15init_500epoch.png}
+	\caption{\label{fig:plot1P10onP30}\textbf{Plot 2} Picture of a magnificent gradient. Used 500 epochs of the ordering phase with an initial size of 15 nodes.}
+\end{figure}
 
 \subsection*{Question 3}
 \emph{What relation between the ordering phase and tuning phase seems to be best in order to get a smooth map? Why do you think that is?}
@@ -75,11 +85,10 @@ Pretty damn good.
 \subsection*{Question 7}
 \emph{How well does the SOFM separate the classes, in your opinion?}
 
-\textbf{Answer:} 
+\textbf{Answer: } 
 
 \subsection*{Question 8}
-\emph{f you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbor
-distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
+\emph{f you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
 Describe your reasoning.}
 
 \textbf{Answer:} 
@@ -98,17 +107,45 @@ largest petals? Explain your reasoning.}
 
 \section*{Task 5: Analysis of unknown data}
 
+% \begin{figure}[H] %float here
+	% \includegraphics[]{q1_somP30onP10.png}
+	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+% \end{figure}
+
 \subsection*{Question 11}
 \emph{How many well-separated clusters are there in the data set?
 Explain how you found out your answer. Include figures if necessary.}
 
-\textbf{Answer:} 
+% \begin{figure}[H] %float here
+	% \includegraphics[]{q1_somP30onP10.png}
+	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+% \end{figure}
+% \begin{figure}[H] %float here
+	% \includegraphics[]{q1_somP30onP10.png}
+	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+% \end{figure}
+% \begin{figure}[H] %float here
+	% \includegraphics[]{q1_somP30onP10.png}
+	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+% \end{figure}
+% \begin{figure}[H] %float here
+	% \includegraphics[]{q1_somP30onP10.png}
+	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+% \end{figure}
+% \begin{figure}[H] %float here
+	% \includegraphics[]{q1_somP30onP10.png}
+	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+% \end{figure}
+
+\textbf{Answer:} We have been studying the neighbour distances and we always find 7 separated areas. However since the SOFM creates a 2-dimensional map that tries to fit in a 10-dimensional space, some of these areas in 2-dimensions might be connected to each other at the borders of the network. We strongly suspect that the bottom left one and the top left one are connected since the lines of the separation fits very good with each other. This means it's only 5 different actual clusters. If we imagine the 2D neural network as a paper it have connected two corners on one side and created a loop where the edges are against each other. 
+We found the best results with 200 epochs and no tuning phase. We used a $20 \times 20$ sized network.
+
 
 \subsection*{Question 12}
 \emph{Which data points are from the same cluster? How did you
 figure it out? Include figures if necessary.} 
 
-\textbf{Answer:}
+\textbf{Answer:} We used the \texttt{plotsomhits} with the trained SOM and the points as input parameters. If we compare their location we can see that point 1 and 4 are close to each other. Point 3 and 5 are very close to each other as well but are far away from 1 and 4. Point 2 is placed in the top left corner so it could belong to a separated cluster or it belongs to the same class as 3 and 5 that are in the bottom left corner.
 
 \section*{Task 6: Wrapping up}
 
