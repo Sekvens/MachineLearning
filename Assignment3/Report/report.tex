@@ -25,12 +25,12 @@ Report for Assignment 3 by group 2}
 
 \begin{figure}[H] %float here
 	\includegraphics[]{q1_somP30onP10.png}
-	\caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
+	\caption{\label{fig:q1_somP30onP10}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
 \end{figure}
 
 \begin{figure}[H] %float here
 	\includegraphics[]{q1_somP10onP30.png}
-	\caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P10 on P30.}
+	\caption{\label{fig:q1_somP10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P10 on P30.}
 \end{figure}
 
 \subsection*{Question 1} 
@@ -85,19 +85,20 @@ Pretty damn good.
 \subsection*{Question 7}
 \emph{How well does the SOFM separate the classes, in your opinion?}
 
-\textbf{Answer: } 
+\textbf{Answer: } TODO In this classification problem, the map clearly distinguishes a distance between two groups of nodes. It does not however clearly classify the three flower classes. One possible reason is that the characteristics of one class of Iris flowers are very similary to another class characteristics making it hard for a SOFM to classify. 
 
 \subsection*{Question 8}
 \emph{f you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
 Describe your reasoning.}
 
-\textbf{Answer:} 
+\textbf{Answer:} The neighbor distances plot tells us that a certain set of data differs alot from another set of data. This implies that the data is probably not entirely from the same class of flowers. In this case it is difficult to interperet three classes from the generated SOFM, probably because of two data clusters 
+overlapping. 
 
 \subsection*{Question 9}
 \emph{Do any of the attributes seem particularly correlated? Which
 ones? Explain your reasoning.}
 
-\textbf{Answer:} 
+\textbf{Answer:}  
 
 \subsection*{Question 10}
 \emph{Which species has the smallest petals? Which species has the
@@ -107,35 +108,35 @@ largest petals? Explain your reasoning.}
 
 \section*{Task 5: Analysis of unknown data}
 
-% \begin{figure}[H] %float here
-	% \includegraphics[]{q1_somP30onP10.png}
-	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
-% \end{figure}
+ \begin{figure}[H] %float here
+	 \includegraphics[scale=0.6]{20x20trainedUnknown.png}
+	 \caption{\label{fig:20x20trainedUnknown} Picture showing the neighbourhood of the nodes in a SOM trained for the unknown data.}
+ \end{figure}
 
 \subsection*{Question 11}
 \emph{How many well-separated clusters are there in the data set?
 Explain how you found out your answer. Include figures if necessary.}
 
-% \begin{figure}[H] %float here
-	% \includegraphics[]{q1_somP30onP10.png}
-	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
-% \end{figure}
-% \begin{figure}[H] %float here
-	% \includegraphics[]{q1_somP30onP10.png}
-	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
-% \end{figure}
-% \begin{figure}[H] %float here
-	% \includegraphics[]{q1_somP30onP10.png}
-	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
-% \end{figure}
-% \begin{figure}[H] %float here
-	% \includegraphics[]{q1_somP30onP10.png}
-	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
-% \end{figure}
-% \begin{figure}[H] %float here
-	% \includegraphics[]{q1_somP30onP10.png}
-	% \caption{\label{fig:plot1P10onP30}\textbf{Plot 1} Picture of cluster $F_1$ when using SOM\_P30 on P10.}
-% \end{figure}
+ \begin{figure}[H] %float here
+	 \includegraphics[]{point1.png}
+	 \caption{\label{fig:point1} Weight triggered by point 1 in our trained SOM.}
+ \end{figure}
+ \begin{figure}[H] %float here
+	 \includegraphics[]{point2.png}
+	 \caption{\label{fig:point2} Weight triggered by point 2 in our trained SOM.}
+ \end{figure}
+ \begin{figure}[H] %float here
+	 \includegraphics[]{point3.png}
+	 \caption{\label{fig:point3} Weight triggered by point 3 in our trained SOM.}
+ \end{figure}
+ \begin{figure}[H] %float here
+	 \includegraphics[]{point4.png}
+	 \caption{\label{fig:point4} Weight triggered by point 4 in our trained SOM.}
+ \end{figure}
+ \begin{figure}[H] %float here
+	 \includegraphics[]{point5.png}
+	 \caption{\label{fig:point5} Weight triggered by point 5 in our trained SOM.}
+ \end{figure}
 
 \textbf{Answer:} We have been studying the neighbour distances and we always find 7 separated areas. However since the SOFM creates a 2-dimensional map that tries to fit in a 10-dimensional space, some of these areas in 2-dimensions might be connected to each other at the borders of the network. We strongly suspect that the bottom left one and the top left one are connected since the lines of the separation fits very good with each other. This means it's only 5 different actual clusters. If we imagine the 2D neural network as a paper it have connected two corners on one side and created a loop where the edges are against each other. 
 We found the best results with 200 epochs and no tuning phase. We used a $20 \times 20$ sized network.
