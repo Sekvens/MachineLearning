@@ -85,26 +85,30 @@ Pretty damn good.
 \subsection*{Question 7}
 \emph{How well does the SOFM separate the classes, in your opinion?}
 
-\textbf{Answer: } TODO In this classification problem, the map clearly distinguishes a distance between two groups of nodes. It does not however clearly classify the three flower classes. One possible reason is that the characteristics of one class of Iris flowers are very similary to another class characteristics making it hard for a SOFM to classify. 
+\textbf{Answer: } When studying the sample hit plots it clearly shows that there are a minimum of two classes since two of them are clustered in opposite corners. However it's hard to tell if the cluster in the middle is actually another class even if we could suspect this without known anything about the data.
+
+%TODO In this classification problem, the map clearly distinguishes a distance between two groups of nodes. It does not however clearly classify the three flower classes. One possible reason is that the characteristics of one class of Iris flowers are very similar to another class characteristics making it hard for a SOFM to classify. 
 
 \subsection*{Question 8}
-\emph{f you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
+\emph{If you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
 Describe your reasoning.}
 
-\textbf{Answer:} The neighbor distances plot tells us that a certain set of data differs alot from another set of data. This implies that the data is probably not entirely from the same class of flowers. In this case it is difficult to interperet three classes from the generated SOFM, probably because of two data clusters 
-overlapping. 
+\textbf{Answer:} We can clearly see that there are two classes when analysing the neighbourhood distances since there are a clear line dividing the classes in two. However the third class is not visible. We tried to train SOM networks to classify the datasets 2vs2 as well and clearly it can't separate two of the sets.
+
+
+%The neighbor distances plot tells us that a certain set of data differs alot from another set of data. This implies that the data is probably not entirely from the same class of flowers. In this case it is difficult to interperet three classes from the generated SOFM, probably because of two data clusters overlapping. 
 
 \subsection*{Question 9}
 \emph{Do any of the attributes seem particularly correlated? Which
 ones? Explain your reasoning.}
 
-\textbf{Answer:}  
+\textbf{Answer:}  We can see in the SOM input planes that the petal length and the petal width is very correlated. Both classes have black areas in the same region and the main difference seem to be the yellow region. We were discussing this findings with Peter Backeman and we found out that Matlab actually doesn't specify the colour coding of the regions so without being able to access the weights directly we can't speculate much more about them. 
 
 \subsection*{Question 10}
 \emph{Which species has the smallest petals? Which species has the
 largest petals? Explain your reasoning.}
 
-\textbf{Answer:} 
+\textbf{Answer:} TODO: We can see a visual representation of the weights in the SOM input planes and use this to reason about the different species of flowers. However since the Matlab documentation claims the black areas are equal to zero weights but doesn't mention the yellow areas we are not sure how to reason about the different species. 
 
 \section*{Task 5: Analysis of unknown data}
 
