@@ -37,7 +37,7 @@ Report for Assignment 3 by group 2}
 
 \emph{Use } \texttt{plotsomehits} \emph{ to study the overlap between the winning nodes for the two clusters, as above. What amount of overlap do you see for each different data set?}
 
-\textbf{Answer:} As the sparseness increases, the amount of overlap between the clusters increases as well.
+\textbf{Answer:} As the sparseness increases, we expect the amount of overlap between the clusters to increase as well. With confirmed by plotting the winning nodes from the map trained on the P10 dataset as well as the nodes from map trained on the P30 dataset. The winning nodes from the map trained on the more dense data were much closer together than the nodes trained on the P30 dataset. 
 
 %insert plot 1: plotsomehits figures for cluster F1 both with P10 som_P30 and P30 with som_P10
 
@@ -52,38 +52,38 @@ Report for Assignment 3 by group 2}
 
 \begin{figure}[H] %float here
 	\includegraphics[]{q2_Order500_15init_500epoch.png}
-	\caption{\label{fig:plot1P10onP30}\textbf{Plot 2} Picture of a magnificent gradient. Used 500 epochs of the ordering phase with an initial size of 15 nodes.}
+	\caption{\label{fig:plot1P10onP30}\textbf{Plot 2} Picture of a magnificent gradient. Used 500 epochs of the ordering phase with an initial size of 5 nodes.}
 \end{figure}
 
 \subsection*{Question 3}
 \emph{What relation between the ordering phase and tuning phase seems to be best in order to get a smooth map? Why do you think that is?}
 
 \textbf{Answer:} 
-In this problem, the data lies in 3-dimensional space. How can we make the map cover the data in a good way? We can think of the 2-dimensional map as a paper arc which is formed  in some way to occupy as much space as possible in a 3D-cube. Even though we want to map a good variation of colors, it is more important to have smooth transitions between nodes in this problem. With this in mind, it would be good to form the map as a globe occupying as much as possible of the 3D-cube. In essence, this problem is to minimize the difference of the distances between the nodes. In order to do this, we found that we needed to train the network with no tuning phase at all. If we added a tuning phase where the nodes are moved individually, the distances start to differ and the shape of the map was distorted, resulting in a non-smooth color plot.
+In this problem, the data lies in 3-dimensional space. In order to make the map cover the data in the best way possible, we try to visualize the problem. Since the map is 2-Dimensional and the target data 3-Dimensional, we think of the map as a paper arc which is formed in some way to occupy as much space as possible in a cube with data points evenly distributed in it. In this problem it is more important to have smooth transitions between nodes than to have a full variation of all the colors. Therefore, we want the map to take a smooth shape eventually in order to to minimize the difference of the distances between the nodes. To train a map in such a way, we found that we needed to train the network with no tuning phase at all. If we added a tuning phase where the nodes are moved individually, the distances start to differ and the shape of the map was distorted, resulting in a non-smooth color plot. The network had 10$\cdot$10 nodes, an initial neighbourhood size of 5 and was trained for 500 epochs.
+
+
+\section*{Task 3: Analysis on wine data}
 
 \subsection*{Question 4}
 \emph{What training parameters did you use? How well does the trained
 SOFM separate the classes in your opinion? Is some class easier to separate then the rest? If so, which one?}
 
-\textbf{Answer:} We trained the map for 200 epochs in total with only one epoch in ordering phase. The first class was easier to separate from the others. The SOFM performed quite badly. 
+\textbf{Answer:} We obtained the best results when we trained the map for 200 epochs in total with only one epoch in ordering phase. The first class was easier to separate from the others, but we found this data difficult to train on and the algorithm performed quite badly.
 
 \subsection*{Question 5}
 \emph{What training parameters did you use? What  major differences
 do you see in the results compared to the 5 by 5-node SOFM?}
 
-\textbf{Answer:} This time we used a 10 times 10 network and the same parameters except that we changed the total number of epochs to 300. One major difference is that we get better precision in the classification since 25 nodes was not enough to cover the training data. With 100 nodes we get better coverage over the first cluster that is less dense than the other two classes. The other two classes are more dense and they are overlapping a bit. We got a better cover over the area with these two nodes as well and that helped to separate them as well.
+\textbf{Answer:} This time we used a 10 times 10 network and the same parameters except that we trained for 300 epochs instead of 200 epochs. We managed to get better precision in the classification, probably since the previous number of 25 nodes was not enough to cover the training data. With 100 nodes we get better coverage over both the sparse cluster and the two more dense clusters. Even though they were overlapping a bit the new map was able to cover that area and separate them better than the $5\cdot5$ map. 
+
 
 \subsection*{Question 6}
 \emph{How well do the SOFM separate the classes in the normalized
 data?}
 
-\textbf{Answer:} 
-Pretty damn good.
+\textbf{Answer:} Normalizing the data greatly improved the quality of the classification. We achieved without difficulties three very clear groups of winning nodes representing the different wine types. In this problem, we are interested in identifying three clusters. Again, it's not that important to cover all data, in fact if there are data points that differ much from the rest they might distort the data. So this is obviously an example of a problem where you benefit from normalizing the data. 
 
 \section*{Task 4: Analysis of flower data}
-
-\subsection*{Question 7}
-\emph{How well does the SOFM separate the classes, in your opinion?}
 
  \begin{figure}[H] %float here
 	 \includegraphics[scale=0.5]{q4_plotsom1_50.jpg}
@@ -98,7 +98,10 @@ Pretty damn good.
 	 \caption{\label{fig:plotg3} Analysis of flower data, the third group.}
  \end{figure}
 
-\textbf{Answer: } When studying the sample hit plots it clearly shows that there are a minimum of two classes since two of them are clustered in opposite sides (namely \ref{fig:plotg1} and \ref{fig:plotg3}). However it's hard to tell if the cluster in the middle \ref{fig:plotg2} is actually another class even if we could suspect this without known anything about the data.
+%\subsection*{Question 7}
+%\emph{How well does the SOFM separate the classes, in your opinion?}
+ 
+ %\textbf{Answer: } When studying the sample hit plots it clearly shows that there are a minimum of two classes since two of them are clustered in opposite sides (namely \ref{fig:plotg1} and \ref{fig:plotg3}). However it's hard to tell if the cluster in the middle \ref{fig:plotg2} is actually another class even if we could suspect this without known anything about the data.
 
 %TODO In this classification problem, the map clearly distinguishes a distance between two groups of nodes. It does not however clearly classify the three flower classes. One possible reason is that the characteristics of one class of Iris flowers are very similar to another class characteristics making it hard for a SOFM to classify. 
 
@@ -107,13 +110,15 @@ Pretty damn good.
 	 \caption{\label{fig:neighbour} Neighbourhood distance for the flower data.}
  \end{figure}
 
-\subsection*{Question 8}
-\emph{If you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
+\subsection*{Question 7 / 8}
+\emph{How well did the SOM separate the classes and if you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
 Describe your reasoning.}
 
-\textbf{Answer:} We can clearly see that there are two classes when analysing the neighbourhood distances since there are a clear line dividing the classes in two \ref{fig:neighbour}. However the third class is not visible. We tried to train SOM networks to classify the datasets 1vs1 as well and clearly it can't separate two of the sets. This suggest that two of the sets are very hard to separate with the SOM and this setup. 
+ \textbf{Answer: } We didn't manage to train a map on this data with the same success as with the wine data. Again we want to see if the map is able to classify three different types of data, this time Iris flowers. By studying the neighbourhood distance plot, we see a clear distance between two groups of nodes. It is possible that the smaller part could represent one type of flower. To investigate further, we plot the winning nodes of the three individual groups of data. Although we see some overlapping between the different groups, we can still see a clear partition of the map according to the three groups. Judging from this, the first samples are from a species which differs quite much from the others, while the data from the other two species probably are very close as two clusters but still possible to separate. (There might be some data points for which it is possible that to origin from different species).
 
-We were discussing this findings with Peter Backeman and we found out that Matlab actually doesn't specify the colour coding of the regions so without being able to access the weights directly we can't speculate much more about them. 
+%\textbf{Answer:} We can clearly see that there are two classes when analysing the neighbourhood distances since there are a clear line dividing the classes in two \ref{fig:neighbour}. However the third class is not visible. We tried to train SOM networks to classify the datasets 1vs1 as well and clearly it can't separate two of the sets. This suggest that two of the sets are very hard to separate with the SOM and this setup. 
+
+%We were discussing this findings with Peter Backeman and we found out that Matlab actually doesn't specify the colour coding of the regions so without being able to access the weights directly we can't speculate much more about them. 
 
 
 %The neighbor distances plot tells us that a certain set of data differs alot from another set of data. This implies that the data is probably not entirely from the same class of flowers. In this case it is difficult to interperet three classes from the generated SOFM, probably because of two data clusters overlapping. 
@@ -133,7 +138,8 @@ ones? Explain your reasoning.}
 \emph{Which species has the smallest petals? Which species has the
 largest petals? Explain your reasoning.}
 
-\textbf{Answer:} TODO: We can see a visual representation of the weights in the SOM input planes and use this to reason about the different species of flowers.
+\textbf{Answer:} 
+In figure \ref{fig:weightdist}, dark colors indicate weak connections and light colors shows the strongest positive connections. Further looking at the input planes 3 and 4, we see that the group representing the left part of both input map 3 and 4 area has the most positive connections and hence the largest petals, and in a similar way the area representing the right part of the map has the smallest petals. Referencing to figure \ref{fig:plotg1} and \ref{fig:plotg3} we see establish group 3(Iris Virganica) to have the largest petals and group 1 (Iris Setosa) to have the smallest petals.
 
 \section*{Task 5: Analysis of unknown data}
 
@@ -147,27 +153,28 @@ largest petals? Explain your reasoning.}
 Explain how you found out your answer. Include figures if necessary.}
 
  \begin{figure}[H] %float here
-	 \includegraphics[]{point1.png}
+	 \includegraphics[scale=0.5]{point1.png}
 	 \caption{\label{fig:point1} Weight triggered by point 1 in our trained SOM.}
  \end{figure}
  \begin{figure}[H] %float here
-	 \includegraphics[]{point2.png}
+	 \includegraphics[scale=0.5]{point2.png}
 	 \caption{\label{fig:point2} Weight triggered by point 2 in our trained SOM.}
  \end{figure}
  \begin{figure}[H] %float here
-	 \includegraphics[]{point3.png}
+	 \includegraphics[scale=0.5]{point3.png}
 	 \caption{\label{fig:point3} Weight triggered by point 3 in our trained SOM.}
  \end{figure}
  \begin{figure}[H] %float here
-	 \includegraphics[]{point4.png}
+	 \includegraphics[scale=0.5]{point4.png}
 	 \caption{\label{fig:point4} Weight triggered by point 4 in our trained SOM.}
  \end{figure}
  \begin{figure}[H] %float here
-	 \includegraphics[]{point5.png}
+	 \includegraphics[scale=0.5]{point5.png}
 	 \caption{\label{fig:point5} Weight triggered by point 5 in our trained SOM.}
  \end{figure}
 
-\textbf{Answer:} We have been studying the neighbour distances and we always find 7 separated areas. However since the SOFM creates a 2-dimensional map that tries to fit in a 10-dimensional space, some of these areas in 2-dimensions might be connected to each other at the borders of the network. We strongly suspect that the bottom left one and the top left one are connected since the lines of the separation fits very good with each other. This means it's only 5 different actual clusters. If we imagine the 2D neural network as a paper it have connected two corners on one side and created a loop where the edges are against each other. 
+ \textbf{Answer:} By studying the neighbour distances shown in figure \ref{fig:20x20trainedUnknown} and we indentify 7 separated clusters. However, since the SOFM creates a 2-dimensional map that tries to fit in a 10-dimensional space, some of these areas in 2-dimensions might be connected to each other at the borders of the network. We strongly suspect that the bottom left one and the top left one are connected since the lines of the separation fits very good with each other. This means it's only 5 different actual clusters. If we imagine the 2D neural network as a paper it have connected two corners on one side and created a loop where the edges are against each other. 
+ 
 We found the best results with 200 epochs and no tuning phase. We used a $20 \times 20$ sized network.
 
 
