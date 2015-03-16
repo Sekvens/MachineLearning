@@ -85,26 +85,55 @@ Pretty damn good.
 \subsection*{Question 7}
 \emph{How well does the SOFM separate the classes, in your opinion?}
 
-\textbf{Answer: } TODO In this classification problem, the map clearly distinguishes a distance between two groups of nodes. It does not however clearly classify the three flower classes. One possible reason is that the characteristics of one class of Iris flowers are very similary to another class characteristics making it hard for a SOFM to classify. 
+ \begin{figure}[H] %float here
+	 \includegraphics[scale=0.5]{q4_plotsom1_50.jpg}
+	 \caption{\label{fig:plotg1} Analysis of flower data, the first group.}
+ \end{figure}
+  \begin{figure}[H] %float here
+	 \includegraphics[scale=0.5]{q4_plotsom50_100.jpg}
+	 \caption{\label{fig:plotg2} Analysis of flower data, the second group.}
+ \end{figure}
+  \begin{figure}[H] %float here
+	 \includegraphics[scale=0.5]{q4_plotsom100_150.jpg}
+	 \caption{\label{fig:plotg3} Analysis of flower data, the third group.}
+ \end{figure}
+
+\textbf{Answer: } When studying the sample hit plots it clearly shows that there are a minimum of two classes since two of them are clustered in opposite sides (namely \ref{fig:plotg1} and \ref{fig:plotg3}). However it's hard to tell if the cluster in the middle \ref{fig:plotg2} is actually another class even if we could suspect this without known anything about the data.
+
+%TODO In this classification problem, the map clearly distinguishes a distance between two groups of nodes. It does not however clearly classify the three flower classes. One possible reason is that the characteristics of one class of Iris flowers are very similar to another class characteristics making it hard for a SOFM to classify. 
+
+  \begin{figure}[H] %float here
+	 \includegraphics[scale=0.5]{q4_100o_1900tuningphase.jpg}
+	 \caption{\label{fig:neighbour} Neighbourhood distance for the flower data.}
+ \end{figure}
 
 \subsection*{Question 8}
-\emph{if you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
+\emph{If you did not already know that the data came from three different species of Iris flowers, could you have found any evidence in the neighbour distances plot to indicate that the data are not from a single species? What evidence would that be, and what does it imply about the distribution of the data?
 Describe your reasoning.}
 
-\textbf{Answer:} The neighbor distances plot tells us that a certain set of data differs alot from another set of data. This implies that the data is probably not entirely from the same class of flowers. In this case it is difficult to interperet three classes from the generated SOFM, probably because of two data clusters 
-overlapping. 
+\textbf{Answer:} We can clearly see that there are two classes when analysing the neighbourhood distances since there are a clear line dividing the classes in two \ref{fig:neighbour}. However the third class is not visible. We tried to train SOM networks to classify the datasets 1vs1 as well and clearly it can't separate two of the sets. This suggest that two of the sets are very hard to separate with the SOM and this setup. 
+
+We were discussing this findings with Peter Backeman and we found out that Matlab actually doesn't specify the colour coding of the regions so without being able to access the weights directly we can't speculate much more about them. 
+
+
+%The neighbor distances plot tells us that a certain set of data differs alot from another set of data. This implies that the data is probably not entirely from the same class of flowers. In this case it is difficult to interperet three classes from the generated SOFM, probably because of two data clusters overlapping. 
+
+  \begin{figure}[H] %float here
+	 \includegraphics[scale=0.7]{q4_q9weightdistribution.jpg}
+	 \caption{\label{fig:weightdist} Weight distribution for flower data.}
+ \end{figure}
 
 \subsection*{Question 9}
 \emph{Do any of the attributes seem particularly correlated? Which
 ones? Explain your reasoning.}
 
-\textbf{Answer:}  
+\textbf{Answer:}  We can see in the SOM input planes that the petal length and the petal width is very correlated. Both classes have black areas in the same region and the main difference seem to be the yellow region (This are refereed to as input 3 and 4 in \ref{fig:weightdist}). 
 
 \subsection*{Question 10}
 \emph{Which species has the smallest petals? Which species has the
 largest petals? Explain your reasoning.}
 
-\textbf{Answer:} 
+\textbf{Answer:} TODO: We can see a visual representation of the weights in the SOM input planes and use this to reason about the different species of flowers.
 
 \section*{Task 5: Analysis of unknown data}
 
