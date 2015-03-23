@@ -52,10 +52,19 @@ During an update the discount factor have lowered the values of a sub-optimal pa
 
 \subsection*{Question 5}
 \emph{How can we reformulate the problem (change the immediate re-
-wards that the agent receives) so as to explicitly make shorter paths preferable to longer paths, also if the metric of success is simply the total sum of rewards in an episode?}
-
-\textbf{Answer:} One solution is to punish the poor robot if it moves away from the goal and reward it if it walks closer. 
-Another alternative could be to calculate the Manhattan distance (since we know how this environment is constrained) and reward it more when it's closer to the Manhattan distance and less if it's moving away from the Manhattan distance.
+wards that the agent receives) so as to explicitly make shorter paths preferable
+to longer paths, also if the metric of success is simply the total sum of 
+rewards in an episode?}
+\\\\
+\textbf{New answer:} A simpler solution would be to punish the agent every
+time an action does not bring it to the goal. This way, we would not need to
+know anything about the solution before training. 
+\\\\
+\textbf{Answer:} One solution is to punish the poor robot if it moves away from 
+the goal and reward it if it walks closer. 
+Another alternative could be to calculate the Manhattan distance (since we know 
+how this environment is constrained) and reward it more when it's closer to the 
+Manhattan distance and less if it's moving away from the Manhattan distance.
 
 \subsection*{Question 6}
 \emph{Write down the update rule for Q-learning!}
@@ -92,9 +101,28 @@ This leads to states that are far away from the optimal paths are less likely to
 \emph{With Q-learning the lengths of the arrows increased steadily, but
 using SARSA they sometimes decrease. Why is that?}
 
-\textbf{Answer:} When Q-learning selects an action it directly update the previous state. SARSA however, selects one action and then explores it. The previous state is not necessary updated right away and SARSA can select another action if it's not satisfied with the explorations of the first chosen action. This makes the Q-values of an action getting updated (the length of the arrows increase) while SARSA is exploring, however when SARSA decides to explore another action it restores the Q-values and thus the arrows of the first explored action decrease.
+\textbf{New Answer:} Unlike Q-learning, SARSA does not always update the
+Q-value towards the maximum Q-value of the next state. Instead it updates
+towards the Q-value of the selected action in the next state. If that Q-value
+happens to be smaller than the Q-value of the current state, it will result in
+a negative update, and the arrows in the simulation will shrink.
+\begin{equation*}
+Q(s, a) \leftarrow Q(s, a) + \eta \bigg(\overbrace{ r + \gamma Q(s', a') - 
+Q(s, a)}^\text{Becomes less than 0} \bigg)
+\end{equation*}
+\\\\
+\textbf{Answer:} When Q-learning selects an action it directly update the 
+previous state. SARSA however, selects one action and then explores it. 
+The previous state is not necessary updated right away and SARSA can 
+select another action if it's not satisfied with the explorations of the 
+first chosen action. This makes the Q-values of an action getting updated 
+(the length of the arrows increase) while SARSA is exploring, however when 
+SARSA decides to explore another action it restores the Q-values and thus 
+the arrows of the first explored action decrease.
 
-When trying to visualize the agent for the two algorithms one difference would be that SARSA have many actions to choose from while Q-learning just takes the one that maximise for the moment (greediness).
+When trying to visualize the agent for the two algorithms one difference 
+would be that SARSA have many actions to choose from while Q-learning 
+just takes the one that maximise for the moment (greediness).
 
 \subsection*{Question 10}
 \emph{Do the arrows in the SARSA window converge to the same
