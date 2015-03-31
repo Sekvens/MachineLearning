@@ -162,8 +162,10 @@ the more difficult maps? Explain any difference in performance you observed.}
 \subsection*{Question 10}
 \emph{Why would the global minimum be difficult to find using a gradient descent method?}
 
-\textbf{Answer:} 
-In figure, dark colors indicate weak connections and light colors shows the strongest positive connections. Further looking at the input planes 3 and 4, we see that the group representing the left part of both input map 3 and 4 area has the most positive connections and hence the largest petals, and in a similar way the area representing the right part of the map has the smallest petals. Referencing to figure \ref{fig:plotg1} and \ref{fig:plotg3} we see establish group 3(Iris Virganica) to have the largest petals and group 1 (Iris Setosa) to have the smallest petals.
+\textbf{Answer:} The fact that the global minimum is very tightly by local
+minima makes it almost impossible to find for a single searcher that is
+following the slopes without falling down into one of the surrounding local 
+minima. 
 
 
 \subsection*{Question 11}
