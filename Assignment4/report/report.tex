@@ -162,46 +162,82 @@ the more difficult maps? Explain any difference in performance you observed.}
 \subsection*{Question 10}
 \emph{Why would the global minimum be difficult to find using a gradient descent method?}
 
-\textbf{Answer:} The fact that the global minimum is very tightly by local
-minima makes it almost impossible to find for a single searcher that is
-following the slopes without falling down into one of the surrounding local 
-minima. 
+\textbf{Answer:} The fact that the global minimum is very tightly surrounded by local minima makes it likely that a gradient descent method would get stuck at a local minimum. That it's surrounded by multiple layers of local minima makes it even less likely to find the actual global minimum. 
 
+
+\begin{table}[h]
+\scalebox{0.8}{
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\multicolumn{5}{|l|}{Fitness Values from 250 Generations with different crossover functions and proportional selection.} \\ \hline
+One-Point Crossover     & Two-Point Crossover     & Arithmetic Crossover     & Blend Crossover     & Linear Crossover    \\ \hline
+4.5                     & 4.3                     & 3.4                      & 10.3                & 19.8                \\ \hline
+4.1                     & 5.7                     & 3.8                      & 3.2                 & 19.9                \\ \hline
+5.2                     & 5.6                     & 3.6                      & 2.7                 & 19.9                \\ \hline
+4.2                     & 5.7                     & 3.8                      & 2.9                 & 18.9                \\ \hline
+4.7                     & 5.6                     & 4.2                      & 1.2                 & 19.9                \\ \hline
+\end{tabular}}
+\caption{Different Crossover Operations}
+\label{table:crossover}
+\end{table}
 
 \subsection*{Question 11}
 \emph{What effect does the choice of crossover operation appear to
 have on the population diversity?}
 
-\textbf{Answer:} gly suspect that the bottom left one and the top left one are connected since the lines of the separation fits very good with each other. This means it's only 5 different actual clusters. If we imagine the 2D neural network as a paper it have connected two corners on one side and created a loop where the edges are against each other. 
+\textbf{Answer:} 1-point, 2-point and Blend Crossover have a fairly steep slope in their diversity graph where Blend \ref{fig:blendDiversity} have the least steep graph. Arithmetic crossover have a much steeper diversity graph and requires very few generations until the diversity becomes close to zero. As we can see in the table \ref{table:crossover} arithmetic have a mean fitness of 3.76 and blend have a mean fitness of 4.06. However the mean value of blend seems to be high because it occasionally get a bad fitness value. When comparing their diversity graphs we can see that it blend have a more gracial slope and thus we suspect it doesn't rule out other solutions as fast as arithmetic crossover would do. Therefore we think blend would be better fitted for this function since it's less likely to rule out other solutions early on.
  
  %insert plot 4
  % \begin{figure}[H] %float here
-	 % \includegraphics[scale=0.4]{20x20trainedUnknown.png}
-	 % \caption{\label{fig:20x20trainedUnknown} Picture showing the neighbourhood of the nodes in a SOM trained for the unknown data.}
+	 % \includegraphics[scale=0.6]{BlendDiversity.png}
+	 % \caption{\label{fig:blendDiversity} Picture showing the diversity grapth for blend crossover.}
  % \end{figure}
 
+\begin{table}[h]
+\scalebox{0.8}{
+\begin{tabular}{|l|l|l|l|}
+\hline
+\multicolumn{4}{|l|}{Blend Fitness, getting fit without workout! Different Mutation Strategies}                              \\ \hline
+Mutate Proportional & Mutate Decay = None & Mutate Decay = Linear & Mutate Decay = Exponential \\ \hline
+True                & 2.1                 & 1.8                   & 2.9                        \\ \hline
+True                & 2.7                 & 2.7                   & 13.7                       \\ \hline
+True                & 2.5                 & 1.9                   & 1.6                        \\ \hline
+True                & 2.1                 & 2.7                   & 2.8                        \\ \hline
+True                & 2.3                 & 12.7                  & 2.7                        \\ \hline
+False               & 1.7                 & 2.0                   & 2.6                        \\ \hline
+False               & 12.7                & 2.9                   & 1.7                        \\ \hline
+False               & 2.3                 & 2.2                   & 2.9                        \\ \hline
+False               & 2.4                 & 2.8                   & 3.0                        \\ \hline
+False               & 2.5                 & 1.9                   & 2.1                        \\ \hline
+\end{tabular}}
+\caption{Comparing Mutation Strategies}
+\label{table:mutationStrategies}
+\end{table}
+ 
 \subsection*{Question 12}
 \emph{Which (if any) of the dynamic mutation probability strategies
 improved the performance of the algorithm? What difference do you observe in the results?}
 
-\textbf{Answer:} We used the \texttt{plotsomhits} with the trained SOM and the points as input parameters. If we compare their location we can see that point 1 and 4 are close to each other. Point 3 and 5 are very close to each other as well but are far away from 1 and 4. Point 2 is placed in the top left corner so it could belong to a separated cluster or possible to the same class as 3 and 5 the bottom left corner.
+\textbf{Answer:} As we can see in Table \ref{table:mutationStrategies} we can't really see any difference between the different mutation strategies. Since the values are few and that the blend crossover earlier experienced some random high fitness values we can't really draw any conclusions from these values except that all strategies seems equally good. 
+
+We will choose to continue the experiments with Linear Mutation strategy and no proportional mutations. 
 
 \subsection*{Question 13}
 \emph{Describe the effect (if any) comparative selection has on population diversity and convergence.} 
 
-\textbf{Answer:}
+\textbf{Answer:} Every run with comparative selection we achieve a fitness value of 0 with the selected parameters. Blend crossover, Linear Mutation and no proportional mutation. Compared with Arithmetic crossover the results seems to be slightly better but nearly as good as with the Blend crossover. 
 
 \subsection*{Question 14}
 \emph{What was the fitness value and position of the best solution you
 were able to locate? Report the parameter settings you used to generate that solution.} 
 
-\textbf{Answer:}
+\textbf{Answer:} As mentioned in Question 13 we get fitness 0 every experiment we have conducted. The parameters are: Crossover function = blend, Pressure = 2, Generation = 250, Mutate probability = 0.003, Mutate Decay = Linear, Mutate Proportional = False, Population Size = 200, Comparative = True, Elitist = True, Selection = Proportional and Selection Pressure = 2.
 
 \subsection*{Question 15}
-\emph{Try using GAsolver to find the minimum for the 100 dimensional Ackley’s function, using the same parameters as the last question. How
+\emph{Try using GAsolver to find the minimum for the 100 dimensional Ackley's function, using the same parameters as the last question. How
 well does it perform now? Can you improve the performance?} 
 
-\textbf{Answer:}
+\textbf{Answer:} It only performed decent with a fitness between 1.5-2.5. We discovered that we could increase the performance by simply increasing the number of generations it could run. 1000 generations is sufficient to find the optimal solution to a 100 dimensional Ackley's function.
 
 \section*{Task 3: Particle Swarm Optimization}
 
