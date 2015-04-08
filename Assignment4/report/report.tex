@@ -320,14 +320,13 @@ With $c_1 = c_2 = \phi = \phi_1 + \phi_2 = 4 + 2 = 6$ we get:
 \chi = \frac{2\kappa}{|2-6-\sqrt{6(6-4)}|} = (2-\sqrt{3})\kappa
 \end{align*}
 
-And to implement constriction, we should use $w = \chi, c_1 =
-\frac{\phi_1}{\chi}, c_2 = \frac{\phi_2}{\chi}$
+And to implement constriction, we should use $w = \chi, c_1 = \phi_1\chi, c_2 = \phi_2\chi$
 
 \subsection*{Question 22}
 \emph{Describe the behavior of the swarm when using constriction.
 Does it locate the global optimum? How quickly does it converge?}
 
-\textbf{Answer:}
+\textbf{Answer:} It converges quickly, around generation 80. However it converges in a fitness at 2-3, so it doesn't find the global optimum. We suspect that it converge faster the smaller $\kappa$ is, at the cost of fitness. A $\kappa$ at 1 seems to work best for us. 
 
 \section*{Task 4: Global Trajectory Optimisation}
 
@@ -335,7 +334,11 @@ Does it locate the global optimum? How quickly does it converge?}
 \emph{Before trying to solve this problem, make a hypothesis. Consider what little you know about the problem. Now, make an educated guess: what is one choice for setting up either GA or PSO which you think might lead to better performance on this problem? For example, you could hypothesize that a particular crossover operation will be more effective than the others, or that higher values of social attraction will improve PSO performance. Your choice needs to be something you can test in matlab , and should be more than simply changing the number of iterations or population size. Briefly explain why you
 think that your choice might make a difference on this problem. (Note that there isn’t a right or wrong answer here.)}
 
-\textbf{Answer:}
+\textbf{Answer:} We think GA will perform better due to several reasons. We think PSO have a great risk of getting stuck at a sub-optimal solution for this problem since the search space is very large and contains a lot of varying solutions. GA should be able to perform well with a crossover operator that takes Thrust and Course Correction in consideration since the child should be able to get somewhat similar trajectory. Mutations could help getting out of sub-optimal solutions to find better ones.
+
+We think there is a large risk that a PSO would spend much time exploring solutions that can't be good, like travelling the wrong direction in the start. A GA solution should be able to faster find a general direction to explore. 
+Since the general direction is important to find, especially in the start, we think that the crossover operator and social attraction is very important for this problem. For the crossover operator we think exploring crossover with Thrust and Course direction is important since it tunes the trajectory of the space ship, however the time is another factor that affect the trajectory directly and could be equally important.
+Social attraction in a PSO is important to ensure that we are exploring around a sound trajectory and don't start exploring to much space that can't contain any optimal solutions. 
 
 \section*{4.1 GA}
 
