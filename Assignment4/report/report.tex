@@ -91,15 +91,28 @@ Why does that make rank based selection better at avoiding premature convergence
 	\caption{\label{fig:plot2Diversity1}\textbf{Plot 2} The diversity of the population of coordinates using ranked based selection with a pressure value of 1.}
 \end{figure}
 
-\subsection*{Question 6}
-\emph{What selection pressure resulted in the most promising looking
-diversity curve? Run the algorithm a few more times using that pressure setting. What was the best fitness value and position you were able to locate?}
+\subsection*{Question 6} \emph{What selection pressure resulted in the most
+    promising looking diversity curve? Run the algorithm a few more times using
+that pressure setting. What was the best fitness value and position you were
+able to locate?}
 
-\textbf{Answer:} We think that a pressure of 1.5 looks most promising as seen in \ref{fig:plot2Diversity15}. Another good candidate is the pressure value of 1.25 \ref{fig:plot2Diversity125}. The big question here is what we consider the problem to be. Are we looking for the optimal solution or just a good solution? Another consideration is how much computational time do we have? 
+\textbf{Answer:} We think that a pressure of 1.5 looks most promising as seen
+in \ref{fig:plot2Diversity15}. Another good candidate is the pressure value of
+1.25 \ref{fig:plot2Diversity125}. The big question here is what we consider the
+problem to be. Are we looking for the optimal solution or just a good solution?
+Another consideration is how much computational time do we have? 
 
-A steep diversity curve as in \ref{fig:plot2Diversity2} leads to a fast convergence which most likely means it takes the first good enough solution and optimize for that one. A less steep one means we are considering more less fit nodes for a longer time, giving us more time to search the space for a better solution and thus increasing the probability of eventually the globally optimal solution.
+A steep diversity curve as in \ref{fig:plot2Diversity2} leads to a fast
+convergence which most likely means it takes the first good enough solution and
+optimize for that one. A less steep one means we are considering more less fit
+nodes for a longer time, giving us more time to search the space for a better
+solution and thus increasing the probability of eventually the globally optimal
+solution.
 
-An argument why we like the 1.25 solution is that it still contains some spikes after the first steep decent of the slope. This suggest that it's still searching quite a lot for better solutions and thus giving it more generations to run means it could eventually find better solutions.
+An argument why we like the 1.25 solution is that it still contains some spikes
+after the first steep decent of the slope. This suggest that it's still
+searching quite a lot for better solutions and thus giving it more generations
+to run means it could eventually find better solutions.
 
 %fitness 3.4192 generation 2 crossover
 %fitness 3.6057 gen 74 via mutation
@@ -290,7 +303,10 @@ in terms of $\Phi$?}
 
 
 \subsection*{Question 21}
-\emph{Consider the constriction equation with $\Phi_1 = 4, \Phi_2 = 2$. What is the constriction coefficient for these values? What values of $w, c_1$ and $c_2$ would we have to use in (2) in order to implement constriction with these values?}
+\emph{Consider the constriction equation with $\Phi_1 = 4, \Phi_2 = 2$. What is
+the constriction coefficient for these values? What values of $w, c_1$ and
+$c_2$ would we have to use in (2) in order to implement constriction with these
+values?}
 
 \textbf{Answer:}
 
@@ -300,9 +316,8 @@ With $c_1 = c_2 = \phi = \phi_1 + \phi_2 = 4 + 2 = 6$ we get:
 \end{align*}
 
 And to implement constriction, we should use $w = \chi, c_1 =
-\frac{\phi_1}{\chi r_1}, c_2 = \frac{\phi_2}{\chi r_2}$
+\frac{\phi_1}{\chi}, c_2 = \frac{\phi_2}{\chi}$
 
-where $r_1$ and $r_2$ are random values in range [0, 1].
 \subsection*{Question 22}
 \emph{Describe the behavior of the swarm when using constriction.
 Does it locate the global optimum? How quickly does it converge?}
@@ -365,5 +380,6 @@ lectures? Is there a specific concept that the lab has helped to clarify for you
 session? What could have been improved?}
 
 \textbf{Answer:}
+
 
 \end{document}
