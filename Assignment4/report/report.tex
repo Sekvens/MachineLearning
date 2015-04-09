@@ -10,6 +10,12 @@
 \usepackage{graphicx}
 \graphicspath{{../pics/}}
 
+% Mathlab color stuff
+\usepackage{listings}
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
 \title{Machine Learning (course 1DT071)
 Uppsala University – Spring 2015
 Report for Assignment 4 by group 6}
@@ -18,6 +24,24 @@ Report for Assignment 4 by group 6}
 \date{\today}
 
 \begin{document}
+
+% Matlab style stuff
+\lstset{language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},    
+}
 
 \maketitle
 
@@ -198,13 +222,17 @@ One-Point Crossover     & Two-Point Crossover     & Arithmetic Crossover     & B
 \emph{What effect does the choice of crossover operation appear to
 have on the population diversity?}
 
-\textbf{Answer:} 1-point, 2-point and Blend Crossover have a fairly steep slope in their diversity graph where Blend \ref{fig:blendDiversity} have the least steep graph. Arithmetic crossover have a much steeper diversity graph and requires very few generations until the diversity becomes close to zero. As we can see in the table \ref{table:crossover} arithmetic have a mean fitness of 3.76 and blend have a mean fitness of 4.06. However the mean value of blend seems to be high because it occasionally get a bad fitness value. When comparing their diversity graphs we can see that it blend have a more gracial slope and thus we suspect it doesn't rule out other solutions as fast as arithmetic crossover would do. Therefore we think blend would be better fitted for this function since it's less likely to rule out other solutions early on.
+\textbf{Answer:} 1-point, 2-point and Blend Crossover have a fairly steep slope in their diversity graph where Blend \ref{fig:blendDiversity} have the least steep graph. Arithmetic crossover \ref{fig:arithmeticDiversity} have a much steeper diversity graph and requires very few generations until the diversity becomes close to zero. As we can see in the table \ref{table:crossover} arithmetic have a mean fitness of 3.76 and blend have a mean fitness of 4.06. However the mean value of blend seems to be high because it occasionally get a bad fitness value. When comparing their diversity graphs we can see that it blend have a more gracial slope and thus we suspect it doesn't rule out other solutions as fast as arithmetic crossover would do. Therefore we think blend would be better fitted for this function since it's less likely to rule out other solutions early on.
  
- %insert plot 4
- % \begin{figure}[H] %float here
-	 % \includegraphics[scale=0.6]{BlendDiversity.png}
-	 % \caption{\label{fig:blendDiversity} Picture showing the diversity grapth for blend crossover.}
- % \end{figure}
+ \begin{figure}[H] %float here
+	 \includegraphics[scale=0.8]{BlendDiversity.png}
+	 \caption{\label{fig:blendDiversity}\textbf{Plot 4} Picture showing the diversity graph for blend crossover. This is what we consider the best diversity slope of all crossover operations.}
+ \end{figure}
+ 
+ \begin{figure}[H] %float here
+	 \includegraphics[scale=0.8]{arithmeticDiversity.png}
+	 \caption{\label{fig:arithmeticDiversity} Picture showing the diversity graph for arithmetic crossover. We added this picture as a comparison so you can see the difference between this and blend. }
+ \end{figure}
 
 \begin{table}[h]
 \scalebox{0.8}{
@@ -246,10 +274,20 @@ able to locate? Report the parameter settings you used to generate that
 solution.} 
 
 \textbf{Answer:} As mentioned in Question 13 we get fitness 0 every experiment
-we have conducted. The parameters are: Crossover function = blend, Pressure =
-2, Generation = 250, Mutate probability = 0.003, Mutate Decay = Linear, Mutate
-Proportional = False, Population Size = 200, Comparative = True, Elitist =
-True, Selection = Proportional and Selection Pressure = 2.
+we have conducted. The parameters are: 
+\begin{itemize}
+\item Crossover function = blend, 
+\item Pressure = 2,
+\item Generation = 250,
+\item Mutate probability = 0.003,
+\item Mutate Decay = Linear, 
+\item Mutate Proportional = False, 
+\item Population Size = 200, 
+\item Comparative = True, 
+\item Elitist = True, 
+\item Selection = Proportional and 
+\item Selection Pressure = 2.
+\end{itemize}
 
 \subsection*{Question 15}
 \emph{Try using GAsolver to find the minimum for the 100 dimensional Ackley's function, using the same parameters as the last question. How
@@ -345,7 +383,10 @@ Social attraction in a PSO is important to ensure that we are exploring around a
 \subsection*{Question 24}
 \emph{Describe your final GA setup, in enough detail that your experiment can be replicated (the output of ga show parameters can be useful here). Which settings seemed to have the most effect on your final results?}
 
-\textbf{Answer:}
+\textbf{Answer:} The most important feature is what crossover function that's selected. In our case we succeed in getting a very good result with the blend operator. Luck very important as well and most times when we ran this settings it got poor results. 
+Our settings are described here:
+
+% \lstinputlisting{myfun.m} %TODO! Fix path and file.
 
 \subsection*{Question 25}
 \emph{What was the best solution you were able to locate? Be sure to
