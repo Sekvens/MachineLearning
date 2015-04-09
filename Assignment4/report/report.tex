@@ -386,21 +386,23 @@ Social attraction in a PSO is important to ensure that we are exploring around a
 \textbf{Answer:} The most important feature is what crossover function that's selected. In our case we succeed in getting a very good result with the blend operator. Luck very important as well and most times when we ran this settings it got poor results. 
 Our settings are described here:
 
-% \lstinputlisting{myfun.m} %TODO! Fix path and file.
+% \lstinputlisting{ga.m} %TODO! Fix path and file.
 
 \subsection*{Question 25}
 \emph{What was the best solution you were able to locate? Be sure to
 include both the fitness value, and the full 22-dimensional vector representing
 the solution. How long did it take to run the solver?}
 
-\textbf{Answer:}
+\textbf{Answer:} The best fitness we found was
 
 \section*{4.2 PSO}
 
 \subsection*{Question 26}
 \emph{Describe your final PSO setup, in enough detail that your experiment can be replicated (the output of \texttt{psooptimset} can be useful here). Which settings seemed to have the most effect on your final results?}
 
-\textbf{Answer:}
+\textbf{Answer:} Both social attraction and cognitive attraction are very important to solve this problem with PSO. Inertia weights seems to be very important as well. The best fitness we found was 18.68.
+
+% \lstinputlisting{pso.m} %TODO! Fix path and file.
 
 \subsection*{Question 27}
 \emph{What was the best solution you were able to locate? Be sure to
@@ -414,7 +416,10 @@ include both the fitness value, and the full 22-dimensional vector representing 
 \emph{Describe your experimental setup, and summarise your results.
 Did the experiment support or contradict your hypothesis? Be persuasive. (Note: plots are persuasive.)}
 
-\textbf{Answer:}
+\textbf{Answer:} When experimenting with GA we had more control over variables to tune and feedback about what happened. As we hypothesised cross-over seem to play a very important role when using GA for this problem. 
+Our hypothesis about mutation seem to be false since experimented with higher mutation probability and other combinations without noticing any clear difference. It seems like the mutation plays a very minor role in this problem or that we lack ways of manipulating mutation to force more results. 
+When GA was set up properly it didn't do much exploring in any bad directions, it finds a general direction quite fast and explores it. PSO seems to be a bit more chaotic and sometimes go more towards bad/new directions. A higher social attraction seems to lower the risk of this. 
+One problem with these experiments and the GA setup seem to be that it's depending heavy on luck. 
 
 \section*{Task 5: Wrapping up}
 
@@ -422,13 +427,14 @@ Did the experiment support or contradict your hypothesis? Be persuasive. (Note: 
 \emph{How well did today's lab help to reinforce concepts from the
 lectures? Is there a specific concept that the lab has helped to clarify for you? Is there a concept from the relevant lectures that should have been covered more?}
 
-\textbf{Answer:}
+\textbf{Answer:} It help clarify how to fine tune these type of algorithm and how the different variables work together. It helped us understanding how to imagine the population moving through the search space as well. However this lab is much larger than the earlier labs and it feels like it's not sufficient time to dig deep into the different concepts. 
+
+Another issue was that we had to spend a lot of time working with matlab related bugs and errors in this lab.
 
 \subsection*{Question 30}
 \emph{If you attended it, then how helpful did you find today's lab
 session? What could have been improved?}
 
-\textbf{Answer:}
-
+\textbf{Answer:} During the lab session we only had time to work on one task so we didn't have much opportunity there to get help with some of the harder issues. However we got help with the things we where working on during the lab session. 
 
 \end{document}
