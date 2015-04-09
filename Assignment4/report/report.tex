@@ -384,16 +384,17 @@ Social attraction in a PSO is important to ensure that we are exploring around a
 \emph{Describe your final GA setup, in enough detail that your experiment can be replicated (the output of ga show parameters can be useful here). Which settings seemed to have the most effect on your final results?}
 
 \textbf{Answer:} The most important feature is what crossover function that's selected. In our case we succeed in getting a very good result with the blend operator. Luck very important as well and most times when we ran this settings it got poor results. 
-Our settings are described here:
+We used a function to change the settings and the code is described here with the parameters for the best solution:
 
-% \lstinputlisting{ga.m} %TODO! Fix path and file.
+\lstinputlisting{../code/runGA.m}
 
 \subsection*{Question 25}
 \emph{What was the best solution you were able to locate? Be sure to
 include both the fitness value, and the full 22-dimensional vector representing
 the solution. How long did it take to run the solver?}
 
-\textbf{Answer:} The best fitness we found was
+\textbf{Answer:} The best fitness we found was 16.06 with the vector 
+$[ -748.3891 3.2140 0.4767 0.2927 167.3969 403.4941 279.3988 610.4546 1935.8055 0.0415 0.3821 0.1399 0.1489 0.0107 1.4439 1.6135 2.6655 201.4489 -1.2844 2.7223 -1.4451 -1.5027]$. The solver took about 33 seconds to run.
 
 \section*{4.2 PSO}
 
@@ -401,14 +402,14 @@ the solution. How long did it take to run the solver?}
 \emph{Describe your final PSO setup, in enough detail that your experiment can be replicated (the output of \texttt{psooptimset} can be useful here). Which settings seemed to have the most effect on your final results?}
 
 \textbf{Answer:} Both social attraction and cognitive attraction are very important to solve this problem with PSO. Inertia weights seems to be very important as well. The best fitness we found was 18.68.
+As in the GA task we where manipulating a matlab file with the parameters and it can be seen here:
 
-% \lstinputlisting{pso.m} %TODO! Fix path and file.
+\lstinputlisting{../code/pso_gtop_lab4.m}
 
 \subsection*{Question 27}
-\emph{What was the best solution you were able to locate? Be sure to
-include both the fitness value, and the full 22-dimensional vector representing the solution. How long did it take to run the solver?}
+\emph{What was the best solution you were able to locate? Be sure to include both the fitness value, and the full 22-dimensional vector representing the solution. How long did it take to run the solver?}
 
-\textbf{Answer:}
+\textbf{Answer:} $[-795.52 3.1445 0.55709 0.7583 262.59 459.04 263.4 569.88 2012.1 0.52941 0.8668 0.030247 0.02972 0.037367 5.3748 1.6183 1.1506 277.75 -3.1369 -0.86963 -1.7364 -0.86793]$ is the vector and the best fitness we found was 18.68 in 41.6 seconds. 
 
 \section*{4.3 Testing Your Hypothesis}
 
@@ -416,10 +417,14 @@ include both the fitness value, and the full 22-dimensional vector representing 
 \emph{Describe your experimental setup, and summarise your results.
 Did the experiment support or contradict your hypothesis? Be persuasive. (Note: plots are persuasive.)}
 
-\textbf{Answer:} When experimenting with GA we had more control over variables to tune and feedback about what happened. As we hypothesised cross-over seem to play a very important role when using GA for this problem. 
+\textbf{Answer:}
+The setup is described by the code at question 24 and 26.
+When experimenting with GA we had more control over variables to tune and feedback about what happened. As we hypothesised cross-over seem to play a very important role when using GA for this problem. 
 Our hypothesis about mutation seem to be false since experimented with higher mutation probability and other combinations without noticing any clear difference. It seems like the mutation plays a very minor role in this problem or that we lack ways of manipulating mutation to force more results. 
 When GA was set up properly it didn't do much exploring in any bad directions, it finds a general direction quite fast and explores it. PSO seems to be a bit more chaotic and sometimes go more towards bad/new directions. A higher social attraction seems to lower the risk of this. 
 One problem with these experiments and the GA setup seem to be that it's depending heavy on luck. 
+Because of the randomness it's hard to be very persuasive and we feel like there is a need for scripts running many more iterations than we have time to get some better results. 
+We feel like the hypothesises we had have all been at least partly confirmed except the one about mutation.
 
 \section*{Task 5: Wrapping up}
 
