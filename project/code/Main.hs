@@ -9,7 +9,8 @@ import qualified Data.Text as T
 import Data.List as L
 import Data.List.Split
 import Data.Char 
-import Data.Map
+import Data.Map 
+import System.Random;
 
 -- Auxillary function
 -- Length of a string filtered by a predicate
@@ -40,7 +41,8 @@ ndigit = countChars isDigit
 -- the float result of dividing the number of alphabetic characters in a 
 -- string with the total number of characters in a string 
 alphaRatio :: String -> Float
-alphaRatio chunk = (/) (fromIntegral $ nalpha chunk) (fromIntegral $ nchars chunk)
+alphaRatio chunk = 
+  (/) (fromIntegral $ nalpha chunk) (fromIntegral $ nchars chunk)
 
 -- Character Frequency
 -- the list containing the built map from the list of combined key/value pairs
@@ -128,14 +130,40 @@ nOccurringWordsFreq n chunk =
   in  
     (fromIntegral ones) / (fromIntegral all) 
 
+comparePairs :: Eq a => [a] -> [Bool]
+comparePairs [] = [] 
+comparePairs [a] = [False]
+comparePairs (a : b : cs) = 
+  if a == b then True : comparePairs cs else False : comparePairs cs
+
+yulesAux :: String -> [Float] -> Float
+yulesAux chunk rs = 
+  let 
+    multiplyAndFloor n = floor $ n * (fromIntegral $ nwords chunk)
+    getRelativeWord x  = stripDot $ words chunk !! multiplyAndFloor x
+    randomWords        = L.map getRelativeWord rs
+    truthValues        = (comparePairs randomWords)
+    trues              = fromIntegral $ length $ L.filter (== True) truthValues
+    falses             = (fromIntegral $ length truthValues)
+  in 
+     trues / falses
+
 -- Yule’s K measure - 
    --measures the likelyhood that two nouns, chosen at random,
    --being the same. Thus it is a measure of repetiveness aswell as complexity
+yules :: String -> IO ()
+yules chunk = do 
+  n <- randomIO :: IO Float 
+  g <- newStdGen
+  let arr = take 1000 $ randoms g :: [Float]
+  print $ yulesAux chunk arr 
+
 
 -- Simpson’s D measure -
    --Another diversity index 
    --http://geographyfieldwork.com/Simpson%27sDiversityIndex.htm
--- Frequency of punctuation 18 punctuation chars: . ، ; ? ! : ( ) – “ « » < > [ ] { }
+-- Frequency of punctuation 18 punctuation chars: . ، ; ? ! : ( ) – “ « » < > [
+-- ] { }
 
 teststring1 = "AAA AAB AAC asdkfj 23409 a123 alskdjf )*(*. Hej jag en ye asd wie re sask s s f r er. fixx fuasdf. hejasdf oua sclam asdfiou .asdf.  aosdiuf .aasdfou aosdiu f."
 
@@ -177,4 +205,4 @@ main = do
     ++ (show $ nOccurringWordsFreq 1 teststring1) ++ "\n"
   putStrLn $ "Once occuring words freq    " 
     ++ (show $ nOccurringWordsFreq 2 teststring1) ++ "\n"
-
+  yules teststring1
