@@ -1,5 +1,4 @@
 
-
 -- The purpose of this proram is to extract important feautures from chunks of
 -- text. The extracted features include:
 --
@@ -12,110 +11,103 @@ import Data.Char
 import Data.Map 
 import System.Random;
 
--- Auxillary function
 -- Length of a string filtered by a predicate
 countChars :: (Char -> Bool) -> String -> Int
 countChars pred = length . L.filter pred 
 
--- Total no of characters (C)
--- number of characters in a string which are not whitespace
+-- Total number of characters not whitespace
 nchars :: String -> Int
 nchars = countChars (not . isSpace) 
 
--- Total no of whitespace chars/C
--- number of characters in a string which are whitespace
+-- Total number of whitespace characters
 nwhite :: String -> Int
 nwhite = countChars isSpace
 
--- Total no of alpha chars 
--- number of characters in a string which are alphabetic
+-- Total number of alphabetic characters 
 nalpha :: String -> Int
 nalpha = countChars isAlpha
 
--- Total no of digit chars / C
--- number of characters in a string which are digits
+-- Total number of digit characters
 ndigit :: String -> Int 
 ndigit = countChars isDigit
 
--- Ratio of alpha chars
--- the float result of dividing the number of alphabetic characters in a 
--- string with the total number of characters in a string 
+-- Total number of punctuation characters
+npunct :: String -> Int 
+npunct = countChars isPunctuation
+
+-- Ratio of total number of chars / alphabetic chars
 alphaRatio :: String -> Float
 alphaRatio chunk = 
-  (/) (fromIntegral $ nalpha chunk) (fromIntegral $ nchars chunk)
+  (fromIntegral $ nalpha chunk) / (fromIntegral $ nchars chunk)
 
--- Character Frequency
--- the list containing the built map from the list of combined key/value pairs
--- with the combining function
+-- Letter Frequency as a list of kv-pairs
 charFreq :: (Char -> Bool) -> String -> [(Char, Int)]
 charFreq pred = 
   toList . fromListWith (+) . L.map (\x -> (x, 1)) . L.filter pred
 
--- Auxiallay function
+-- Total number of words filtered by a predicate
 countWords :: (String -> Bool) -> String -> Int
 countWords pred = length . L.filter pred . L.words
 
--- Total no of words (M)
+-- Total number of words
 nwords :: String -> Int
 nwords = countWords (\s -> True)
 
--- Total no of short words/M Two letters or less
+-- Total number of short words Two letters or less
 nshortWords :: String -> Int
 nshortWords = countWords (\x -> (length x) < 2)
 
--- Auxillary function
+-- The average length of a all elements in a list
 average :: [[a]] -> Float
 average list =
   let 
-    lengths = L.map L.length list 
+    lengths = L.map length list 
     s       = sum lengths
     len     = length lengths
   in 
-    (/) (fromIntegral s) (fromIntegral len)
+    (fromIntegral s) / (fromIntegral len)
 
 -- Average word length
 avgWordLen :: String -> Float
 avgWordLen = average . words 
 
--- Avg. sentence length in words
+-- Avg. sentence length in respect to words
 avgSentenceLenInWords :: String -> Float
 avgSentenceLenInWords = 
   average . L.map words . L.filter (\x -> (length x) > 1) . splitOn (".") 
 
--- Avg. sentence length in chars
+-- Avg. sentence length in respect to chars
 avgSentenceLenInChars :: String -> Float
 avgSentenceLenInChars = 
   average . L.filter (\x -> (length x) > 1) . splitOn (".")
 
--- Auxillary function
+-- If the last character of a string is '.', remove it 
 stripDot word = if last word == '.' then take (length word - 1) word else word
 
--- Auxillary function
-wordLenFreqAux :: Int -> [(Int, Int)] -> Int -> [Float]
-wordLenFreqAux 15 _ _ = []
-wordLenFreqAux n [] listLen =  0.0 : wordLenFreqAux (n + 1) [] listLen
-wordLenFreqAux n woccs listLen = 
+-- word length frequency, helpin function
+wordLenFreqAux :: Int -> Int -> [(Int, Int)] -> Int -> [Float]
+wordLenFreqAux n max _ _ | n == max = []
+wordLenFreqAux n max [] listLen     =  
+  0.0 : wordLenFreqAux (n + 1) max [] listLen
+wordLenFreqAux n max woccs listLen  = 
   let 
     (x : xs) = woccs
     (len, num) = x 
     freq       = (fromIntegral num) / (fromIntegral listLen)
   in 
     if len == n then 
-      freq : wordLenFreqAux (n + 1) xs listLen
+      freq : wordLenFreqAux (n + 1) max xs listLen
     else 
-      0.0 : wordLenFreqAux (n + 1) (x : xs) listLen
+      0.0 : wordLenFreqAux (n + 1) max (x : xs) listLen
 
+-- Word occurences, as a list of kv-pairs
 wordOccurences :: Ord a => (String -> a) -> String -> [(a, Int)]
 wordOccurences folder = 
   toList . fromListWith (+) . L.map (\x -> (folder $ stripDot x, 1)) . words
 
--- Word length freq. distribution/M Ratio of words of length n, n between 1 and
--- 15
-wordLenFreq chunk = 
-  wordLenFreqAux 1 (wordOccurences length chunk) $ length $ words chunk
-
--- Type Token Ratio No. Of unique Words/ M
--- TODO ?
+-- Word length frequency. Ratio of words of length n, n between 1 and n
+wordLenFreq n chunk = 
+  wordLenFreqAux 1 n (wordOccurences length chunk) $ length $  words chunk
 
 -- List of n times occuring words 
 nOccuringWords :: Int -> String -> [String]
@@ -130,44 +122,20 @@ nOccurringWordsFreq n chunk =
   in  
     (fromIntegral ones) / (fromIntegral all) 
 
-comparePairs :: Eq a => [a] -> [Bool]
-comparePairs [] = [] 
-comparePairs [a] = [False]
-comparePairs (a : b : cs) = 
-  if a == b then True : comparePairs cs else False : comparePairs cs
-
-yulesAux :: String -> [Float] -> Float
-yulesAux chunk rs = 
-  let 
-    multiplyAndFloor n = floor $ n * (fromIntegral $ nwords chunk)
-    getRelativeWord x  = stripDot $ words chunk !! multiplyAndFloor x
-    randomWords        = L.map getRelativeWord rs
-    truthValues        = (comparePairs randomWords)
-    trues              = fromIntegral $ length $ L.filter (== True) truthValues
-    falses             = (fromIntegral $ length truthValues)
+-- Simpson’s D measure, a diversity index 
+--ref: http://geographyfieldwork.com/Simpson%27sDiversityIndex.htm
+simpsonsDMeasure chunk = 
+  let
+    n = nwords chunk 
+    fstQuads acc (x, y) = y * (y - 1) + acc
+    sum = L.foldl fstQuads 0 (wordOccurences id chunk)
   in 
-     trues / falses
-
--- Yule’s K measure - 
-   --measures the likelyhood that two nouns, chosen at random,
-   --being the same. Thus it is a measure of repetiveness aswell as complexity
-yules :: String -> IO ()
-yules chunk = do 
-  n <- randomIO :: IO Float 
-  g <- newStdGen
-  let arr = take 1000 $ randoms g :: [Float]
-  print $ yulesAux chunk arr 
-
-
--- Simpson’s D measure -
-   --Another diversity index 
-   --http://geographyfieldwork.com/Simpson%27sDiversityIndex.htm
--- Frequency of punctuation 18 punctuation chars: . ، ; ? ! : ( ) – “ « » < > [
--- ] { }
+    1 - (fromIntegral sum) / (fromIntegral (n * (n - 1)))
 
 teststring1 = "AAA AAB AAC asdkfj 23409 a123 alskdjf )*(*. Hej jag en ye asd wie re sask s s f r er. fixx fuasdf. hejasdf oua sclam asdfiou .asdf.  aosdiuf .aasdfou aosdiu f."
 
 teststring2 = "hej hopp. jag heter. jag hej"
+teststring3 = "sh sh sc sc sc sc sc sc sc sc bw pu sp sp sp"
 
 main :: IO ()
 main = do 
@@ -180,6 +148,8 @@ main = do
     ++ (show $ nalpha teststring1) ++ "\n"
   putStrLn $ "number of digits            " 
     ++ (show $ ndigit teststring1) ++ "\n"
+  putStrLn $ "punctuation chars           " 
+    ++ (show $ npunct teststring1) ++ "\n"
   putStrLn $ "Alpha char ratio            " 
     ++ (show $ alphaRatio teststring1) ++ "\n"
   putStrLn $ "Letter Frequency            " 
@@ -200,9 +170,40 @@ main = do
   putStrLn $ "In characters               " 
     ++ (show $ avgSentenceLenInChars teststring1) ++ "\n"
   putStrLn $ "Word frequency len (1-15)   " 
-    ++ (show $ wordLenFreq teststring1) ++ "\n"
+    ++ (show $ wordLenFreq 15 teststring1) ++ "\n"
   putStrLn $ "Once occuring words freq    " 
     ++ (show $ nOccurringWordsFreq 1 teststring1) ++ "\n"
   putStrLn $ "Once occuring words freq    " 
     ++ (show $ nOccurringWordsFreq 2 teststring1) ++ "\n"
-  yules teststring1
+  putStrLn $ "Word Diversity              " 
+    ++ (show $ simpsonsDMeasure teststring1)
+
+{--- Extract two elements at a time in a list, -}
+{-comparePairs :: Eq a => [a] -> [Bool]-}
+{-comparePairs [] = [] -}
+{-comparePairs [a] = [False]-}
+{-comparePairs (a : b : cs) = -}
+  {-if a == b then True : comparePairs cs else False : comparePairs cs-}
+
+{-yulesAux :: String -> [Float] -> Float-}
+{-yulesAux chunk rs = -}
+  {-let -}
+    {-multiplyAndFloor n = floor $ n * (fromIntegral $ nwords chunk)-}
+    {-getRelativeWord x  = stripDot $ words chunk !! multiplyAndFloor x-}
+    {-randomWords        = L.map getRelativeWord rs-}
+    {-truthValues        = (comparePairs randomWords)-}
+    {-trues              = fromIntegral $ length $ L.filter (== True) truthValues-}
+    {-falses             = (fromIntegral $ length truthValues)-}
+  {-in -}
+     {-trues / falses-}
+
+{--- Yule’s K measure - -}
+   {---measures the likelyhood that two nouns, chosen at random,-}
+   {---being the same. Thus it is a measure of repetiveness aswell as complexity-}
+{-yules :: String -> IO ()-}
+{-yules chunk = do -}
+  {-n <- randomIO :: IO Float -}
+  {-g <- newStdGen-}
+  {-let arr = take 1000 $ randoms g :: [Float]-}
+  {-print $ yulesAux chunk arr -}
+
