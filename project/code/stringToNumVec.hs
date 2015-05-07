@@ -4,12 +4,14 @@
 --
 
 module Main where
-import qualified Data.Text as T
 import Data.List as L
 import Data.List.Split
 import Data.Char 
 import Data.Map 
 import System.Random;
+import System.Directory;
+import Control.Monad;
+import System.Environment;
 
 -- Length of a string filtered by a predicate
 countChars :: (Char -> Bool) -> String -> Int
@@ -82,11 +84,12 @@ avgSentenceLenInChars =
   average . L.filter (\x -> (length x) > 1) . splitOn (".")
 
 -- If the last character of a string is '.', remove it 
+stripDot "."  = "." 
 stripDot word = if last word == '.' then take (length word - 1) word else word
 
 -- word length frequency, helpin function
 wordLenFreqAux :: Int -> Int -> [(Int, Int)] -> Int -> [Float]
-wordLenFreqAux n max _ _ | n == max = []
+wordLenFreqAux n max _ _ | n == max + 1 = []
 wordLenFreqAux n max [] listLen     =  
   0.0 : wordLenFreqAux (n + 1) max [] listLen
 wordLenFreqAux n max woccs listLen  = 
@@ -132,78 +135,93 @@ simpsonsDMeasure chunk =
   in 
     1 - (fromIntegral sum) / (fromIntegral (n * (n - 1)))
 
-teststring1 = "AAA AAB AAC asdkfj 23409 a123 alskdjf )*(*. Hej jag en ye asd wie re sask s s f r er. fixx fuasdf. hejasdf oua sclam asdfiou .asdf.  aosdiuf .aasdfou aosdiu f."
 
-teststring2 = "hej hopp. jag heter. jag hej"
-teststring3 = "sh sh sc sc sc sc sc sc sc sc bw pu sp sp sp"
+str2NumVec chunk = 
+  let 
+    wlf = wordLenFreq 15 chunk
+    rest = 
+      [
+        realToFrac $ nchars chunk,
+        realToFrac $ nwhite chunk,
+        realToFrac $ nalpha chunk,
+        realToFrac $ ndigit chunk,
+        realToFrac $ npunct chunk,
+        alphaRatio chunk,
+        realToFrac $ nwords chunk,
+        realToFrac $ nshortWords chunk,
+        avgWordLen chunk,
+        avgSentenceLenInWords chunk,
+        avgSentenceLenInChars chunk,
+        realToFrac $ nOccurringWordsFreq 1 chunk,
+        realToFrac $ nOccurringWordsFreq 2 chunk,
+        simpsonsDMeasure chunk
+      ] 
+  in rest ++ wlf
+
+--unused
+{-charFreq isAlphaNum chunk,-}
+{-charFreq (not . isAlphaNum) chunk,-}
+
+{-teststring2 = "hej hopp. jag heter. jag hej"-}
+{-teststring3 = "sh sh sc sc sc sc sc sc sc sc bw pu sp sp sp"-}
+
+filterDirectory :: String -> [String] -> [String]
+filterDirectory sourcedir list = 
+  L.map ((sourcedir ++ "/") ++) (L.filter (\x -> x /= "." && x /= "..") list)
 
 main :: IO ()
 main = do 
-  putStrLn $ "Analysing: " ++ teststring1
-  putStrLn $ "number of chars             " 
-    ++ (show $ nchars teststring1) ++ "\n"
-  putStrLn $ "Whitespace characters:      " 
-    ++ (show $ nwhite teststring1) ++ "\n"
-  putStrLn $ "number of alpha             " 
-    ++ (show $ nalpha teststring1) ++ "\n"
-  putStrLn $ "number of digits            " 
-    ++ (show $ ndigit teststring1) ++ "\n"
-  putStrLn $ "punctuation chars           " 
-    ++ (show $ npunct teststring1) ++ "\n"
-  putStrLn $ "Alpha char ratio            " 
-    ++ (show $ alphaRatio teststring1) ++ "\n"
-  putStrLn $ "Letter Frequency            " 
-    ++ (show $ charFreq isAlphaNum teststring1) ++ "\n"
-  putStrLn $ "Special character Frequency " 
-    ++ (show $ charFreq (not . isAlphaNum) teststring1) ++ "\n"
-  putStrLn $ "Total number of words       " 
-    ++ (show $ nwords teststring1) ++ "\n"
-  putStrLn $ "Total number of words       " 
-  putStrLn $ "shorter than 2 letters      " 
-    ++ (show $ nshortWords teststring1) ++ "\n"
-  putStrLn $ "Avarage word length         " 
-    ++ (show $ avgWordLen teststring1) ++ "\n"
-  putStrLn $ "Avarage sentence length     " 
-  putStrLn $ "In words                    " 
-    ++ (show $ avgSentenceLenInWords teststring1) ++ "\n"
-  putStrLn $ "Avarage sentence length     " 
-  putStrLn $ "In characters               " 
-    ++ (show $ avgSentenceLenInChars teststring1) ++ "\n"
-  putStrLn $ "Word frequency len (1-15)   " 
-    ++ (show $ wordLenFreq 15 teststring1) ++ "\n"
-  putStrLn $ "Once occuring words freq    " 
-    ++ (show $ nOccurringWordsFreq 1 teststring1) ++ "\n"
-  putStrLn $ "Once occuring words freq    " 
-    ++ (show $ nOccurringWordsFreq 2 teststring1) ++ "\n"
-  putStrLn $ "Word Diversity              " 
-    ++ (show $ simpsonsDMeasure teststring1)
+  args <- getArgs
+  let sourceDir = (args !! 0)
+  let destDir   = (args !! 1)
+  contents <- getDirectoryContents sourceDir
+  let filtered  = filterDirectory sourceDir contents
+  files <- mapM readFile filtered
+  let numvecs = L.map (str2NumVec) files  
+  writeFile (destDir ++ "/final.txt") (show numvecs)
 
-{--- Extract two elements at a time in a list, -}
-{-comparePairs :: Eq a => [a] -> [Bool]-}
-{-comparePairs [] = [] -}
-{-comparePairs [a] = [False]-}
-{-comparePairs (a : b : cs) = -}
-  {-if a == b then True : comparePairs cs else False : comparePairs cs-}
 
-{-yulesAux :: String -> [Float] -> Float-}
-{-yulesAux chunk rs = -}
-  {-let -}
-    {-multiplyAndFloor n = floor $ n * (fromIntegral $ nwords chunk)-}
-    {-getRelativeWord x  = stripDot $ words chunk !! multiplyAndFloor x-}
-    {-randomWords        = L.map getRelativeWord rs-}
-    {-truthValues        = (comparePairs randomWords)-}
-    {-trues              = fromIntegral $ length $ L.filter (== True) truthValues-}
-    {-falses             = (fromIntegral $ length truthValues)-}
-  {-in -}
-     {-trues / falses-}
 
-{--- Yule’s K measure - -}
-   {---measures the likelyhood that two nouns, chosen at random,-}
-   {---being the same. Thus it is a measure of repetiveness aswell as complexity-}
-{-yules :: String -> IO ()-}
-{-yules chunk = do -}
-  {-n <- randomIO :: IO Float -}
-  {-g <- newStdGen-}
-  {-let arr = take 1000 $ randoms g :: [Float]-}
-  {-print $ yulesAux chunk arr -}
+{-teststring1 = "AAA AAB AAC asdkfj 23409 a123 alskdjf )*(*. Hej jag en ye asd wie re sask s s f r er. fixx fuasdf. hejasdf oua sclam asdfiou .asdf.  aosdiuf .aasdfou aosdiu f."-}
 
+  {-putStrLn $ show $ filtered-}
+  {-putStrLn $ show $ length numvecs -}
+  {-putStrLn $ "----------------------------"-}
+  {-putStrLn $ "Analysing: " ++ teststring1-}
+  {-putStrLn $ "number of chars             " -}
+    {-++ (show $ nchars teststring1) ++ "\n"-}
+  {-putStrLn $ "Whitespace characters:      " -}
+    {-++ (show $ nwhite teststring1) ++ "\n"-}
+  {-putStrLn $ "number of alpha             " -}
+    {-++ (show $ nalpha teststring1) ++ "\n"-}
+  {-putStrLn $ "number of digits            " -}
+    {-++ (show $ ndigit teststring1) ++ "\n"-}
+  {-putStrLn $ "punctuation chars           " -}
+    {-++ (show $ npunct teststring1) ++ "\n"-}
+  {-putStrLn $ "Alpha char ratio            " -}
+    {-++ (show $ alphaRatio teststring1) ++ "\n"-}
+  {-putStrLn $ "Letter Frequency            " -}
+    {-++ (show $ charFreq isAlphaNum teststring1) ++ "\n"-}
+  {-putStrLn $ "Special character Frequency " -}
+    {-++ (show $ charFreq (not . isAlphaNum) teststring1) ++ "\n"-}
+  {-putStrLn $ "Total number of words       " -}
+    {-++ (show $ nwords teststring1) ++ "\n"-}
+  {-putStrLn $ "Total number of words       " -}
+  {-putStrLn $ "shorter than 2 letters      " -}
+    {-++ (show $ nshortWords teststring1) ++ "\n"-}
+  {-putStrLn $ "Avarage word length         " -}
+    {-++ (show $ avgWordLen teststring1) ++ "\n"-}
+  {-putStrLn $ "Avarage sentence length     " -}
+  {-putStrLn $ "In words                    " -}
+    {-++ (show $ avgSentenceLenInWords teststring1) ++ "\n"-}
+  {-putStrLn $ "Avarage sentence length     " -}
+  {-putStrLn $ "In characters               " -}
+    {-++ (show $ avgSentenceLenInChars teststring1) ++ "\n"-}
+  {-putStrLn $ "Word frequency len (1-15)   " -}
+    {-++ (show $ wordLenFreq 15 teststring1) ++ "\n"-}
+  {-putStrLn $ "Once occuring words freq    " -}
+    {-++ (show $ nOccurringWordsFreq 1 teststring1) ++ "\n"-}
+  {-putStrLn $ "Twice occuring words freq    " -}
+    {-++ (show $ nOccurringWordsFreq 2 teststring1) ++ "\n"-}
+  {-putStrLn $ "Word Diversity              " -}
+    {-++ (show $ simpsonsDMeasure teststring1) -}
