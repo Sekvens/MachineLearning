@@ -156,7 +156,7 @@ str2NumVec chunk =
         realToFrac $ nOccurringWordsFreq 2 chunk,
         simpsonsDMeasure chunk
       ] 
-  in rest ++ wlf
+  in rest ++ wlf ++ [-1]
 
 --unused
 {-charFreq isAlphaNum chunk,-}
@@ -169,6 +169,7 @@ filterDirectory :: String -> [String] -> [String]
 filterDirectory sourcedir list = 
   L.map ((sourcedir ++ "/") ++) (L.filter (\x -> x /= "." && x /= "..") list)
 
+
 main :: IO ()
 main = do 
   args <- getArgs
@@ -178,7 +179,11 @@ main = do
   let filtered  = filterDirectory sourceDir contents
   files <- mapM readFile filtered
   let numvecs = L.map (str2NumVec) files  
-  writeFile (destDir ++ "/final.txt") (show numvecs)
+  {-writeFile (destDir ++ "/final.txt") (show $ head numvecs)-}
+  let h = head numvecs
+  let d = destDir ++ "/final.txt"
+  let f x = appendFile d (show x ++ "\n")
+  mapM_ (mapM_ f) numvecs 
 
 
 
