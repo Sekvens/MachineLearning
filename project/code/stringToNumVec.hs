@@ -179,9 +179,8 @@ main = do
   let filtered  = filterDirectory sourceDir contents
   files <- mapM readFile filtered
   let numvecs = L.map (str2NumVec) files  
-  {-writeFile (destDir ++ "/final.txt") (show $ head numvecs)-}
   let h = head numvecs
-  let d = destDir ++ "/final.txt"
+  let d = destDir ++ "/numvecs.txt"
   let f x = appendFile d (show x ++ "\n")
   mapM_ (mapM_ f) numvecs 
 
