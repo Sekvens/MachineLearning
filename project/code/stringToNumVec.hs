@@ -12,6 +12,9 @@ import System.Random;
 import System.Directory;
 import Control.Monad;
 import System.Environment;
+import Control.Exception;
+import qualified Data.Text as T
+import qualified Data.Text.IO as TIO
 
 -- Length of a string filtered by a predicate
 countChars :: (Char -> Bool) -> String -> Int
@@ -136,7 +139,7 @@ simpsonsDMeasure chunk =
     1 - (fromIntegral sum) / (fromIntegral (n * (n - 1)))
 
 
-str2NumVec chunk = 
+str2NumVec code chunk = 
   let 
     wlf = wordLenFreq 15 chunk
     rest = 
@@ -156,7 +159,7 @@ str2NumVec chunk =
         realToFrac $ nOccurringWordsFreq 2 chunk,
         simpsonsDMeasure chunk
       ] 
-  in rest ++ wlf ++ [-1]
+  in rest ++ wlf ++ [-1] ++ [code]
 
 --unused
 {-charFreq isAlphaNum chunk,-}
@@ -169,63 +172,24 @@ filterDirectory :: String -> [String] -> [String]
 filterDirectory sourcedir list = 
   L.map ((sourcedir ++ "/") ++) (L.filter (\x -> x /= "." && x /= "..") list)
 
+readFileStrict :: FilePath -> IO String
+readFileStrict = fmap T.unpack . TIO.readFile
 
 main :: IO ()
 main = do 
   args <- getArgs
   let sourceDir = (args !! 0)
   let destDir   = (args !! 1)
+  let hamorspam = (args !! 2)
   contents <- getDirectoryContents sourceDir
   let filtered  = filterDirectory sourceDir contents
-  files <- mapM readFile filtered
-  let numvecs = L.map (str2NumVec) files  
+  files <- mapM (\x -> readFileStrict x >>= evaluate) filtered 
+  let numvecs = L.map (str2NumVec (read hamorspam)) files  
   let h = head numvecs
-  let d = destDir ++ "/numvecs.txt"
-  let f x = appendFile d (show x ++ "\n")
+  let wipe = (args !! 3)
+  if wipe == "wipe" then writeFile destDir "" else return ()
+  let f x = appendFile d (show x ++ "\n") >>= evaluate
   mapM_ (mapM_ f) numvecs 
 
 
 
-{-teststring1 = "AAA AAB AAC asdkfj 23409 a123 alskdjf )*(*. Hej jag en ye asd wie re sask s s f r er. fixx fuasdf. hejasdf oua sclam asdfiou .asdf.  aosdiuf .aasdfou aosdiu f."-}
-
-  {-putStrLn $ show $ filtered-}
-  {-putStrLn $ show $ length numvecs -}
-  {-putStrLn $ "----------------------------"-}
-  {-putStrLn $ "Analysing: " ++ teststring1-}
-  {-putStrLn $ "number of chars             " -}
-    {-++ (show $ nchars teststring1) ++ "\n"-}
-  {-putStrLn $ "Whitespace characters:      " -}
-    {-++ (show $ nwhite teststring1) ++ "\n"-}
-  {-putStrLn $ "number of alpha             " -}
-    {-++ (show $ nalpha teststring1) ++ "\n"-}
-  {-putStrLn $ "number of digits            " -}
-    {-++ (show $ ndigit teststring1) ++ "\n"-}
-  {-putStrLn $ "punctuation chars           " -}
-    {-++ (show $ npunct teststring1) ++ "\n"-}
-  {-putStrLn $ "Alpha char ratio            " -}
-    {-++ (show $ alphaRatio teststring1) ++ "\n"-}
-  {-putStrLn $ "Letter Frequency            " -}
-    {-++ (show $ charFreq isAlphaNum teststring1) ++ "\n"-}
-  {-putStrLn $ "Special character Frequency " -}
-    {-++ (show $ charFreq (not . isAlphaNum) teststring1) ++ "\n"-}
-  {-putStrLn $ "Total number of words       " -}
-    {-++ (show $ nwords teststring1) ++ "\n"-}
-  {-putStrLn $ "Total number of words       " -}
-  {-putStrLn $ "shorter than 2 letters      " -}
-    {-++ (show $ nshortWords teststring1) ++ "\n"-}
-  {-putStrLn $ "Avarage word length         " -}
-    {-++ (show $ avgWordLen teststring1) ++ "\n"-}
-  {-putStrLn $ "Avarage sentence length     " -}
-  {-putStrLn $ "In words                    " -}
-    {-++ (show $ avgSentenceLenInWords teststring1) ++ "\n"-}
-  {-putStrLn $ "Avarage sentence length     " -}
-  {-putStrLn $ "In characters               " -}
-    {-++ (show $ avgSentenceLenInChars teststring1) ++ "\n"-}
-  {-putStrLn $ "Word frequency len (1-15)   " -}
-    {-++ (show $ wordLenFreq 15 teststring1) ++ "\n"-}
-  {-putStrLn $ "Once occuring words freq    " -}
-    {-++ (show $ nOccurringWordsFreq 1 teststring1) ++ "\n"-}
-  {-putStrLn $ "Twice occuring words freq    " -}
-    {-++ (show $ nOccurringWordsFreq 2 teststring1) ++ "\n"-}
-  {-putStrLn $ "Word Diversity              " -}
-    {-++ (show $ simpsonsDMeasure teststring1) -}
