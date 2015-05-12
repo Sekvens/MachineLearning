@@ -1,16 +1,13 @@
 #!/bin/bash
 
-hamsrc=~/School/ml/MachineLearning/project/data/datasets/enron
-hamsrc+=/preprocessed/enron1/ham
+hamsrc=data/datasets/enron/preprocessed/enron1/ham
+spamsrc=data/datasets/enron/preprocessed/enron1/spam
 
-spamsrc=~/School/ml/MachineLearning/project/data/datasets/enron
-spamsrc+=/preprocessed/enron1/spam
+prehamdst=data/preprocessed/ham
+prespamdst=data/preprocessed/spam
 
-prehamdst=~/School/ml/MachineLearning/project/data/preprocessed/ham
-prespamdst=~/School/ml/MachineLearning/project/data/preprocessed/spam
-
-finalhamdst=~/School/ml/MachineLearning/project/data/numvecs/ham
-finalspamdst=~/School/ml/MachineLearning/project/data/numvecs/spam
+finalhamdst=data/numvecs/ham
+finalspamdst=data/numvecs/spam
 
 if [ "$1" = "pre" ]; then 
   node code/parseEnron.js $hamsrc $prehamdst 

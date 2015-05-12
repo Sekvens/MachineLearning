@@ -1,9 +1,9 @@
 
-prehamdst=~/School/ml/MachineLearning/project/data/preprocessed/ham/*
-prespamdst=~/School/ml/MachineLearning/project/data/preprocessed/spam/*
+prehamdst=data/preprocessed/ham/*
+prespamdst=data/preprocessed/spam/*
 
-finalhamdst=~/School/ml/MachineLearning/project/data/numvecs/ham/*
-finalspamdst=~/School/ml/MachineLearning/project/data/numvecs/spam/*
+finalhamdst=data/numvecs/ham/*
+finalspamdst=data/numvecs/spam/*
 
 rm $prehamdst
 rm $prespamdst

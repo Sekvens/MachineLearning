@@ -136,7 +136,10 @@ simpsonsDMeasure chunk =
     fstQuads acc (x, y) = y * (y - 1) + acc
     sum = L.foldl fstQuads 0 (wordOccurences id chunk)
   in 
-    1 - (fromIntegral sum) / (fromIntegral (n * (n - 1)))
+    if n == 1 then 
+      1.0 
+    else 
+      1 - (fromIntegral sum) / (fromIntegral (n * (n - 1)))
 
 
 str2NumVec chunk = 
@@ -182,7 +185,7 @@ readFileStrict = fmap T.unpack . TIO.readFile
 
 writefiles d _ [] = return ()
 writefiles d (name : names) (vec : vecs) = do
-  if (head vec) > 0 then 
+  if (head vec) > 10 then 
     writeFile (d ++ "/" ++ (last $ splitOn "/" name)) (vecToRows vec) 
   else 
     return ()
