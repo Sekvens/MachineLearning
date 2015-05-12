@@ -139,7 +139,7 @@ simpsonsDMeasure chunk =
     1 - (fromIntegral sum) / (fromIntegral (n * (n - 1)))
 
 
-str2NumVec code chunk = 
+str2NumVec chunk = 
   let 
     wlf = wordLenFreq 15 chunk
     rest = 
@@ -159,7 +159,7 @@ str2NumVec code chunk =
         realToFrac $ nOccurringWordsFreq 2 chunk,
         simpsonsDMeasure chunk
       ] 
-  in rest ++ wlf ++ [-1] ++ [code]
+  in rest ++ wlf
 
 --unused
 {-charFreq isAlphaNum chunk,-}
@@ -168,6 +168,11 @@ str2NumVec code chunk =
 {-teststring2 = "hej hopp. jag heter. jag hej"-}
 {-teststring3 = "sh sh sc sc sc sc sc sc sc sc bw pu sp sp sp"-}
 
+vecToRows [] = ""
+vecToRows (x : xs) = 
+  (show x) ++ "\n" ++ vecToRows (xs)
+
+
 filterDirectory :: String -> [String] -> [String]
 filterDirectory sourcedir list = 
   L.map ((sourcedir ++ "/") ++) (L.filter (\x -> x /= "." && x /= "..") list)
@@ -175,21 +180,22 @@ filterDirectory sourcedir list =
 readFileStrict :: FilePath -> IO String
 readFileStrict = fmap T.unpack . TIO.readFile
 
+writefiles d _ [] = return ()
+writefiles d (name : names) (vec : vecs) = do
+  if (head vec) > 0 then 
+    writeFile (d ++ "/" ++ (last $ splitOn "/" name)) (vecToRows vec) 
+  else 
+    return ()
+  writefiles d names vecs
+
 main :: IO ()
 main = do 
   args <- getArgs
   let sourceDir = (args !! 0)
   let destDir   = (args !! 1)
-  let hamorspam = (args !! 2)
   contents <- getDirectoryContents sourceDir
   let filtered  = filterDirectory sourceDir contents
   files <- mapM (\x -> readFileStrict x >>= evaluate) filtered 
-  let numvecs = L.map (str2NumVec (read hamorspam)) files  
-  let h = head numvecs
-  let wipe = (args !! 3)
-  if wipe == "wipe" then writeFile destDir "" else return ()
-  let f x = appendFile d (show x ++ "\n") >>= evaluate
-  mapM_ (mapM_ f) numvecs 
-
-
+  let numvecs = L.map (str2NumVec) files  
+  writefiles destDir filtered numvecs
 
