@@ -86,7 +86,7 @@ end
 
 net = init(net); 
 
-[trained_net, stats] = train(net, p, t);
+[trained_net, stats] = train(net, normTrainPatterns, traintargets);
 
 testoutput = sim(trained_net, normTestPatterns);
 
