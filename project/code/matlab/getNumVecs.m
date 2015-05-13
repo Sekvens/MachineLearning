@@ -4,7 +4,7 @@
 function [ result ] = getNumVecs(listing, src)
 
   [ldimx, ldimy] = size(listing);
-  result = zeros(29, ldimx);
+  result = zeros(19, ldimx);
 
   for idx = 1:numel(listing)
     path = strcat(src, listing(idx).name);
@@ -16,7 +16,7 @@ function [ result ] = getNumVecs(listing, src)
       else 
         numvec = fscanf(fid, '%f');
         [vdimx, vdimy] = size(numvec);
-        if (vdimx ~= 29)
+        if (vdimx ~= 19)
           disp('ERROR: arrays does not match');
         else
           if (any(isnan(numvec(:))))

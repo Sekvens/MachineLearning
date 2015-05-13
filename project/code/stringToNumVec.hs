@@ -144,7 +144,7 @@ simpsonsDMeasure chunk =
 
 str2NumVec chunk = 
   let 
-    wlf = wordLenFreq 15 chunk
+    wlf = wordLenFreq 5 chunk
     rest = 
       [
         realToFrac $ nchars chunk,
@@ -185,7 +185,7 @@ readFileStrict = fmap T.unpack . TIO.readFile
 
 writefiles d _ [] = return ()
 writefiles d (name : names) (vec : vecs) = do
-  if (head vec) > 10 then 
+  if (head vec) > 25 then 
     writeFile (d ++ "/" ++ (last $ splitOn "/" name)) (vecToRows vec) 
   else 
     return ()
