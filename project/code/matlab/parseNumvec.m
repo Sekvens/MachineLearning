@@ -1,5 +1,6 @@
 
-readdata = 1;
+readdata  = 1;
+cli       = 1;
 
 %train_algorithm = 'traingd';
 train_algorithm = 'trainrp';
@@ -77,6 +78,11 @@ elseif (strcmp(train_algorithm, 'trainrp'))
   net.trainParam.max_fail = 1000;
   net.trainParam.min_grad = 0;
 end
+
+if (cli) 
+  net.trainParam.showCommandLine = true;  
+end
+
 
 net = init(net); 
 
