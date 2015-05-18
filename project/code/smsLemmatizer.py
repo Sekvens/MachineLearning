@@ -1,6 +1,5 @@
 from nltk.stem.wordnet import WordNetLemmatizer
-import re
-import os
+import re, os, io, glob
 
 path_ = os.getcwd()
 #name of the file that contains the data.
@@ -38,16 +37,16 @@ def getDictionary_(textFile):
 	for line in textFile:
 		text += textFile.readline()
 	return buildDictionaryFromTextBlock(text)
-	
 
-#Returns a dictionary for the spamCollection with word:lemma as mapping.
 def getDictionary():
+	"""Returns a dictionary for the spamCollection with word:lemma as mapping."""
 	spamCollection = open(filePath, "r")
 	temp = getDictionary_(spamCollection)
 	spamCollection.close()
 	return temp
 	
 def getLemmatizedText_(file):
+	""" #returns a version of the file with lemmatization applied to it as a string.	"""
 	dic = getDictionary()
 	lemmatizedText = ""
 	for temp in file:
@@ -59,10 +58,66 @@ def getLemmatizedText_(file):
 		lemmatizedText += line
 	return lemmatizedText
 	
-#returns a version of the target file text with lemmatization appled to it as a string.
 def getLemmatizedText():
+	""" #returns a version of the SMSSpamCollection text with lemmatization applied to it as a string.	"""
 	spamCollection = open(filePath, "r")
 	spamCollection.seek(0)
 	lemmatizedText = getLemmatizedText_(spamCollection)
 	spamCollection.close()
 	return lemmatizedText
+
+#NOT TESTED
+def LemmatizeTextInFile(input, outputPath, spamClassificationFunction, preprocessingFunction, lineMode = True):
+	"""Lemmatizes the text in a file line by line or the whole file.
+	
+	Keyword Arguments:
+	input -- The file that contains all the data. This should be a path including the file name.
+	outputPath -- This is the path to the folder where the output should be. It should contain a folder named "spam" and one named "ham" where the output will be generated.
+	spamClassificationFunction -- A function String -> Boolean that returns true if a line or a file is a spam.
+	preprocessingFunction -- A String -> String function that returns the text with all desired preprocessing applied to it.
+	lineMode -- A boolean that tells if input should be parsed line by line or in a chunk until EOF.
+	"""
+	messageCounterHam = 0
+	messageCounterSpam = 0
+	messagebuffer = io.StringIO(getLemmatizedText_(input))
+	for line in (messageBuffer.readlines() if lineMode else messageBuffer.read()):
+		if isSpam(line):
+			outputFile = open(outputPath + "message" + str(messageCounterSpam), "w+")
+			messageCounterSpam += 1
+		elif not spam(line):
+			outputFile = open(outputPath + "message" + str(messageCounterHam), "w+")
+			messageCounterHam += 1
+		line = preprocessingFunction
+		outputFile.write(line)
+		outputFile.close()
+		
+def CreateOutputFolders(outputPath):
+	"""If the folders don't exist it creates the outputPath folder containing one folder named spam and one folder named ham."""
+	if not os.path.exists(outputPath):
+		os.mkdir(outputPath)
+	spamFolder = outputPath + os.sep + "spam" + os.sep
+	hamFolder = outputPath + os.sep + "ham" + os.sep
+	if not os.path.exists(spamFolder):
+		os.mkdir(spamFolder)
+	if not os.path.exists(hamFolder):
+		os.mkdir(hamFolder)
+
+def LemmatizeFilesInFolder(inputPath, outputPath, spamClassificationFunction, preprocessingFunction, dataFileMatching, lineMode = True, silentMode = True):
+	"""Lemmatizes all files in a folder and output them at a desired place.
+	
+	Keyword Arguments:
+	inputPath -- The folder that contains all files with the data. This should be a path including the file name.
+	outputPath -- This is the path to the folder where the output should be. It should contain a folder named "spam" and one named "ham" where the output will be generated.
+	spamClassificationFunction -- A function String -> Boolean that returns true if a line or a file is a spam.
+	preprocessingFunction -- A String -> String function that returns the text with all desired preprocessing applied to it.
+	lineMode -- A boolean that tells if input should be parsed line by line or in a chunk until EOF.
+	dataFileMatching -- A string describing the glob pattern of the data files. For example "*.data" would only pick up all files in inputPath that ends with the suffix "data". Unknown behaviour if matching folders.
+	silentMode -- If set to false the function returns text feedback about what it's doing.
+	"""
+	CreateOutputFolders(outputPath)
+	fileCounter = 0
+	for file in glob.glob(dataFileMatching):		
+		print("Applying lemmatization on the file: " + file) if not silentMode else()
+		LemmatizeTextInFile(file, outputPath, spamClassificationFunction, preprocessingFunction, lineMode)
+		fileCounter += 1
+	print("Done applying lemmatization on " + str(fileCounter) + " files.") if (not silentMode) else()
