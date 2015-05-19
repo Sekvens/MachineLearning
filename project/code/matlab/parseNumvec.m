@@ -1,59 +1,16 @@
 
-readdata  = 1;
-cli       = 1;
+readdata  = 0;
 
-%train_algorithm = 'traingd';
-train_algorithm = 'trainrp';
-
-lr            = 2;
-epochs        = 1000;
-nhidden       = 1;
-spampercent   = 0.2;
-trainratio    = 0.7;
+trainratio = 0.7;
 
 if (readdata) 
-  hamSrc = '../../data/numvecs/ham/';
-  spamSrc = '../../data/numvecs/spam/';
-
-  hamListing = dir(hamSrc);
-  spamListing = dir(spamSrc);
-
-  hams = getNumVecs(hamListing(3:end), hamSrc);
-  [hdimx, hdimy] = size(hams);
-
-  n = floor(hdimy * spampercent);
-  [lstdimx, lstdimy] = size(spamListing(3:end));
-  if (n > lstdimx)
-    disp('Error: Percentage too high, not enough spams');
-  else
-    spams = getNumVecs(spamListing(3:n), spamSrc);
-    [sdimx, sdimy] = size(spams);
-
-    hamtargets = zeros(1, hdimy);
-    spamtargets = ones(1, sdimy);
-
-    patterns  = horzcat(hams, spams);
-    targets   = horzcat(hamtargets, spamtargets);
-
-    sequence = randperm(length(targets));
-
-    [seqdimx, seqdimy] = size(sequence);
-
-    randpatterns = zeros(19, seqdimy);
-    randtargets = zeros(1, seqdimy);
-
-    for idx = 1:numel(sequence)
-      index = sequence(idx);
-      pattern = patterns(:,index);
-      target  = targets(:,index);
-      randpatterns(:,idx) = pattern;
-      randtargets(:,idx) = target;
-    end
-  end
+  % Get numeric vectors from files
+  readData
 end
 
 n = floor(seqdimy * trainratio);
 
+% Divide train and test patterns
 trainpatterns = randpatterns(:, 1:n);
 traintargets = randtargets(:, 1:n);
 
@@ -65,98 +22,121 @@ testtargets = randtargets(:, (n+1):end);
 normTrainPatterns = mapminmax(trainpatterns);
 normTestPatterns = mapminmax(testpatterns);
 
-net = newff(normTrainPatterns, traintargets, [nhidden], ...
-  {'tansig' 'logsig'}, train_algorithm, '', 'mse', {}, {}, '');
+train_algorithm_vals    = cell(2, 1);
+train_algorithm_vals{1} = 'traingd';
+train_algorithm_vals{2} = 'trainrp';
 
-if (strcmp(train_algorithm, 'traingd'))
-  net.trainParam.lr     = lr;
-  net.trainParam.epochs = epochs;
-  net.trainParam.goal = 0;
-elseif (strcmp(train_algorithm, 'trainrp'))
-  net.trainParam.epochs = epochs;
-  net.trainParam.goal = 0;
-  net.trainParam.max_fail = 1000;
-  net.trainParam.min_grad = 0;
-end
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if (cli) 
-  net.trainParam.showCommandLine = true;  
-end
+% COMMON CONFIGS %%%%%%%%%%%%%%%%%%%%%%%
+epoch_start             = 100;
+epoch_interval          = 100;
+epoch_end               = 1000;
 
+nhidden_start           = 1;
+nhidden_interval        = 1;
+nhidden_end             = 20; 
 
-net = init(net); 
+% GD %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lr_start                = 0.1;
+lr_interval             = 0.1;
+lr_end                  = 10;
 
-[trained_net, stats] = train(net, normTrainPatterns, traintargets);
+% RP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+delta0_start            = 0;
+delta0_interval         = 0.01;
+delta0_end              = 2;
+delta_inc_start         = 1;
+delta_inc_interval      = 0.1;
+delta_inc_end           = 5;
+delta_dec_start         = 0.1;
+delta_dec_interval      = 0.1;
+delta_dec_end           = 0.9;
+trainmax_vals           = [10:10:300];
 
-testoutput = sim(trained_net, normTestPatterns);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% spam -> spam
-scoreA = 0;
+delta_dec_vals          = [delta_dec_start:delta_dec_interval:delta_dec_end];
+delta_inc_vals          = [delta_inc_start:delta_inc_interval:delta_inc_end];
+delta0_vals             = [delta0_start:delta0_interval:delta0_end];
+lr_vals                 = [lr_start:lr_interval:lr_end];
+epochs_vals             = [epoch_start:epoch_interval:epoch_end];
+nhidden_vals            = [nhidden_start:nhidden_interval:nhidden_end];
+rp_dyn = [0.04, 1.2, 0.5, 10];
 
-% ham -> ham
-scoreB = 0;
+train_algorithm = 'traingd';
 
-% spam -> ham
-scoreC = 0;
+bestAnyRatio  = 0.0;
+spamRatio     = 0.0;
+hamRatio      = 0.0;
+bestepochs    = -1;
+bestnhidden   = -1;
+bestlr        = -1;
 
-% ham -> spam
-scoreD = 0;
+% Main trial and error loop
 
-% any -> correct
-scoreE = 0;
+for i = 1:numel(epochs_vals)
+  for j = 1:numel(nhidden_vals)
+    for k = 1:numel(lr_vals)
 
-% any -> false
-scoreF = 0;
+      epochs = epochs_vals(i);
+      nhidden = nhidden_vals(j);
+      lr      = lr_vals(k);
+      gd_dyn = [lr];
 
-nhams = 0;
-nspams = 0;
+      [net, anySuccessRatio, hamSuccessRatio, ...
+      spamSuccessRatio, scoreA, scoreB, scoreE] = ...
+      createNet( train_algorithm, epochs, nhidden, gd_dyn, ...
+        normTrainPatterns, traintargets, normTestPatterns, testtargets, ...
+        testdimy);
+      if (anySuccessRatio > bestAnyRatio) 
+        bestAnyRatio  = anySuccessRatio;
+        bestepochs    = epochs;
+        bestnhidden   = nhidden;
+        bestlr        = lr;
+        spamRatio     = spamSuccessRatio;
+        hamRatio      = hamSuccessRatio;
+      end
 
-for idx = 1:numel(testoutput)
-  element = testoutput(idx);
-  if (element > 0.5)
-    % network thinks pattern is spam
-    if (testtargets(idx) > 0.5)
-      % pattern is actually spam
-      scoreA = scoreA + 1;
-      scoreE = scoreE + 1;
-      nspams = nspams + 1;
-    else 
-      % pattern is actually ham 
-      scoreF = scoreF + 1;
-      scoreD = scoreD + 1;
-      nhams = nhams + 1;
-    end
-  else
-    % network thinks pattern is ham
-    if (testtargets(idx) <= 0.5)
-      % pattern is actually ham 
-      scoreB = scoreB + 1;
-      scoreE = scoreE + 1;
-      nhams = nhams + 1;
-    else 
-      % pattern is actually spam
-      scoreC = scoreC + 1;
-      scoreF = scoreF + 1;
-      nspams = nspams + 1;
     end
   end
 end
 
-spamSuccessRatio = (scoreA / nspams);
-hamSuccessRatio = (scoreB / nhams);
-spamFailRatio = 1 - spamSuccessRatio;
-hamFailRatio = 1 - hamSuccessRatio;
-anySuccessRatio = (scoreE / testdimy);
-anyFailRatio = 1 - anySuccessRatio;
+% Write Score to file
+fid = fopen('../../data/results/results.txt', 'w');
 
-fprintf('spam -> spam: %d (%2.2f %%)\n', scoreA, spamSuccessRatio * 100);
-fprintf('ham -> ham: %d (%2.2f %%)\n', scoreB, hamSuccessRatio * 100);
-fprintf('spam -> ham: %d (%2.2f %%)\n', scoreC, spamFailRatio * 100);
-fprintf('ham -> spam: %d (%2.2f %%)\n', scoreD, hamFailRatio * 100);
-fprintf('any -> success: %d (%2.2f %%)\n', scoreE, anySuccessRatio * 100);
-fprintf('any -> fail: %d (%2.2f %%)\n', scoreF, anyFailRatio * 100);
+fprintf(fid, 'testing epochs from %d interval %d to %d\n', ...
+  epoch_start, epoch_interval, epoch_end);
+fprintf(fid, 'testing hidden nodes from %d interval %d to %d\n', ...
+  nhidden_start, nhidden_interval, nhidden_end);
+fprintf(fid, 'testing learning rates from %d interval %d to %d\n\n', ...
+  lr_start, lr_interval, lr_end);
 
-fprintf('total no ham patterns: %d\n', nhams);
-fprintf('total no spam patters: %d\n', nspams);
-fprintf('total no test patterns: %d\n', testdimy);
+fprintf(fid, 'number of epochs: %d\n', bestepochs);
+fprintf(fid, 'number of nodes in hidden layer: %d\n', bestnhidden);
+
+if (strcmp(train_algorithm, 'traingd'))
+  fprintf(fid, 'train_algoritm: traingd\n');
+  fprintf(fid, 'learning rate: %f\n', bestlr);
+elseif (strcmp(train_algorithm, 'trainrp'))
+  %fprintf(fid, 'train_algoritm: trainrp\n');
+  %fprintf(fid, 'delta0: %f\n', net.trainParam.delta0);
+  %fprintf(fid, 'delta_inc: %f\n', net.trainParam.delt_inc);
+  %fprintf(fid, 'delta_dec: %f\n', net.trainParam.delt_dec);
+  %fprintf(fid, 'trainmax: %d\n', net.trainParam.deltamax);
+end
+
+fprintf(fid, 'total no ham patterns: %d\n', nhams);
+fprintf(fid, 'total no spam patters: %d\n', nspams);
+fprintf(fid, 'total no test patterns: %d\n\n', testdimy);
+
+fprintf(fid, 'any -> success: %d (%2.2f %%)\n', scoreE, bestratio * 100);
+fprintf(fid, 'spam -> spam: %d (%2.2f %%)\n', scoreA, spamSuccessRatio * 100);
+fprintf(fid, 'ham -> ham: %d (%2.2f %%)\n\n', scoreB, hamSuccessRatio * 100);
+
+%fprintf(fid, 'spam -> ham: %d (%2.2f %%)\n', scoreC, spamFailRatio * 100);
+%fprintf(fid, 'ham -> spam: %d (%2.2f %%)\n', scoreD, hamFailRatio * 100);
+%fprintf(fid, 'any -> fail: %d (%2.2f %%)\n', scoreF, anyFailRatio * 100);
+
+fclose(fid);
 
