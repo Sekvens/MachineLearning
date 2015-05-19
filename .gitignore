@@ -2,4 +2,7 @@
 node_modules
 data
 *.swp
-
+*.pyc
+*.aux
+*.log
+*.out
