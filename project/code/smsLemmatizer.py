@@ -1,5 +1,6 @@
 from nltk.stem.wordnet import WordNetLemmatizer
-import re, os, io, glob
+import re, os, io, glob, argparse
+import spamFunctions
 
 path_ = os.getcwd()
 #name of the file that contains the data.
@@ -121,3 +122,22 @@ def LemmatizeFilesInFolder(inputPath, outputPath, spamClassificationFunction, pr
 		LemmatizeTextInFile(file, outputPath, spamClassificationFunction, preprocessingFunction, lineMode)
 		fileCounter += 1
 	print("Done applying lemmatization on " + str(fileCounter) + " files.") if (not silentMode) else()
+	
+parser = argparse.ArgumentParser(prog="Spam Lemmatizer")
+parser.add_argument("dataFolder", help="Path to the folder containing the dataset")
+parser.add_argument("outputPath", help="Path to the folder where the script will output the spam and ham folder containing the lemmatized dataset. ")
+parser.add_argument("spamClassificationFunction", help="Function that classify each message file or line as spam or ham. The options are: \n" + spamFunctions.getIsSpamText(), type=int, choices=[0, 1])
+parser.add_argument("preprocessingFunction", help="Function to perform the preprocessing.", type=int, choices=[0, 1])
+parser.add_argument("-p","--pattern", help="A pattern matching the datafiles suffix in the folder.")
+parser.add_argument("-l", "--lineMode", help="Treats every text line in the files as a message instead of reading it to EOF.", action="store_true")
+parser.add_argument("-d", "--debug", help="Prints some feedback about what files are being parsed during execution.", action="store_true")
+
+args = parser.parse_args()
+parser.parse_args()
+print("Datafolder choosen is: " + args.dataFolder)
+print("outputPath choosen is: " + args.outputPath)
+print("Spam Classification choosen is: " + str(args.spamClassificationFunction))
+print("Preprocessing function choosen is: " + str(args.preprocessingFunction))
+print("Pattern chosen: " + args.pattern)
+print("lineMode: " + str(args.lineMode))
+print("debug: " + str(args.debug))
