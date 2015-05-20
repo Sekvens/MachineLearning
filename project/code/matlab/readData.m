@@ -1,5 +1,5 @@
 
-spampercent     = 0.2;
+spampercent     = 0.3;
 
 hamSrc = '../../data/numvecs/ham/';
 spamSrc = '../../data/numvecs/spam/';
