@@ -2,21 +2,21 @@ from nltk.stem.wordnet import WordNetLemmatizer
 import re, os, io, glob, argparse
 import spamFunctions
 
-path_ = os.getcwd()
+#path_ = os.getcwd()
 #name of the file that contains the data.
-fileName = "SMSSpamCollection"
+#fileName = "SMSSpamCollection"
 #This is the path to the file that contains the original data.
-filePath = path_ + os.sep + ".." + os.sep + "data" + os.sep + fileName
+#filePath = path_ + os.sep + ".." + os.sep + "data" + os.sep + fileName
 lemmatizer = WordNetLemmatizer()
 
 # Returns all words from a textLine without any special characters
-def getWordsFromString(textLine):
+def __getWordsFromString(textLine):
 	wordList = re.sub('[^a-zA-Z+]', " ", textLine).split()
 	return wordList
 	
 # Takes a line of Text and applies the Lemmatizer on each word in it. Returns a dictionary with original words mapped to the lemmatized words. Only returns lower case characters.
-def getLemmatizedTextKeyset(textLine):
-	listOfWords = getWordsFromString(textLine)
+def __getLemmatizedTextKeyset(textLine):
+	listOfWords = __getWordsFromString(textLine)
 	dictionaryMap = {}
 	i = 0
 	for word in listOfWords:
@@ -30,21 +30,21 @@ def buildDictionaryFromTextBlock(text):
 	lines = text.splitlines()
 	dic =  {}
 	for line in lines:
-		dic.update(getLemmatizedTextKeyset(line))
+		dic.update(__getLemmatizedTextKeyset(line))
 	return dic
 
-def getDictionary_(textFile):
+def getDictionary(textFile):
 	text=""
 	for line in textFile:
 		text += textFile.readline()
 	return buildDictionaryFromTextBlock(text)
 
-def getDictionary():
-	"""Returns a dictionary for the spamCollection with word:lemma as mapping."""
-	spamCollection = open(filePath, "r")
-	temp = getDictionary_(spamCollection)
-	spamCollection.close()
-	return temp
+#def getDictionary():
+#	"""Returns a dictionary for the spamCollection with word:lemma as mapping. DEPRECATED"""
+#	spamCollection = open(filePath, "r")
+#	temp = getDictionary_(spamCollection)
+#	spamCollection.close()
+#	return temp
 	
 def getLemmatizedText_(file):
 	""" #returns a version of the file with lemmatization applied to it as a string.	"""
@@ -68,7 +68,7 @@ def getLemmatizedText():
 	return lemmatizedText
 
 #NOT TESTED
-def LemmatizeTextInFile(input, outputPath, spamClassificationFunction, preprocessingFunction, lineMode = True):
+def __lemmatizeTextInFile(input, outputPath, spamClassificationFunction, preprocessingFunction, lineMode = True):
 	"""Lemmatizes the text in a file line by line or the whole file.
 	
 	Keyword Arguments:
@@ -92,7 +92,7 @@ def LemmatizeTextInFile(input, outputPath, spamClassificationFunction, preproces
 		outputFile.write(line)
 		outputFile.close()
 		
-def CreateOutputFolders(outputPath):
+def createOutputFolders(outputPath):
 	"""If the folders don't exist it creates the outputPath folder containing one folder named spam and one folder named ham."""
 	if not os.path.exists(outputPath):
 		os.mkdir(outputPath)
@@ -103,7 +103,7 @@ def CreateOutputFolders(outputPath):
 	if not os.path.exists(hamFolder):
 		os.mkdir(hamFolder)
 
-def LemmatizeFilesInFolder(inputPath, outputPath, spamClassificationFunction, preprocessingFunction, dataFileMatching, lineMode = True, silentMode = True):
+def lemmatizeFilesInFolder_(inputPath, outputPath, spamClassificationFunction, preprocessingFunction, dataFileMatching, lineMode = True, silentMode = True):
 	"""Lemmatizes all files in a folder and output them at a desired place.
 	
 	Keyword Arguments:
@@ -115,11 +115,11 @@ def LemmatizeFilesInFolder(inputPath, outputPath, spamClassificationFunction, pr
 	dataFileMatching -- A string describing the glob pattern of the data files. For example "*.data" would only pick up all files in inputPath that ends with the suffix "data". Unknown behaviour if matching folders.
 	silentMode -- If set to false the function returns text feedback about what it's doing.
 	"""
-	CreateOutputFolders(outputPath)
+	createOutputFolders(outputPath)
 	fileCounter = 0
 	for file in glob.glob(dataFileMatching):		
 		print("Applying lemmatization on the file: " + file) if not silentMode else()
-		LemmatizeTextInFile(file, outputPath, spamClassificationFunction, preprocessingFunction, lineMode)
+		__lemmatizeTextInFile(file, outputPath, spamClassificationFunction, preprocessingFunction, lineMode)
 		fileCounter += 1
 	print("Done applying lemmatization on " + str(fileCounter) + " files.") if (not silentMode) else()
 	
