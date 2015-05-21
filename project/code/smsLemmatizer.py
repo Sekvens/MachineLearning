@@ -14,7 +14,9 @@ def __getWordsFromString(textLine):
 	wordList = re.sub('[^a-zA-Z+]', " ", textLine).split()
 	return wordList
 	
-# Takes a line of Text and applies the Lemmatizer on each word in it. Returns a dictionary with original words mapped to the lemmatized words. Only returns lower case characters.
+# Takes a line of Text and applies the Lemmatizer on each word in it. Returns a
+# dictionary with original words mapped to the lemmatized words. Only returns
+# lower case characters.
 def __getLemmatizedTextKeyset(textLine):
 	listOfWords = __getWordsFromString(textLine)
 	dictionaryMap = {}
@@ -47,7 +49,8 @@ def getDictionary(textFile):
 #	return temp
 	
 def getLemmatizedText_(file):
-	""" #returns a version of the file with lemmatization applied to it as a string.	"""
+        """ #returns a version of the file with lemmatization applied to it as
+        a string.	"""
 	dic = getDictionary()
 	lemmatizedText = ""
 	for temp in file:
@@ -60,7 +63,8 @@ def getLemmatizedText_(file):
 	return lemmatizedText
 	
 def getLemmatizedText():
-	""" #returns a version of the SMSSpamCollection text with lemmatization applied to it as a string.	"""
+        """ #returns a version of the SMSSpamCollection text with lemmatization
+        applied to it as a string.	"""
 	spamCollection = open(filePath, "r")
 	spamCollection.seek(0)
 	lemmatizedText = getLemmatizedText_(spamCollection)
@@ -72,11 +76,17 @@ def __lemmatizeTextInFile(input, outputPath, spamClassificationFunction, preproc
 	"""Lemmatizes the text in a file line by line or the whole file.
 	
 	Keyword Arguments:
-	input -- The file that contains all the data. This should be a path including the file name.
-	outputPath -- This is the path to the folder where the output should be. It should contain a folder named "spam" and one named "ham" where the output will be generated.
-	spamClassificationFunction -- A function String -> Boolean that returns true if a line or a file is a spam.
-	preprocessingFunction -- A String -> String function that returns the text with all desired preprocessing applied to it.
-	lineMode -- A boolean that tells if input should be parsed line by line or in a chunk until EOF.
+        input -- The file that contains all the data. This should be a path
+        including the file name.
+        outputPath -- This is the path to the folder where the output should
+        be. It should contain a folder named "spam" and one named "ham" where
+        the output will be generated.
+        spamClassificationFunction -- A function String -> Boolean that returns
+        true if a line or a file is a spam.
+        preprocessingFunction -- A String -> String function that returns the
+        text with all desired preprocessing applied to it.
+        lineMode -- A boolean that tells if input should be parsed line by line
+        or in a chunk until EOF.
 	"""
 	messageCounterHam = 0
 	messageCounterSpam = 0
@@ -93,7 +103,8 @@ def __lemmatizeTextInFile(input, outputPath, spamClassificationFunction, preproc
 		outputFile.close()
 		
 def createOutputFolders(outputPath):
-	"""If the folders don't exist it creates the outputPath folder containing one folder named spam and one folder named ham."""
+        """If the folders don't exist it creates the outputPath folder
+        containing one folder named spam and one folder named ham."""
 	if not os.path.exists(outputPath):
 		os.mkdir(outputPath)
 	spamFolder = outputPath + os.sep + "spam" + os.sep
@@ -107,13 +118,23 @@ def lemmatizeFilesInFolder_(inputPath, outputPath, spamClassificationFunction, p
 	"""Lemmatizes all files in a folder and output them at a desired place.
 	
 	Keyword Arguments:
-	inputPath -- The folder that contains all files with the data. This should be a path including the file name.
-	outputPath -- This is the path to the folder where the output should be. It should contain a folder named "spam" and one named "ham" where the output will be generated.
-	spamClassificationFunction -- A function String -> Boolean that returns true if a line or a file is a spam.
-	preprocessingFunction -- A String -> String function that returns the text with all desired preprocessing applied to it.
-	lineMode -- A boolean that tells if input should be parsed line by line or in a chunk until EOF.
-	dataFileMatching -- A string describing the glob pattern of the data files. For example "*.data" would only pick up all files in inputPath that ends with the suffix "data". Unknown behaviour if matching folders.
-	silentMode -- If set to false the function returns text feedback about what it's doing.
+        inputPath -- The folder that contains all files with the data. This
+        should be a path including the file name.
+        outputPath -- This is the path to the folder where the output should
+        be. It should contain a folder named "spam" and one named "ham" where
+        the output will be generated.
+        spamClassificationFunction -- A function String -> Boolean that returns
+        true if a line or a file is a spam.
+        preprocessingFunction -- A String -> String function that returns the
+        text with all desired preprocessing applied to it.
+        lineMode -- A boolean that tells if input should be parsed line by line
+        or in a chunk until EOF.
+        dataFileMatching -- A string describing the glob pattern of the data
+        files. For example "*.data" would only pick up all files in inputPath
+        that ends with the suffix "data". Unknown behaviour if matching
+        folders.
+        silentMode -- If set to false the function returns text feedback about
+        what it's doing.
 	"""
 	createOutputFolders(outputPath)
 	fileCounter = 0
@@ -141,3 +162,4 @@ print("Preprocessing function choosen is: " + str(args.preprocessingFunction))
 print("Pattern chosen: " + args.pattern)
 print("lineMode: " + str(args.lineMode))
 print("debug: " + str(args.debug))
+

@@ -2,7 +2,8 @@ import re, os
 
 ##Start of help functions for the SMSSpamCollection dataset
 def isSpamSMS(textLine):
-	"""SMS spam dataset spam classifier. Returns true if a word is spam, false otherwise."""
+        """SMS spam dataset spam classifier. Returns true if a word is spam,
+        false otherwise."""
 	return re.sub("[\^w]", " ", textLine).split()[0].lower() == "spam"
 	
 def preprocessingSMS(textLine):
@@ -10,7 +11,8 @@ def preprocessingSMS(textLine):
 	return textLine.split(None, 1)[1]
 	
 def getDefultSMSpath():
-	"""Returns the filepath to the SMSSpamCollection assuming we have the default folder structure."""
+        """Returns the filepath to the SMSSpamCollection assuming we have the
+        default folder structure."""
 	return getDataPath() + "SMSSpamCollection"
 	
 ##End of help functions for the SMSSpamCollection dataset
