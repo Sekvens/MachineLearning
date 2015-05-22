@@ -1,7 +1,7 @@
 
 tic
 
-readdata  = 0;
+readdata  = 1;
 
 trainratio = 0.7;
 

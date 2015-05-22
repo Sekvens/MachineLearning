@@ -1,7 +1,6 @@
 
 -- The purpose of this proram is to extract important feautures from chunks of
--- text. The extracted features include:
---
+-- text.
 
 module Main where
 import Data.List as L
@@ -38,10 +37,15 @@ spamwords = ["win",
              "adult",
              "virus"];
 
+-- Normalizes a list to values 0 - 1
+norm x = L.map (\xi -> (xi - minimum x) / (maximum x - minimum x)) x
+
+-- Converts False to 0.0 and True to 1.0
 boolToFloat :: Bool -> Float
 boolToFloat False = 0.0;
 boolToFloat True  = 1.0;
 
+-- 0.0 if chunk and list does have a common element 1.0 otherwise
 hasWordInList :: String -> [String] -> Float
 hasWordInList chunk list = 
   boolToFloat $ L.foldl (\acc x -> (elem x list) || acc) False (words chunk);
@@ -74,6 +78,22 @@ npunct = countChars isPunctuation
 alphaRatio :: String -> Float
 alphaRatio chunk = 
   (fromIntegral $ nalpha chunk) / (fromIntegral $ nchars chunk)
+
+-- Ratio of total number of chars / digit characters
+digitRatio :: String -> Float
+digitRatio chunk = 
+  (fromIntegral $ ndigit chunk) / (fromIntegral $ nchars chunk)
+
+-- Ratio of total number of chars / punctuation
+punctRatio :: String -> Float
+punctRatio chunk = 
+  (fromIntegral $ npunct chunk) / (fromIntegral $ nchars chunk)
+
+-- Ratio of total number of chars / punctuation
+whiteRatio :: String -> Float
+whiteRatio chunk = 
+  (fromIntegral $ nwhite chunk) / 
+  (fromIntegral $ countChars (\x -> True) chunk)
 
 -- Letter Frequency as a list of kv-pairs
 charFreq :: (Char -> Bool) -> String -> [(Char, Int)]
@@ -171,42 +191,9 @@ simpsonsDMeasure chunk =
     else 
       1 - (fromIntegral sum) / (fromIntegral (n * (n - 1)))
 
-
-str2NumVec chunk = 
-  let 
-    wlf = wordLenFreq 5 chunk
-    rest = 
-      [
-        realToFrac $ nchars chunk,
-        realToFrac $ nwhite chunk,
-        realToFrac $ nalpha chunk,
-        realToFrac $ ndigit chunk,
-        realToFrac $ npunct chunk,
-        alphaRatio chunk,
-        realToFrac $ nwords chunk,
-        realToFrac $ nshortWords chunk,
-        avgWordLen chunk,
-        avgSentenceLenInWords chunk,
-        avgSentenceLenInChars chunk,
-        realToFrac $ nOccurringWordsFreq 1 chunk,
-        realToFrac $ nOccurringWordsFreq 2 chunk,
-        simpsonsDMeasure chunk,
-        hasWordInList chunk spamwords,
-        hasWordInList chunk linkwords
-      ] 
-  in rest ++ wlf
-
---unused
-{-charFreq isAlphaNum chunk,-}
-{-charFreq (not . isAlphaNum) chunk,-}
-
-{-teststring2 = "hej hopp. jag heter. jag hej"-}
-{-teststring3 = "sh sh sc sc sc sc sc sc sc sc bw pu sp sp sp"-}
-
 vecToRows [] = ""
 vecToRows (x : xs) = 
   (show x) ++ "\n" ++ vecToRows (xs)
-
 
 filterDirectory :: String -> [String] -> [String]
 filterDirectory sourcedir list = 
@@ -217,11 +204,43 @@ readFileStrict = fmap T.unpack . TIO.readFile
 
 writefiles d _ [] = return ()
 writefiles d (name : names) (vec : vecs) = do
-  if (head vec) > 25 then 
+  if (head vec) > 0.01 then 
     writeFile (d ++ "/" ++ (last $ splitOn "/" name)) (vecToRows vec) 
   else 
     return ()
   writefiles d names vecs
+
+mergeFiveByElement :: 
+  [Float] -> [Float] -> [Float] -> [Float] -> [Float] -> [[Float]]
+mergeFiveByElement [] _ _ _ _ = [] 
+mergeFiveByElement _ [] _ _ _ = [] 
+mergeFiveByElement _ _ [] _ _ = [] 
+mergeFiveByElement _ _ _ [] _ = [] 
+mergeFiveByElement _ _ _ _ [] = [] 
+mergeFiveByElement (a:as) (b:bs) (c:cs) (d:ds) (e:es) = 
+  [a, b, c, d, e] : mergeFiveByElement as bs cs ds es
+
+mergetwo :: [[Float]] -> [[Float]] -> [[Float]]
+mergetwo [] _ = []
+mergetwo _ [] = [] 
+mergetwo (a:as) (b:bs) = (a ++ b) : mergetwo as bs
+
+str2NumVec chunk = 
+  let 
+    wlf = wordLenFreq 3 chunk
+    rest =
+      [
+        alphaRatio chunk,
+        digitRatio chunk,
+        punctRatio chunk,
+        whiteRatio chunk,
+        realToFrac $ nOccurringWordsFreq 1 chunk,
+        realToFrac $ nOccurringWordsFreq 2 chunk,
+        simpsonsDMeasure chunk,
+        hasWordInList chunk spamwords,
+        hasWordInList chunk linkwords
+      ]
+  in rest ++ wlf
 
 main :: IO ()
 main = do 
@@ -231,6 +250,48 @@ main = do
   contents <- getDirectoryContents sourceDir
   let filtered  = filterDirectory sourceDir contents
   files <- mapM (\x -> readFileStrict x >>= evaluate) filtered 
-  let numvecs = L.map (str2NumVec) files  
+  let wordLens = L.map nwords files 
+  let shortWordLens = L.map nshortWords files 
+  let averageWordLens = L.map avgWordLen files 
+  let averageSentenceLensInWords = L.map avgSentenceLenInWords files
+  let averageSentenceLensInChars = L.map avgSentenceLenInChars files
+  let nwl = norm $ L.map fromIntegral wordLens
+  let nswl = norm $ L.map fromIntegral shortWordLens
+  let nawl = norm $ averageWordLens
+  let naslic = norm averageSentenceLensInChars
+  let nasliw = norm averageSentenceLensInWords
+  let normcollection1 = mergeFiveByElement nwl nswl nawl naslic nasliw
+  let normcollection2 = L.map (str2NumVec) files
+  let numvecs = mergetwo normcollection1 normcollection2
   writefiles destDir filtered numvecs
 
+{-str2NumVec chunk = -}
+  {-let -}
+    {-wlf = wordLenFreq 5 chunk-}
+    {-rest = -}
+      {-[-}
+        {-realToFrac $ nchars chunk,-}
+        {-realToFrac $ nwhite chunk,-}
+        {-realToFrac $ nalpha chunk,-}
+        {-realToFrac $ ndigit chunk,-}
+        {-realToFrac $ npunct chunk,-}
+        {-alphaRatio chunk,-}
+        {-realToFrac $ nwords chunk,-}
+        {-realToFrac $ nshortWords chunk,-}
+        {-avgWordLen chunk,-}
+        {-avgSentenceLenInWords chunk,-}
+        {-avgSentenceLenInChars chunk,-}
+        {-realToFrac $ nOccurringWordsFreq 1 chunk,-}
+        {-realToFrac $ nOccurringWordsFreq 2 chunk,-}
+        {-simpsonsDMeasure chunk,-}
+        {-hasWordInList chunk spamwords,-}
+        {-hasWordInList chunk linkwords-}
+      {-] -}
+  {-in rest ++ wlf-}
+
+--unused
+{-charFreq isAlphaNum chunk,-}
+{-charFreq (not . isAlphaNum) chunk,-}
+
+{-teststring2 = "hej hopp. jag heter. jag hej"-}
+{-teststring3 = "sh sh sc sc sc sc sc sc sc sc bw pu sp sp sp"-}

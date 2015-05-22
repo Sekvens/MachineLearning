@@ -1,0 +1,15 @@
+
+\section{Results}
+  After running our tests we can see that the word list with the banned words
+  are greatly increasing the chance of classifying spam messages correctly. The
+  word list that identifies links have a much smaller impact but improves the
+  spam classification slightly. 
+  \begin{table}[h]
+  \begin{tabular}{llll}
+  Run               & Overall Success & Spam Success & Ham Success \\
+  Both Lists        & 84.24\%         & 79.37\%      & 83.07\%     \\
+  Banned Word List  & 86.37\%         & 67.31\%      & 92.75\%     \\
+  Link Word List    & 82.86\%         & 68.34\%      & 86.50\%     \\
+  None of the Lists & 83.83\%         & 48.66\%      & 96.01\%    
+  \end{tabular}
+  \end{table}

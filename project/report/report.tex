@@ -1,8 +1,9 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage{fullpage}
 \usepackage{glossaries}
+\usepackage{url}
 
-\title{\textbf{Project in Spam Detection} \\
+\title{\textbf{Project Report: Spam Detection with neural networks} \\
     \textbf{Machine Learning (course 1DT071)} \\  
 }
 \author{Ludvig Sundstr\"{o}m and John Shaw}
@@ -11,13 +12,22 @@
 \begin{document}
 
 \maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction} 
+  The goal of this project is to study how to train Neural network to recognize
+  spam messages.
 
 \input{background.tex}
-\input{section_preprocessing.tex}
-\input{parameters.tex}
+\input{preprocessing.tex}
+\input{methods.tex}
+\input{results.tex}
+\input{conclusions.tex}
 
 \section{References}
-\bibliographystyle{plain}
-\bibliography{references}
+  \bibliographystyle{plain}
+  \bibliography{references}
 
 \end{document}

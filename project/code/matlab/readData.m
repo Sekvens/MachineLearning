@@ -1,5 +1,5 @@
 
-numvecdim = 21;
+numvecdim = 17;
 spampercent     = 0.35;
 
 hamSrc = '../../data/numvecs/ham/';

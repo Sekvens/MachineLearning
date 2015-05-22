@@ -1,0 +1,50 @@
+
+\section{Methods}
+
+  The initial list of features that we extracted were as follows:
+  \begin{enumerate}
+    \item Total number of characters
+    \item Total number of white characters 
+    \item Total number of aphabetic characters
+    \item Total number of digit characters
+    \item Total number of punctuation characters
+    \item Ratio between alphabetic characters and total number of characters
+    \item Total number of words
+    \item Total number of words with less than 3 characters
+    \item Avarage word length 
+    \item Average sentence length in words
+    \item Average sentence length in characters
+    \item Frequency of words of length 1
+    \item Frequency of words of length 2
+    \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
+  \end{enumerate}
+  We also assembled two lists of handpicked words that we felt were more
+  significant than others. The two lists are presented in Appendix XX. 
+  For each of the two lists, we added an element to the feature vector, which
+  were 1.0 if the message contained a word that the lists contained and 0.0
+  otherwise.   
+  These lists were added as an experiment attempt to increase similarity of
+  messages containing common spamwords and words that could be resemeled into
+  an hyperlink.
+  One problem with the word list is that spammers might change their vocabulary
+  to avoid our spam detection and thus decrease the chance of spam detection
+  and might increase the risk of faulty classification of hams as spam. 
+
+  After browsing through a list of spam messages we concluded that it was
+  common to split links with white spaces in spam messages as an attempt to
+  avoid spam detection. Links seemed to be more common in spam messages than in
+  ham. Because of that we made a new parameter that checks if the message
+  contains any of the words \texttt{html, http, www TODO} and we use that as a
+  parameter for the ANN. 
+
+  Another interesting hypothesis we had was that using a word list of words
+  that are more common in spam messages could improve the performance of the
+  spam detection. We composed a simple word list containing the words
+  \texttt{win, secret} that would be used as a parameter.  These parameters are
+  binary and true if they contain any of the words in these lists. We didn't
+  want to use a counter since it would discriminate against ham messages that
+  are written about a subject that might contain many of the banned words and
+  therefore increase the risk of a faulty classification. 
+
+
+
