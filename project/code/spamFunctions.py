@@ -2,8 +2,7 @@ import re, os
 
 ##Start of help functions for the SMSSpamCollection dataset
 def isSpamSMS(textLine):
-        """SMS spam dataset spam classifier. Returns true if a word is spam,
-        false otherwise."""
+	"""SMS spam dataset spam classifier. Returns true if a word is spam, false otherwise."""
 	return re.sub("[\^w]", " ", textLine).split()[0].lower() == "spam"
 	
 def preprocessingSMS(textLine):
@@ -11,12 +10,13 @@ def preprocessingSMS(textLine):
 	return textLine.split(None, 1)[1]
 	
 def getDefultSMSpath():
-        """Returns the filepath to the SMSSpamCollection assuming we have the
-        default folder structure."""
-	return getDataPath() + "SMSSpamCollection"
+	"""Returns the filepath to the SMSSpamCollection assuming we have the default folder structure."""
+	return getDataPath() + "datasets" + os.sep + "sms" + os.sep +"SMSSpamCollection"
 	
-##End of help functions for the SMSSpamCollection dataset
-
+##Enron helpfunctions
+def getDefaultEnronPre():
+	return getDataPath() + "preprocessed" + os.sep
+	
 ##Dummy functions
 def isSpam(textLine):
 	"""Classes everything as spam"""
@@ -28,7 +28,7 @@ def preprocessing(textLine):
 	
 def getDataPath():
 	"""Returns ../data/ with os dependent separators."""
-	return path_ + os.sep + ".." + os.sep + "data" + os.sep
+	return ".." + os.sep + "data" + os.sep
 	
 ##Option selection
 def getPreprocessingText():
