@@ -146,5 +146,7 @@ def createDefaultSMSDataset():
 def createEnron():
 	dataPathHam = spamFunctions.getDefaultEnronPre() + os.sep + "ham" + os.sep
 	dataPathSpam = spamFunctions.getDefaultEnronPre() + os.sep + "spam" + os.sep
-	outPath = dataPath + "lem"
-	lemmatizeTextInDataFolder(dataPath, outPath, ".txt", False, False)
+	outPathHam = dataPathHam + "lem" + os.sep
+	outPathSpam = dataPathSpam + "lem" + os.sep
+	lemmatizeTextInDataFolder(dataPathHam, outPathHam, ".txt", False, False)
+	lemmatizeTextInDataFolder(dataPathHam, outPathSpam, ".txt", False, False)
