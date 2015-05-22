@@ -51,9 +51,12 @@ for idx = 1:numel(testoutput)
   end
 end
 
+spamPercent = (nspams / testdimy);
+hamPercent = (nhams / testdimy);
 spamSuccessRatio = (scoreA / nspams);
 hamSuccessRatio = (scoreB / nhams);
 spamFailRatio = 1 - spamSuccessRatio;
 hamFailRatio = 1 - hamSuccessRatio;
 anySuccessRatio = (scoreE / testdimy);
 anyFailRatio = 1 - anySuccessRatio;
+

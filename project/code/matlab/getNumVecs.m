@@ -1,10 +1,10 @@
 
 % Extract numvectors from all files in a listing
 
-function [ result ] = getNumVecs(listing, src)
+function [ result ] = getNumVecs(listing, src, numvecdim)
 
   [ldimx, ldimy] = size(listing);
-  result = zeros(19, ldimx);
+  result = zeros(numvecdim, ldimx);
 
   for idx = 1:numel(listing)
     path = strcat(src, listing(idx).name);
@@ -16,7 +16,7 @@ function [ result ] = getNumVecs(listing, src)
       else 
         numvec = fscanf(fid, '%f');
         [vdimx, vdimy] = size(numvec);
-        if (vdimx ~= 19)
+        if (vdimx ~= numvecdim)
           disp('ERROR: arrays does not match');
         else
           if (any(isnan(numvec(:))))

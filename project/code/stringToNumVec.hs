@@ -16,6 +16,36 @@ import Control.Exception;
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 
+linkwords = ["www",
+             "http",
+             "info",
+             "html",
+             "/"];
+
+spamwords = ["win",
+             "award",
+             "offer",
+             "lay",
+             "sex",
+             "secret",
+             "check",
+             "online",
+             "prescription",
+             "congrats",
+             "free",
+             "girls",
+             "premium",
+             "adult",
+             "virus"];
+
+boolToFloat :: Bool -> Float
+boolToFloat False = 0.0;
+boolToFloat True  = 1.0;
+
+hasWordInList :: String -> [String] -> Float
+hasWordInList chunk list = 
+  boolToFloat $ L.foldl (\acc x -> (elem x list) || acc) False (words chunk);
+
 -- Length of a string filtered by a predicate
 countChars :: (Char -> Bool) -> String -> Int
 countChars pred = length . L.filter pred 
@@ -160,7 +190,9 @@ str2NumVec chunk =
         avgSentenceLenInChars chunk,
         realToFrac $ nOccurringWordsFreq 1 chunk,
         realToFrac $ nOccurringWordsFreq 2 chunk,
-        simpsonsDMeasure chunk
+        simpsonsDMeasure chunk,
+        hasWordInList chunk spamwords,
+        hasWordInList chunk linkwords
       ] 
   in rest ++ wlf
 

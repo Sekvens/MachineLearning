@@ -1,5 +1,6 @@
 
-spampercent     = 0.3;
+numvecdim = 21;
+spampercent     = 0.35;
 
 hamSrc = '../../data/numvecs/ham/';
 spamSrc = '../../data/numvecs/spam/';
@@ -7,7 +8,7 @@ spamSrc = '../../data/numvecs/spam/';
 hamListing = dir(hamSrc);
 spamListing = dir(spamSrc);
 
-hams = getNumVecs(hamListing(3:end), hamSrc);
+hams = getNumVecs(hamListing(3:end), hamSrc, numvecdim);
 [hdimx, hdimy] = size(hams);
 
 n = floor(hdimy * spampercent);
@@ -15,7 +16,7 @@ n = floor(hdimy * spampercent);
 if (n > lstdimx)
   disp('Error: Percentage too high, not enough spams');
 else
-  spams = getNumVecs(spamListing(3:n), spamSrc);
+  spams = getNumVecs(spamListing(3:n), spamSrc, numvecdim);
   [sdimx, sdimy] = size(spams);
 
   hamtargets = zeros(1, hdimy);
@@ -28,7 +29,7 @@ else
 
   [seqdimx, seqdimy] = size(sequence);
 
-  randpatterns = zeros(19, seqdimy);
+  randpatterns = zeros(numvecdim, seqdimy);
   randtargets = zeros(1, seqdimy);
 
   for idx = 1:numel(sequence)

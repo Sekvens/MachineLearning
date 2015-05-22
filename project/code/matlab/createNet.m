@@ -45,7 +45,6 @@ function [net, ...
   [trained_net, stats] = train(net, normTrainPatterns, traintargets);
 
   testoutput = sim(trained_net, normTestPatterns);
-
   % Calculate score
   calcScore
 end
