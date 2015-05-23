@@ -124,17 +124,20 @@ average list =
 
 -- Average word length
 avgWordLen :: String -> Float
-avgWordLen = average . words 
+avgWordLen ""    = 0.0
+avgWordLen chunk = average (words chunk)
 
 -- Avg. sentence length in respect to words
 avgSentenceLenInWords :: String -> Float
-avgSentenceLenInWords = 
-  average . L.map words . L.filter (\x -> (length x) > 1) . splitOn (".") 
+avgSentenceLenInWords ""    = 0.0
+avgSentenceLenInWords chunk = 
+  average $ L.map words $ L.filter (\x -> (length x) > 1) $ splitOn (".") chunk
 
 -- Avg. sentence length in respect to chars
 avgSentenceLenInChars :: String -> Float
-avgSentenceLenInChars = 
-  average . L.filter (\x -> (length x) > 1) . splitOn (".")
+avgSentenceLenInChars ""    = 0.0
+avgSentenceLenInChars chunk = 
+  average $ L.filter (\x -> (length x) > 1) $ splitOn (".") chunk
 
 -- If the last character of a string is '.', remove it 
 stripDot "."  = "." 
@@ -265,33 +268,3 @@ main = do
   let numvecs = mergetwo normcollection1 normcollection2
   writefiles destDir filtered numvecs
 
-{-str2NumVec chunk = -}
-  {-let -}
-    {-wlf = wordLenFreq 5 chunk-}
-    {-rest = -}
-      {-[-}
-        {-realToFrac $ nchars chunk,-}
-        {-realToFrac $ nwhite chunk,-}
-        {-realToFrac $ nalpha chunk,-}
-        {-realToFrac $ ndigit chunk,-}
-        {-realToFrac $ npunct chunk,-}
-        {-alphaRatio chunk,-}
-        {-realToFrac $ nwords chunk,-}
-        {-realToFrac $ nshortWords chunk,-}
-        {-avgWordLen chunk,-}
-        {-avgSentenceLenInWords chunk,-}
-        {-avgSentenceLenInChars chunk,-}
-        {-realToFrac $ nOccurringWordsFreq 1 chunk,-}
-        {-realToFrac $ nOccurringWordsFreq 2 chunk,-}
-        {-simpsonsDMeasure chunk,-}
-        {-hasWordInList chunk spamwords,-}
-        {-hasWordInList chunk linkwords-}
-      {-] -}
-  {-in rest ++ wlf-}
-
---unused
-{-charFreq isAlphaNum chunk,-}
-{-charFreq (not . isAlphaNum) chunk,-}
-
-{-teststring2 = "hej hopp. jag heter. jag hej"-}
-{-teststring3 = "sh sh sc sc sc sc sc sc sc sc bw pu sp sp sp"-}

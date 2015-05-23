@@ -9,11 +9,9 @@ prespamdst=data/preprocessed/spam
 finalhamdst=data/numvecs/ham
 finalspamdst=data/numvecs/spam
 
-if [ "$1" = "pre" ]; then 
-  node code/parseEnron.js $hamsrc $prehamdst 
-  node code/parseEnron.js $spamsrc $prespamdst
-  echo 'done preprocessing'
-fi
+node code/parseEnron.js $hamsrc $prehamdst 
+node code/parseEnron.js $spamsrc $prespamdst
+echo 'done preprocessing'
 
 runhaskell code/stringToNumVec.hs $prehamdst $finalhamdst
 
