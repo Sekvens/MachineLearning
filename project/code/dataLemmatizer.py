@@ -2,11 +2,6 @@ from nltk.stem.wordnet import WordNetLemmatizer
 import re, os, io, glob, argparse
 import spamFunctions
 
-#path_ = os.getcwd()
-#name of the file that contains the data.
-#fileName = "SMSSpamCollection"
-#This is the path to the file that contains the original data.
-#filePath = path_ + os.sep + ".." + os.sep + "data" + os.sep + fileName
 lemmatizer = WordNetLemmatizer()
 
 # Returns all words from a textLine without any special characters
@@ -77,7 +72,6 @@ def getDefaultDataPath():
 def getDefaultSMSPath():
 	return spamFunctions.getDefultSMSpath()
 
-#Will not create output path
 def lemmatizeTextInFile(inputFilePath, outputPath, lineMode = False, debug = False, fileSeperator = ""):
 	messageCounter = 0
 	createOutputFolder(outputPath)
@@ -85,7 +79,7 @@ def lemmatizeTextInFile(inputFilePath, outputPath, lineMode = False, debug = Fal
 	lemmatizedText = getLemmatizedText_(input_)
 	input_.close()
 	messageBuffer = io.StringIO(lemmatizedText)
-	print("Starting Lemmatization") if debug else ()
+	print("lemmatizeTextInFile: Starting Lemmatization") if debug else ()
 	if(lineMode):
 		for line in (messageBuffer.readlines()):
 			outputFile = open(outputPath + os.sep + fileSeperator + "message" + str(messageCounter), "w+")
@@ -101,21 +95,21 @@ def lemmatizeTextInFile(inputFilePath, outputPath, lineMode = False, debug = Fal
 		messageCounter += 1
 		outputFile.close()
 		messageBuffer.close()
-	print("Lemmatized " + str(messageCounter) + " messages") if debug else ()
+	print("lemmatizeTextInFile: Lemmatized " + str(messageCounter) + " messages") if debug else ()
 	
-def lemmatizeTextInDataFolder(inputFolder, output, matchString = "*", lineMode = False, debug = False):
+def lemmatizeTextInDataFolder(inputFolder, output, matchString = ".txt", lineMode = False, debug = False):
 	fileCounter = 0
 	filesToParse = []
 	for file in os.listdir(inputFolder):
 		if file.endswith(matchString):
 			filesToParse.append(file)
-	print("Found " + str(len(filesToParse)) + " files matching in the folder: " + inputFolder + " that matches: " + matchString) if debug else()
+	print("lemmatizeTextInDataFolder: Found " + str(len(filesToParse)) + " files matching in the folder: " + inputFolder + " that matches: " + matchString) if debug else()
 	for filePaths in filesToParse:
 		filePaths = inputFolder + os.sep + filePaths
-		print("Applying lemmatization on the file: " + filePaths) if debug else()
+		print("lemmatizeTextInDataFolder: Applying lemmatization on the file: " + filePaths) if debug else()
 		lemmatizeTextInFile(filePaths, output, lineMode, debug, str(fileCounter))
 		fileCounter += 1
-	print("Done applying lemmatization on " + str(fileCounter) + " files.") if debug else()
+	print("lemmatizeTextInDataFolder: Done applying lemmatization on " + str(fileCounter) + " files.") if debug else()
 
 ##Special method for the SMS dataset
 def lemmatizeSMSset(input, output, debug = False):
@@ -126,6 +120,7 @@ def lemmatizeSMSset(input, output, debug = False):
 	msgCounterHam = 0
 	inputFile = open(input, "r")
 	messageBuffer = io.StringIO(getLemmatizedText_(inputFile))
+	print("lemmatizeSMSset: Starting Lemmatization") if debug else ()
 	for line in messageBuffer.readlines():
 		if spamFunctions.isSpamSMS(line):
 			outputFile = open(outputPathSpam + 'message' + str(msgCounterSpam), "w+")
@@ -137,12 +132,13 @@ def lemmatizeSMSset(input, output, debug = False):
 		outputFile.write(line)
 		outputFile.close()
 	messageBuffer.close()
+	print("lemmatizeSMSset: Finished Lemmatization") if debug else ()
 
 ##Assuming everything is named and placed right this will create the preprocessed spam dataset
 def createDefaultSMSDataset():
 	lemmatizeSMSset(getDefaultSMSPath(), (getDefaultDataPath() + os.sep + "SMSpreprocessed"), False)
 
-##Semi broken
+##Fast script to get the enron dataset.
 def createEnron():
 	dataPathHam = spamFunctions.getDefaultEnronPre() + os.sep + "ham" + os.sep
 	dataPathSpam = spamFunctions.getDefaultEnronPre() + os.sep + "spam" + os.sep
@@ -150,3 +146,6 @@ def createEnron():
 	outPathSpam = dataPathSpam + "lem" + os.sep
 	lemmatizeTextInDataFolder(dataPathHam, outPathHam, ".txt", False, False)
 	lemmatizeTextInDataFolder(dataPathHam, outPathSpam, ".txt", False, False)
+
+def test():
+	print("dataLemmatizer got called")

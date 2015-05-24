@@ -1,35 +1,122 @@
 
 \section{Methods}
 
-  The initial list of features that we extracted were as follows:
-  \begin{enumerate}
-    \item Total number of characters
-    \item Total number of white characters 
-    \item Total number of aphabetic characters
-    \item Total number of digit characters
-    \item Total number of punctuation characters
-    \item Ratio between alphabetic characters and total number of characters
-    \item Total number of words
-    \item Total number of words with less than 3 characters
-    \item Avarage word length 
-    \item Average sentence length in words
-    \item Average sentence length in characters
-    \item Frequency of words of length 1
-    \item Frequency of words of length 2
-    \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
-  \end{enumerate}
-  We also assembled two lists of handpicked words that we felt were more
-  significant than others. The two lists are presented in Appendix XX. 
-  For each of the two lists, we added an element to the feature vector, which
-  were 1.0 if the message contained a word that the lists contained and 0.0
-  otherwise.   
-  These lists were added as an experiment attempt to increase similarity of
-  messages containing common spamwords and words that could be resemeled into
-  an hyperlink.
-  One problem with the word list is that spammers might change their vocabulary
-  to avoid our spam detection and thus decrease the chance of spam detection
-  and might increase the risk of faulty classification of hams as spam. 
+  \subsection{Initial configurations}
 
+    The initial list of features that we extracted were as follows:
+    \begin{enumerate}
+      \item Total number of characters
+      \item Total number of white characters 
+      \item Total number of alphabetic characters
+      \item Total number of digit characters
+      \item Total number of punctuation characters
+      \item Ratio between alphabetic characters and total number of characters
+      \item Total number of words
+      \item Total number of words with less than 3 characters
+      \item Average word length 
+      \item Average sentence length in words
+      \item Average sentence length in characters
+      \item Frequency of words of length 1
+      \item Frequency of words of length 2
+      \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
+    \end{enumerate}
+    
+    \subsection{Preprocessing the Enron dataset}
+
+    Starting with the enron dataset, we used Node.js to get the main content
+    string from the message-file, that is to say removing HTML tags, subject
+    fields etc. Once obtained the pure content strings, we used a Haskell
+    program to perform the actual feature extraction. The features were written
+    as line separated floats to one file per preprocessed message.
+
+    \subsection
+      {
+        Using Matlab to create and a Artificial Neural Network on the
+        enron dataset
+      }
+    
+    Matlab has a built in toolbox for simulating and training neural networks
+    \cite{matlab-nn}. 
+    This toolbox is highly configurable, and the next step was to find the
+    optimal parameters for our problem.
+    
+    Using matlab to parse the files produced by the preprocessors, we obtained
+    a total of ~2500 feature vectors. This set was partitioned into a train and
+    test partition. 70\% of vectors were assigned to the training set and the
+    rest were assigned to the testing set. 35\% of the total amount of the
+    feature vectors were originally spam messages. All feature vectors was
+    normalized to range [0, 1]. This matrix became the input (patterns) to the
+    neural network. A target vector for both the training and the testing
+    dataset were defined. For each message, the target vector had a
+    corresponding element: 1.0 if the message were a spam message or 0.0
+    otherwise. 
+    After training a network using the training dataset targets, we used the
+    test dataset to determine how well trained the system were. 
+    For a given message, if the corresponding system output was greater or
+    equal than 0.5 and the target were 1.0, we defined that as a successfully
+    classified message. If the target were 0.0 for that message, we defined
+    that as a miss-classified message. The reverse logic was used if the output
+    was less than 0.5.
+    For determining the performance of a fully trained network was the ratio
+    between the number of miss-classified messages and the total number of
+    messages.
+    To attempt to find the optimal parameters, we created a Matlab script
+    capable brute forcing through training with all possible combinations of
+    all common parameters and output the configurations for networks with the
+    highest score.  Letting this script run for many hours, we finally
+    established the following parameters optimal for the first dataset:
+    \begin{enumerate}
+      \item Learning rate: 1.0
+      \item Training algorithm: traingd (Gradient descent)
+      \item Number of hidden layers: 1
+      \item Number of nodes in hidden layer: 9
+      \item Number of epochs: 900
+    \end{enumerate}
+    Training with resilient back propagation has more arguments and took longer
+    to test, but as it turns out Gradient descent performed better for this
+    dataset. Results from this training session with the highest score is
+    presented in section XX. 
+    The first attempt to tweak the algorithm was to assembled two lists of
+    handpicked words that we felt were more significant than others. The two
+    lists are presented in Appendix XX.  For each of the two lists, we added an
+    element to the feature vector, which were 1.0 if the message contained a
+    word that the lists contained and 0.0 otherwise.   
+    These lists were added as an experiment attempt to increase similarity of
+    messages containing common spam words and words that could be resembled
+    into an http link.
+    One problem with the word list is that spammers might change their
+    vocabulary to avoid our spam detection and thus decrease the chance of spam
+    detection and might increase the risk of faulty classification of hams as
+    spam.  As it shows in section XX, the addition of these features helped
+    when training this dataset. 
+
+  \subsection{Inproving the feature vector}
+    Realizing that the output of the system were in range [0, 1], we wanted to
+    normalize each individual feature to that range. Note that we were already
+    normalizing the featurevectors. The next generation of features were
+    therefore:
+    \begin{enumerate}
+      \item Total number of words (normalized to [0, 1])
+      \item Total number of words with less than 3 characters 
+        (normalized to [0, 1]) 
+      \item Average word length 
+        (normalized to [0, 1]) 
+      \item Average sentence length in words
+        (normalized to [0, 1]) 
+      \item Average sentence length in characters
+        (normalized to [0, 1]) 
+      \item Ratio alphabetic characters / total amount of characters
+      \item Ratio digital characters / total amount of characters
+      \item Ratio punctuation characters / total amount of characters
+      \item Ratio whitespace characters / total amount of characters
+      \item Frequency of words of length 1
+      \item Frequency of words of length 2
+      \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
+    \end{enumerate}
+  
+  Results from training with these features are presented in section XX.
+
+  \subsection{should we include this?}
   After browsing through a list of spam messages we concluded that it was
   common to split links with white spaces in spam messages as an attempt to
   avoid spam detection. Links seemed to be more common in spam messages than in
