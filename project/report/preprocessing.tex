@@ -1,9 +1,15 @@
 
-\section{Preprocessing}
-Acquiring a reliable data set to train on was surprisingly easy. An exmaple of
-an available dataset is the enron data set \cite{enron} which was published to
-be available for research purposes. For this project we assume that the only
-interesting part of an email is the plain text content.
+\section{Preparing the data}
+
+\subsection{Preprocessing}
+
+Different kind of messages has different structure, properties and
+metadata. In this report, we'll assume that the only interesting part of an
+message is it's plain text content. Before we attempt to get any useful
+information from this content, we'll
+need to prepare the content string in various ways. There are different
+measures one can take to make a string easier to analyse, for example filter
+out stop words \cite{stop-words} or lemmatization \cite{lemmatization}.
 
 \subsection{Lemmatization} Lemmatization is a way of changing the words into
 it's basic form. This have been proven very useful according to some guy when
@@ -12,42 +18,40 @@ handling data. Maybe it was
 
 \subsection{Feature Extraction}
 
-Once done with the preprocessing, we are left with strings. Strings are,
-unfortunately not an object a neural network can handle in a good way. 
-Most neural networks operates are works with numerical objects, in order to
-classify (attempt and create a separable hyperplane between)
-inputs in input space. We need therefore convert the strings into number
-vectors. Regardless of technique chosen for doing this, we most certainly lose
-information in the process. In any case, there are information that are more
-important than other information. If we extract features so that there may
-exist a spam message with the same feature vector as a legitimate message, the
-spam detector will always make mistakes. On the other hand, a too complicated
-choice of feature vector will also make classification difficult. The different
-choices of feature vectors for this problem is presented in section XX.
-Unfortunately, the problem of choosing the right feature vector for a machine
-learning method doesn't seem to have gotten enough attention, and we were not
-able to find many papers discussing the problem. 
-Given this, we needed to come up with the feature extraction techniques
-ourselves. There were two alternatives:
+The plain text describing the content of a message is a string.
+Strings are, unfortunately not an object a ANN can handle in a good
+way. Most ANN works with numeric vectors, and are trying to create a hyperplane
+between them in order separate classes in input space. We need therefore
+convert the strings into numerical vectors. How to do this is not obvious,
+but regardless of technique chosen for doing this, we'll lose
+information in the process. If we extract features so that there may exist a
+spam message with the same feature vector as a legitimate message, the spam
+detector will always make mistakes. On the other hand, a too complicated choice
+of feature vector could also make classification difficult. Unfortunately, the
+problem of choosing the right feature vector for a machine learning method
+doesn't seem to have gotten enough attention, and we were not able to find many
+papers discussing the problem. Given this, we needed to come up with the
+feature extraction techniques ourselves. There were two alternatives:
 \begin{enumerate}
-  \item Acquire a list L of all possible words of length N. Allocate a vector V
-    of length N. For each word of a given  the message: Find the message in L.
-    If the word is on index $i$ in the list, then set V[i] to 1. Set the
-    remaining elements to 0.
+  \item Acquire a list $L$ of all $N$ possible words. Allocate a vector $V$
+    of length $N$. For each word of a given the message: Find the message in
+    $L$.  If the word is on index $i$ in the list, then set $V[i]$ to 1.0. Set
+    the remaining elements to 0.0.
   \item Extract various numeric properties of the message (average word length,
     word diversity, average sentence length), create a vector from these
     numbers.
 \end{enumerate}
 
-After analysing typical spam messages manually, we realized that many of the
+After analysing spam messages manually, we realized that many of the
 words in a spam message didn't make sense and wouldn't match against any
 dictionary. Since the beginning of spam messages a common technique to surpass
 filters has been by using specially spelled words (e.g. (B-U-Y N-O-W) or simply
 misspelled words like (BUUY NOOW). \cite{machine-learning-methods-spam}
 Furthermore, we believe that it isn't neccecarily the individual words of a
 message that classifies it a spam message or a legitimate message. As it really
-is the context behind the words that the classifier should compute, we'll
+is the context behind the words that needs to be computed, we'll
 need to extract more abstract properties about a messages without losing too
 much information.
-Considering this, and realizing that the length of V in \# $1$ in the above list
-would be really big, we chose the approach \#$2$.
+Considering this, and realizing that the $N$ in \#$1$ in the above
+list would be probably be really large, we chose the approach \#$2$.
+

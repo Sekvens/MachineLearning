@@ -266,6 +266,5 @@ main = do
   let normcollection1 = mergeFiveByElement nwl nswl nawl naslic nasliw
   let normcollection2 = L.map (str2NumVec) files
   let numvecs = mergetwo normcollection1 normcollection2
-  print $ averageWordLens
   writefiles destDir filtered numvecs
 

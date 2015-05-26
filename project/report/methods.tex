@@ -1,39 +1,36 @@
 
 \section{Methods}
 
-  \subsection{Initial configurations}
+  Acquiring a reliable data set to train on was surprisingly easy. An
+  exmaple of an available dataset is the enron data set \cite{enron} which was
+  published to be available for research purposes. Starting with the enron
+  dataset, we used Node.js to get the main content string from the
+  message-file, discarding any metadata and other uninteresting characters.
+  That is to say removing HTML tags, subject fields etc. The strings were then
+  lemmatized with the python NLTK lemmatizer \cite{nltk}. Once obtained the
+  proprocessed, pure content strings we used a Haskell program to perform the
+  actual feature extraction. The features were written as line separated floats
+  to one file per preprocessed message.
 
-    The initial list of features that we extracted were as follows:
-    \begin{enumerate}
-      \item Total number of characters
-      \item Total number of white characters 
-      \item Total number of alphabetic characters
-      \item Total number of digit characters
-      \item Total number of punctuation characters
-      \item Ratio between alphabetic characters and total number of characters
-      \item Total number of words
-      \item Total number of words with less than 3 characters
-      \item Average word length 
-      \item Average sentence length in words
-      \item Average sentence length in characters
-      \item Frequency of words of length 1
-      \item Frequency of words of length 2
-      \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
-    \end{enumerate}
+  The initial list of features that we extracted were chosen as follows:
+  \begin{enumerate}
+    \item Total number of characters
+    \item Total number of white characters 
+    \item Total number of alphabetic characters
+    \item Total number of digit characters
+    \item Total number of punctuation characters
+    \item Ratio between alphabetic characters and total number of characters
+    \item Total number of words
+    \item Total number of words with less than 3 characters
+    \item Average word length 
+    \item Average sentence length in words
+    \item Average sentence length in characters
+    \item Frequency of words of length 1
+    \item Frequency of words of length 2
+    \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
+  \end{enumerate}
     
-    \subsection{Preprocessing the Enron dataset}
-
-    Starting with the enron dataset, we used Node.js to get the main content
-    string from the message-file, that is to say removing HTML tags, subject
-    fields etc. Once obtained the pure content strings, we used a Haskell
-    program to perform the actual feature extraction. The features were written
-    as line separated floats to one file per preprocessed message.
-
-    \subsection
-      {
-        Using Matlab to create and a Artificial Neural Network on the
-        enron dataset
-      }
+  \subsection{Creating and training a network}
     
     Matlab has a built in toolbox for simulating and training neural networks
     \cite{matlab-nn}. 
@@ -75,20 +72,19 @@
     Training with resilient back propagation has more arguments and took longer
     to test, but as it turns out Gradient descent performed better for this
     dataset. Results from this training session with the highest score is
-    presented in section XX. 
+    presented in section \ref{sec:initialresults}. 
     The first attempt to tweak the algorithm was to assembled two lists of
     handpicked words that we felt were more significant than others. The two
-    lists are presented in Appendix XX.  For each of the two lists, we added an
+    lists are presented in Appendix XX. For each of the two lists, we added an
     element to the feature vector, which were 1.0 if the message contained a
     word that the lists contained and 0.0 otherwise.   
     These lists were added as an experiment attempt to increase similarity of
     messages containing common spam words and words that could be resembled
     into an http link.
-    One problem with the word list is that spammers might change their
-    vocabulary to avoid our spam detection and thus decrease the chance of spam
-    detection and might increase the risk of faulty classification of hams as
-    spam.  As it shows in section XX, the addition of these features helped
-    when training this dataset. 
+    One thing to keep in mind when "hard-coding" a word list in the system  is
+    that spammers might change their vocabulary to avoid our spam detection and
+    thus decrease the chance of spam detection and might increase the risk of
+    faulty classification of hams as spam. 
 
   \subsection{Inproving the feature vector}
     Realizing that the output of the system were in range [0, 1], we wanted to
@@ -114,7 +110,8 @@
       \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
     \end{enumerate}
   
-  Results from training with these features are presented in section XX.
+  Results from training with these features are presented in section
+  \ref{sec:reworkedresults}.
 
   \subsection{should we include this?}
   After browsing through a list of spam messages we concluded that it was
@@ -132,6 +129,4 @@
   want to use a counter since it would discriminate against ham messages that
   are written about a subject that might contain many of the banned words and
   therefore increase the risk of a faulty classification. 
-
-
 
