@@ -1,6 +1,6 @@
 
-tic
-
+tic;
+clear;
 readdata  = 1;
 
 trainratio = 0.7;

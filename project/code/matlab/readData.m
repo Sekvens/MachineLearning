@@ -8,6 +8,7 @@ spamSrc = '../../data/numvecs/spam/';
 hamListing = dir(hamSrc);
 spamListing = dir(spamSrc);
 
+
 hams = getNumVecs(hamListing(3:end), hamSrc, numvecdim);
 [hdimx, hdimy] = size(hams);
 
@@ -17,6 +18,8 @@ if (n > lstdimx)
   disp('Error: Percentage too high, not enough spams');
 else
   spams = getNumVecs(spamListing(3:n), spamSrc, numvecdim);
+  
+
   [sdimx, sdimy] = size(spams);
 
   hamtargets = zeros(1, hdimy);
