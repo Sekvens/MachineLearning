@@ -2,6 +2,11 @@
 \usepackage{fullpage}
 \usepackage{glossaries}
 \usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{float}
+\theoremstyle{definition}
+\newtheorem{poem}{Feature List}
 
 \title{\textbf{Project Report: Spam Detection with Neural Networks} \\
     \textbf{Machine Learning (course 1DT071)} \\  
@@ -18,13 +23,59 @@
 
 \section{Introduction} 
   The goal of this project is to study how Artificial Neural Networks (ANN) can
-  be trained to recognize spam messages.
+  be trained to recognize spam messages, and to implement a well-performing
+  spam-filter using ANN.
 
 \input{background.tex}
 \input{preprocessing.tex}
 \input{methods.tex}
 \input{results.tex}
 \input{conclusions.tex}
+
+\section{Shortcomings}
+  In this project, a single dataset of messages were used. Even though the
+  dataset contained a wide variety of messages, it would obviously have been
+  interesting to study other datasets too.   
+  \begin{itemize} 
+    \item Train different networks with datasets with the same parameters and
+      study the performance of the networks.
+    \item Study how a trained network performed when trained with different
+    datasets.  
+    \item Find out which features that seems to be most important
+      for a general dataset. 
+  \end{itemize} 
+
+\section{Appendix}
+  \subsection{The lists of words initially used for training}
+  Spam words
+  \begin{itemize}
+    \item win
+    \item award
+    \item offer
+    \item lay
+    \item sex
+    \item secret
+    \item check
+    \item online
+    \item prescription
+    \item congrats
+    \item free
+    \item girls
+    \item premium
+    \item adult
+    \item virus
+  \end{itemize}
+  Link words
+  \begin{itemize}
+    \item www
+    \item http
+    \item info
+    \item html
+    \item /
+  \end{itemize}
+  \subsection{Code}
+    The source code of all the preprocessing and Matlab scripts are hosted at
+    \url{https://github.com/Sekvens/MachineLearning/tree/master/project/code}
 
 
 \bibliographystyle{plain}

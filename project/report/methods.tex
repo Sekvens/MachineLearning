@@ -1,53 +1,78 @@
 
 \section{Methods}
-
+  
+  The goal for the practical part was to try to train an ANN on a reliable
+  dataset and make it correctly classify as many messages as possible,
+  preferably the entire set.
   Acquiring a reliable data set to train on was surprisingly easy. An
-  exmaple of an available dataset is the enron data set \cite{enron} which was
-  published to be available for research purposes. Starting with the enron
-  dataset, we used Node.js to get the main content string from the
+  example of an available dataset is the enron data set \cite{enron} which was
+  published to be available for research purposes. Using this dataset, 
+  we used Node.js to get the main content string from the
   message-file, discarding any metadata and other uninteresting characters.
   That is to say removing HTML tags, subject fields etc. The strings were then
   lemmatized with the python NLTK lemmatizer \cite{nltk}. Once obtained the
-  proprocessed, pure content strings we used a Haskell program to perform the
+  preprocessed, pure content strings we used a Haskell program to perform the
   actual feature extraction. The features were written as line separated floats
   to one file per preprocessed message.
+  \subsection{Initial choice of feature vector}
+    The initial list of features that we extracted were chosen as follows:
+    \begin{poem}\mbox{}\\[-\baselineskip]
+      \begin{enumerate}
+        \item Total number of characters
+        \item Total number of white characters 
+        \item Total number of alphabetic characters
+        \item Total number of digit characters
+        \item Total number of punctuation characters
+        \item Ratio between alphabetic characters and total number of characters
+        \item Total number of words
+        \item Total number of words with less than 3 characters
+        \item Average word length 
+        \item Average sentence length in words
+        \item Average sentence length in characters
+        \item Frequency of words of length 1
+        \item Frequency of words of length 2
+        \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
+        \item Value depending on if message contained a word defined in the
+          predefined list of spam words
+        \item Value depending on if message contained a word defined in the 
+          predefined list of link words.
+      \end{enumerate}
+    \end{poem} 
 
-  The initial list of features that we extracted were chosen as follows:
-  \begin{enumerate}
-    \item Total number of characters
-    \item Total number of white characters 
-    \item Total number of alphabetic characters
-    \item Total number of digit characters
-    \item Total number of punctuation characters
-    \item Ratio between alphabetic characters and total number of characters
-    \item Total number of words
-    \item Total number of words with less than 3 characters
-    \item Average word length 
-    \item Average sentence length in words
-    \item Average sentence length in characters
-    \item Frequency of words of length 1
-    \item Frequency of words of length 2
-    \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
-  \end{enumerate}
-    
+    The two last features were an attempt to manually tweak the algorithm.
+    For these features, we created two lists of words that we felt were more
+    common in spam messages in a general sense. We called the lists "spam
+    words" and "link words" where the former contained common spam words such
+    as \texttt{win, reward} while the latter contained words such as
+    \texttt{http, www}. The motivation for the second list came after we
+    discovered spammers usually split hyperlinks in various ways.
+    The two lists are presented in Appendix XX. For each of the
+    two lists, we set the corresponding feature to 1.0 if the
+    message contained a word that the lists contained and 0.0 otherwise.
+    One thing to keep in mind when "hard-coding" a word list in the system is
+    that spammers might change their vocabulary to avoid our spam detection and
+    thus decrease the chance of spam detection.    
   \subsection{Creating and training a network}
-    
+
+
     Matlab has a built in toolbox for simulating and training neural networks
     \cite{matlab-nn}. 
-    This toolbox is highly configurable, and the next step was to find the
-    optimal parameters for our problem.
+    This toolbox is highly configurable, so the next step was to find the
+    optimal parameters for our problem. In order to do so, we needed to train
+    an ANN with different parameters and compare it's outputs. 
     
-    Using matlab to parse the files produced by the preprocessors, we obtained
+    Using Matlab to parse the files produced by the preprocessors, we obtained
     a total of ~2500 feature vectors. This set was partitioned into a train and
     test partition. 70\% of vectors were assigned to the training set and the
     rest were assigned to the testing set. 35\% of the total amount of the
-    feature vectors were originally spam messages. All feature vectors was
-    normalized to range [0, 1]. This matrix became the input (patterns) to the
-    neural network. A target vector for both the training and the testing
-    dataset were defined. For each message, the target vector had a
-    corresponding element: 1.0 if the message were a spam message or 0.0
-    otherwise. 
-    After training a network using the training dataset targets, we used the
+    feature vectors were from spam messages. The feature vectors was
+    normalized to range [-1, 1] to fit the range of the hidden-layer
+    activation function that we planned on using. The matrix of features became
+    the input (patterns) to the neural network. A target vector for both the
+    training and the testing dataset were defined as follows: For each message,
+    the corresponding element of the target vector were set to 1.0 if the
+    message were a spam message, and set to 0.0 otherwise. 
+    After training a network using the training dataset, we used the
     test dataset to determine how well trained the system were. 
     For a given message, if the corresponding system output was greater or
     equal than 0.5 and the target were 1.0, we defined that as a successfully
@@ -60,39 +85,29 @@
     To attempt to find the optimal parameters, we created a Matlab script
     capable brute forcing through training with all possible combinations of
     all common parameters and output the configurations for networks with the
-    highest score.  Letting this script run for many hours, we finally
+    highest score. Letting this script run for many hours, we finally
     established the following parameters optimal for the first dataset:
     \begin{enumerate}
-      \item Learning rate: 1.0
       \item Training algorithm: traingd (Gradient descent)
+      \item Learning rate: 1.0
       \item Number of hidden layers: 1
       \item Number of nodes in hidden layer: 9
       \item Number of epochs: 900
     \end{enumerate}
+    As activation functions, hyperbolic tangent and logistic were used
+    respectively during the entire session. 
     Training with resilient back propagation has more arguments and took longer
     to test, but as it turns out Gradient descent performed better for this
     dataset. Results from this training session with the highest score is
-    presented in section \ref{sec:initialresults}. 
-    The first attempt to tweak the algorithm was to assembled two lists of
-    handpicked words that we felt were more significant than others. The two
-    lists are presented in Appendix XX. For each of the two lists, we added an
-    element to the feature vector, which were 1.0 if the message contained a
-    word that the lists contained and 0.0 otherwise.   
-    These lists were added as an experiment attempt to increase similarity of
-    messages containing common spam words and words that could be resembled
-    into an http link.
-    One thing to keep in mind when "hard-coding" a word list in the system  is
-    that spammers might change their vocabulary to avoid our spam detection and
-    thus decrease the chance of spam detection and might increase the risk of
-    faulty classification of hams as spam. 
+    presented in section \ref{sec:initialresults}, both including the "spam
+    words" and "list words" features and excluding.
 
-  \subsection{Inproving the feature vector}
-  \ref{sec:reworkedresults}.
+  \subsection{Improving the feature vector}
     Realizing that the output of the system were in range [0, 1], we wanted to
-    normalize each individual feature to that range. Note that we were already
-    normalizing the featurevectors. The next generation of features were
-    therefore:
-    \begin{enumerate}
+    normalize each individual feature to that range. The next generation of
+    features were became:
+  \begin{poem}\mbox{}\\[-\baselineskip]
+    \begin{enumerate} \label{reworked-features}
       \item Total number of words (normalized to [0, 1])
       \item Total number of words with less than 3 characters 
         (normalized to [0, 1]) 
@@ -109,24 +124,16 @@
       \item Frequency of words of length 1
       \item Frequency of words of length 2
       \item Word diversity index, Simpsons D measure \cite{simpsons-measure}
-    \end{enumerate}
+    \end{enumerate} 
+  \end{poem} 
   
   Results from training with these features are presented in section
+  \ref{sec:reworkedresults}.
 
-  \subsection{should we include this?}
-  After browsing through a list of spam messages we concluded that it was
-  common to split links with white spaces in spam messages as an attempt to
-  avoid spam detection. Links seemed to be more common in spam messages than in
-  ham. Because of that we made a new parameter that checks if the message
-  contains any of the words \texttt{html, http, www TODO} and we use that as a
-  parameter for the ANN. 
-
-  Another interesting hypothesis we had was that using a word list of words
-  that are more common in spam messages could improve the performance of the
-  spam detection. We composed a simple word list containing the words
-  \texttt{win, secret} that would be used as a parameter.  These parameters are
-  binary and true if they contain any of the words in these lists. We didn't
-  want to use a counter since it would discriminate against ham messages that
-  are written about a subject that might contain many of the banned words and
-  therefore increase the risk of a faulty classification. 
-
+  \subsection{Deciding the important features}
+    Regardless of how a network performs, some features might be more important
+    than others. To investigate this, we trained automated a script to train
+    the network on different subsets of these features. When we found subsets
+    that performed well, we gradually removed individual features, trained the
+    network again and studied the result. The most important features are
+    presented in section \ref{sec:important-features}.

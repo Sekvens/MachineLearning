@@ -1,22 +1,57 @@
 
 \section{Results}
-  \subsection{Network performance with initial parameters}
+  \subsection{Network performace using Feature List 1}
   \label{sec:initialresults}
-    \begin{table}[h]
-    \begin{tabular}{llll}
-    Run               & Overall Success & Spam Success & Ham Success \\
-    Both Lists        & 84.24\%         & 79.37\%      & 83.07\%     \\
-    Banned Word List  & 86.37\%         & 67.31\%      & 92.75\%     \\
-    Link Word List    & 82.86\%         & 68.34\%      & 86.50\%     \\
-    None of the Lists & 83.83\%         & 48.66\%      & 96.01\%    
-    \end{tabular}
+    Using Feature List 1 the network performed as below:
+    \begin{table}[H]
+      \begin{tabular}{llll}
+        Run with Feature List 1      & Overall Success & Spam Success & Ham Success \\
+        Including features 15 and 16 & 84.24\%         & 69.37\%      & 83.07\%     \\
+        Excluding features 15 and 16 & 83.83\%         & 48.66\%      & 96.01\%    
+      \end{tabular}
     \end{table}
     As shown, introducing extra features for checking for common spam words and
-    links increased the network performance. The network still has troubles
-    classifying some messages, mainly spam messages.
-  \subsection{Network performance with reworked parameters}
+    links slightly increased the network performance. The network still has
+    troubles with classification, mainly with spam messages.
+
+  \subsection{Network performance using Feature List 2}
   \label{sec:reworkedresults}
-    With the reworked paramters, the performance of the network increased
-    drastically. Over 10 sample runs, the total percentage of missclassified
-    messages were never less than 2\%. In one run, the network managed to
-    classify the whole set of messages correctly.
+    With these parameters, the performance of the network increased
+    drastically. Over 10 sample runs the average percentage of correctly
+    classified messages were 99.63\% which means out of the 750 messages used
+    for testing, only about 2 messages were misclassified. 
+
+  \subsection{Most important features from Feature List 2}
+  We established the most important features to be:
+  \label{sec:important-features}
+    \begin{poem}\mbox{}\\[-\baselineskip]
+      \begin{enumerate} \label{important-features}
+        \item Average word length.
+        \item Average sentence length (counting in characters or words mattered 
+          little), 
+        \item Word diversity index. In our case it was Simpsons Diversity
+          Measure.  
+        \item A Measure of short words. 
+      \end{enumerate}     
+    \end{poem}
+    Feature List $3$ generated as well-performing networks as
+    the network in section 5.2.  
+    Over 10 sample runs, the average percentage of correctly
+    classified messages were now 99.52\%.
+    However, removing features from this set set of features always
+    resulted in increased fallout. 
+    \begin{table}[H]
+      \begin{tabular}{ll}
+        Run with Feature List 3      & Overall Success  \\
+        Removing Feature 1           & 81.35\%          \\
+        Removing Feature 2           & 98.49\%          \\ 
+        Removing Feature 3           & 97.20\%          \\ 
+        Removing Feature 4           & 98.14\%          \\ 
+        Keeping only feature 1       & 93.94\%
+      \end{tabular}
+    \end{table}
+    By far, the single most important feature were the average word length.
+    As shown in the table above, training the neural network on this feature
+    alone, the network classified about 94\% of messages correctly. However,
+    for the best result, complementary features were needed.
+    

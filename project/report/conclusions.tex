@@ -1,7 +1,28 @@
 
 \section{Conclusions}
 
-From the result we establish the importance of choosing the right technique
-when extracting features from strings. By eleminating redundant features and
-mapping each feature to the same range as the output we managed to drastically
-increase the performance of the network.
+The result shows the following:
+\begin{enumerate}
+  \item Mapping the range of each individual dimension to
+    the output range turns out to be very important for this application.
+  \item The network manages to find a pattern using only a few general
+    parameters. 
+\end{enumerate}
+
+It turns out normalizing each individual dimension to a common range helped the
+network by a great deal. Since we are trying to generalize features of a
+string and don't necessarily care about some individual protruding feature, we
+don't loose important information because of this. It instead helps when
+clustering the dataset.
+\\ 
+The more surprising result is how little the network needed to know about the
+message in order to classify it correctly. A common concern when training ANN
+is if the dataset is linearly separable, especially if input dimension $<<<$
+number of data points. The results show that the messages were successfully
+separated in four dimensions.
+\\ 
+Shrinking the feature vector also has another implication: Training a network
+in this fashion is rather fast. It took less than 2.5 seconds for Matlab to
+train a network with the used parameters. This means that a system using this
+technique could be dynamically modified when new data were introduced. 
+
