@@ -1,12 +1,14 @@
 
 \section{Conclusions}
 
-The result shows the following:
+We had the theory that spam messages can be recognized without involving the
+specific words in messages. The result shows that is possible.
+The result also shows the following:
 \begin{enumerate}
   \item Mapping the range of each individual dimension to
     the output range turns out to be very important for this application.
-  \item The network manages to find a pattern using only a few general
-    parameters. 
+  \item The network manages to classify messages with very little information
+    about the messages. 
 \end{enumerate}
 
 It turns out normalizing each individual dimension to a common range helped the
@@ -19,7 +21,7 @@ The more surprising result is how little the network needed to know about the
 message in order to classify it correctly. A common concern when training ANN
 is if the dataset is linearly separable, especially if input dimension $<<<$
 number of data points. The results show that the messages were successfully
-separated in four dimensions.
+separated in four dimensions. 
 \\ 
 Shrinking the feature vector also has another implication: Training a network
 in this fashion is rather fast. It took less than 2.5 seconds for Matlab to
