@@ -10,8 +10,9 @@
   we used Node.js to get the main content string from the
   message-file, discarding any meta data and other uninteresting characters.
   That is to say removing HTML tags, subject fields etc. The strings were then
-  lemmatized with the python NLTK lemmatizer \cite{nltk} and \cite{bird2009natural}. Once obtained the
-  preprocessed, pure content strings we used a Haskell program to perform the
+  lemmatized with the python NLTK lemmatizer \cite{nltk} and
+  \cite{bird2009natural}. Once obtained the preprocessed, pure content strings
+  we used a Haskell program to perform the
   actual feature extraction. The features were written as line separated floats
   to one file per preprocessed message.
   \subsection{Initial choice of feature vector}
