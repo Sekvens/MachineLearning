@@ -4,7 +4,7 @@
 \subsection{Preprocessing}
 
 Different kind of messages has different structure, properties and
-metadata. In this report, we'll assume that the only interesting part of an
+meta data. In this report, we'll assume that the only interesting part of an
 message is it's plain text content. Before we attempt to get any useful
 information from this content, we'll
 need to prepare the content string in various ways. There are different
@@ -17,16 +17,19 @@ out stop words \cite{stop-words} or lemmatization \cite{lemmatization}.
 The plain text describing the content of a message is a string.  Strings are,
 unfortunately not an object a ANN can handle in a good way. Most ANN works with
 numeric vectors, and therefore we need to convert the strings into numerical
-vectors. How to do this is not obvious, but regardless of technique chosen for
-doing this, we'll lose information in the process. If we extract features so
-that there may exist a spam message with the same feature vector as a
-legitimate message, the spam detector will always make mistakes. On the other
-hand, a too complicated choice of feature vector could also make classification
-difficult. Unfortunately, the problem of choosing the right feature vector for
-a machine learning method doesn't seem to have gotten enough attention, and we
-were not able to find many papers discussing the problem. Given this, we needed
-to come up with the feature extraction techniques ourselves. There were two
-alternatives:
+vectors. How to do this is not obvious, but regardless of how we do this
+we'll lose information in the process. Finding a good way of extracting
+features is crucial - if we choose a bad technique for this, it doesn't
+matter how good the training algorithm is. \\
+
+If we extract features so that there may exist a spam message with the same
+feature vector as a legitimate message, the spam detector will always make
+mistakes. On the other hand, a too complicated choice of feature vector could
+also make classification difficult. Unfortunately, the problem of choosing the
+right feature vector for a machine learning method doesn't seem to have gotten
+enough attention, and we were not able to find many papers discussing the
+problem. Given this, we needed to come up with the feature extraction
+techniques ourselves. There were two alternatives:
 \begin{enumerate}
   \item Acquire a list $L$ of all $N$ possible words. Allocate a vector $V$
     of length $N$. For each word of a given the message: Find the message in
@@ -48,7 +51,7 @@ necessarily the individual words of a message that classifies it a spam message
 or a legitimate message. As it really is the context behind the words that
 needs to be computed, we'll need to extract more abstract properties about a
 messages without losing too much information. If we manage to do this, we'll
-get around the problems of Baysian poisioning. 
+get around the problems of Baysian poisoning. 
 Considering this, and realizing that the $N$ in \#$1$ in the above
 list would be probably be really large, we chose the approach \#$2$. Since we
 did not know which properties of a message might help to classify it as spam or

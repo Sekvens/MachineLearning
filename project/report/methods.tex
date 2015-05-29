@@ -5,10 +5,10 @@
   dataset and make it correctly classify as many messages as possible,
   preferably the entire set.
   Acquiring a reliable data set to train on was surprisingly easy. An
-  example of an available dataset is the enron data set \cite{enron} which was
+  example of an available dataset is the Enron data set \cite{enron} which was
   published to be available for research purposes. Using this dataset, 
   we used Node.js to get the main content string from the
-  message-file, discarding any metadata and other uninteresting characters.
+  message-file, discarding any meta data and other uninteresting characters.
   That is to say removing HTML tags, subject fields etc. The strings were then
   lemmatized with the python NLTK lemmatizer \cite{nltk}. Once obtained the
   preprocessed, pure content strings we used a Haskell program to perform the
@@ -46,7 +46,7 @@
     as \texttt{win, reward} while the latter contained words such as
     \texttt{http, www}. The motivation for the second list came after we
     discovered spammers usually split hyperlinks in various ways.
-    The two lists are presented in Appendix XX. For each of the
+    The two lists are presented in Appendix A. For each of the
     two lists, we set the corresponding feature to 1.0 if the
     message contained a word that the lists contained and 0.0 otherwise.
     One thing to keep in mind when "hard-coding" a word list in the system is
