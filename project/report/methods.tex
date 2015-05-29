@@ -10,7 +10,7 @@
   we used Node.js to get the main content string from the
   message-file, discarding any meta data and other uninteresting characters.
   That is to say removing HTML tags, subject fields etc. The strings were then
-  lemmatized with the python NLTK lemmatizer \cite{nltk}. Once obtained the
+  lemmatized with the python NLTK lemmatizer \cite{nltk} and \cite{bird2009natural}. Once obtained the
   preprocessed, pure content strings we used a Haskell program to perform the
   actual feature extraction. The features were written as line separated floats
   to one file per preprocessed message.
@@ -49,6 +49,13 @@
     The two lists are presented in Appendix A. For each of the
     two lists, we set the corresponding feature to 1.0 if the
     message contained a word that the lists contained and 0.0 otherwise.
+	
+	This approach with lists of words is similar to naive algorithmic approaches 
+	to spam detection where the performance have been quite bad. They are as well 
+	partly used for the rule based knowledge engineering techniques \cite{machine-learning-methods-spam}.
+	However it differs in our approach since we are only giving the information to an ANN as an extra parameter
+	used for training. The ANN then decides how important this information is and adapt it accordingly
+	which differs from the naive algorithms where the word list would be what decides if it spam or not.
     One thing to keep in mind when "hard-coding" a word list in the system is
     that spammers might change their vocabulary to avoid our spam detection and
     thus decrease the chance of spam detection.    
@@ -87,13 +94,13 @@
     all common parameters and output the configurations for networks with the
     highest score. Letting this script run for many hours, we finally
     established the following parameters optimal for the first dataset:
-    \begin{enumerate}
+    \begin{itemize}
       \item Training algorithm: traingd (Gradient descent)
       \item Learning rate: 1.0
       \item Number of hidden layers: 1
       \item Number of nodes in hidden layer: 9
       \item Number of epochs: 900
-    \end{enumerate}
+    \end{itemize}
     As activation functions, hyperbolic tangent and logistic were used
     for the hidden layer and output layer respectively during the entire
     session.  Training with resilient back propagation has more arguments and
